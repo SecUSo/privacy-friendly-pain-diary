@@ -8,12 +8,8 @@
     android:fitsSystemWindows="true"
     tools:context="org.secuso.privacyfriendlyexample.activities.MainActivity">
 
-    <include layout="@layout/toolbar"/>
-
-    <include layout="@layout/content_main" />
-
     <Button
-        android:id="@+id/button_main_add"
+        android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom|end"
@@ -21,13 +17,13 @@
         android:background="@drawable/button_normal"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:text="@string/main_button_add"
+        android:text="@string/diary_next"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button_main_remove"
+        android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom|start"
@@ -35,7 +31,7 @@
         android:background="@drawable/button_normal"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:text="@string/main_button_remove"
+        android:text="@string/diary_back"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"

@@ -34,7 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="org.secuso.privacyfriendlyexample.activities.AboutActivity"
+            android:name="org.secuso.privacyfriendlyexample.activities.wieFuelenSieSich"
             android:label="@string/about"
             android:parentActivityName="org.secuso.privacyfriendlyexample.activities.MainActivity"
             android:screenOrientation="portrait">
@@ -70,6 +70,29 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlyexample.activities.MainActivity" />
         </activity>
+        <activity
+            android:name="org.secuso.privacyfriendlyexample.tutorial.TutorialActivity2"
+            android:label="tutorialActivity2"
+            android:parentActivityName="org.secuso.privacyfriendlyexample.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlyexample.activities.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="org.secuso.privacyfriendlyexample.activities.PainDiaryActivity"
+            android:label="painDiaryActivity"
+            android:parentActivityName="org.secuso.privacyfriendlyexample.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlyexample.activities.MainActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

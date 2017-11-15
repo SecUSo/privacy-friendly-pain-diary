@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_button_add">Add New Diary Entry</string>
+    <string name="main_button_remove">Remove Diary Entry</string>
+    <string name="howAreYou">Wie fühlen sie sich?</string>
+    <string name="diary_next">Next</string>
+    <string name="diary_back">Back</string>
+    <string name="wieStarkSindDieSchmerzen">Wie stark sind die Schmerzen</string>
+    <string name="title_activity_Diary">activityDiary</string>
+</resources>

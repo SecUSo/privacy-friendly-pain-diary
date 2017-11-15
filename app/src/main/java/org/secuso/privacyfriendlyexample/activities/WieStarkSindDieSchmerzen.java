@@ -17,24 +17,24 @@
 
 package org.secuso.privacyfriendlyexample.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
-import org.secuso.privacyfriendlyexample.BuildConfig;
 import org.secuso.privacyfriendlyexample.R;
+import org.secuso.privacyfriendlyexample.tutorial.PrefManager;
 
 /**
  * Created by yonjuni on 15.06.16.
  */
-public class AboutActivity extends AppCompatActivity {
+public class WieStarkSindDieSchmerzen extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_wie_fuehlen_sie_sich);
 
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
@@ -47,11 +47,27 @@ public class AboutActivity extends AppCompatActivity {
             mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
         }
 
+
+        // Add a new diary Entry
+        Button add = (Button) findViewById(R.id.button_next);
+        if(add != null) {
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PrefManager prefManager = new PrefManager(getBaseContext());
+                    prefManager.setFirstTimeLaunch(true);
+                    Intent intent = new Intent(WieStarkSindDieSchmerzen.this, WieStarkSindDieSchmerzen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+        }
+
         overridePendingTransition(0, 0);
 
-        ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.textFieldVersionName)).setText(BuildConfig.VERSION_NAME);
+//        ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
+//        ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+//        ((TextView)findViewById(R.id.textFieldVersionName)).setText(BuildConfig.VERSION_NAME);
     }
 
     //@Override
@@ -59,4 +75,3 @@ public class AboutActivity extends AppCompatActivity {
     //    return R.id.nav_about;
     //}
 }
-

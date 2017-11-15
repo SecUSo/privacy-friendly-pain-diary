@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Example</string>
-    <string name="app_name_long">Privacy Friendly Example</string>
+    <string name="app_name">Pain Diary</string>
+    <string name="app_name_long">Privacy Friendly Pain Diary</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
     <!-- ###DRAWER###-->
@@ -16,13 +16,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- ###MAIN### -->
+
+    <string name="main_button_add">Add New Diary Entry</string>
+    <string name="wieStarkSindDieSchmerzen">Wie stark sind die Schmerzen?</string>
+
     <string name="main_button_text">Full Width Button</string>
     <string name="main_button_disabled_text">Inactive Button</string>
-    <string name="main_button_1">1</string>
-    <string name="main_button_2">2</string>
-    <string name="main_button_3">3</string>
-    <string name="main_button_4">4</string>
-    <string name="main_button_5">5</string>
+
     <string name="main_text_fullwithbutton_desc">A button that uses the full width of the screen looks like this:</string>
     <string name="main_text_disabledbutton_desc">A disabled button looks like this (any size):</string>
     <string name="main_text_title">This is an example app to demonstrate the design of a Privacy Friendly App. Further explanations can be found in the Privacy Friendly App Guide.</string>
@@ -86,5 +86,10 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="main_button_welcomedialog">Show Welcome</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
+    <string name="main_button_remove">Remove Diary Entry</string>
+    <string name="howAreYou">Wie fühlen sie sich?</string>
+    <string name="diary_next">Next</string>
+    <string name="diary_back">Back</string>
+    <string name="title_activity_Diary">activityDiary</string>
 
 </resources>

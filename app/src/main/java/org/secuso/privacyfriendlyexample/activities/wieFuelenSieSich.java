@@ -19,38 +19,46 @@ package org.secuso.privacyfriendlyexample.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 
 import org.secuso.privacyfriendlyexample.R;
 import org.secuso.privacyfriendlyexample.tutorial.PrefManager;
-import org.secuso.privacyfriendlyexample.tutorial.TutorialActivity2;
-import org.secuso.privacyfriendlyexample.activities.PainDiaryActivity;
 
 /**
- * @author Christopher Beckmann, Karola Marky
- * @version 20171016
+ * Created by yonjuni on 15.06.16.
  */
 
-public class MainActivity extends BaseActivity {
 
-    @Override
+public class wieFuelenSieSich extends AppCompatActivity {
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_wie_fuehlen_sie_sich);
 
-        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.calendarView); // get the reference of CalendarView
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        View mainContent = findViewById(R.id.main_content);
+        if (mainContent != null) {
+            mainContent.setAlpha(0);
+            mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
+        }
+
 
         // Add a new diary Entry
-        Button add = (Button) findViewById(R.id.button_main_add);
+        Button add = (Button) findViewById(R.id.button_next);
         if(add != null) {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     PrefManager prefManager = new PrefManager(getBaseContext());
                     prefManager.setFirstTimeLaunch(true);
-                    Intent intent = new Intent(MainActivity.this, PainDiaryActivity.class);
+                    Intent intent = new Intent(wieFuelenSieSich.this, WieStarkSindDieSchmerzen.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -58,40 +66,15 @@ public class MainActivity extends BaseActivity {
         }
 
         overridePendingTransition(0, 0);
+
+//        ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
+//        ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+//        ((TextView)findViewById(R.id.textFieldVersionName)).setText(BuildConfig.VERSION_NAME);
     }
 
-    /**
-     * This method connects the Activity to the menu item
-     * @return ID of the menu item it belongs to
-     */
-    @Override
-    protected int getNavigationDrawerID() {
-        return R.id.nav_example;
-    }
+//@Override
+//protected int getNavigationDrawerID() {
+//    return R.id.nav_about;
+//}
 
-    public void onClick(View view) {
-        switch(view.getId()) {
-            // do something with all these buttons?
-            default:
-        }
-    }
 }
-
-
-//        String date = "15/11/2014";
-//        String parts[] = date.split("/");
-//
-//        int day = Integer.parseInt(parts[0]);
-//        int month = Integer.parseInt(parts[1]);
-//        int year = Integer.parseInt(parts[2]);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, year);
-//        calendar.set(Calendar.MONTH, month);
-//        calendar.set(Calendar.DAY_OF_MONTH, day);
-//
-//        long milliTime = calendar.getTimeInMillis();
-//
-//
-//        simpleCalendarView.setDate(milliTime,false,false);
-//
