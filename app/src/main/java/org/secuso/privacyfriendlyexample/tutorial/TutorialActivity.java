@@ -19,6 +19,7 @@ package org.secuso.privacyfriendlyexample.tutorial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,11 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyexample.R;
 import org.secuso.privacyfriendlyexample.activities.MainActivity;
+import org.secuso.privacyfriendlyexample.database.DatabaseHandler;
+import org.secuso.privacyfriendlyexample.database.entities.enums.Gender;
+import org.secuso.privacyfriendlyexample.database.entities.interfaces.UserInterface;
+
+import java.sql.Date;
 
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
@@ -70,6 +77,10 @@ public class TutorialActivity extends AppCompatActivity {
             launchHomeScreen();
             return;
         }
+
+//        DatabaseHandler handler = new DatabaseHandler(this);
+//        SQLiteDatabase db = handler.getWritableDatabase();
+//        handler.onUpgrade(db, 1, 1);
 
     // Making notification bar transparent
         if(Build.VERSION.SDK_INT >=21)
