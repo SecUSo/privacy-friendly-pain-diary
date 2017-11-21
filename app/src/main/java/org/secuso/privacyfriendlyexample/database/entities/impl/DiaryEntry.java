@@ -5,13 +5,14 @@ import org.secuso.privacyfriendlyexample.database.entities.enums.Condition;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.DrugInterface;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.PainDescriptionInterface;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Susanne Felsen
- * @version 20171118
+ * @version 20171121
  */
 public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryInterface {
 
@@ -97,6 +98,11 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
     @Override
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public Set<DrugInterface> getDrugs() {
+        return Collections.unmodifiableSet(drugs);
     }
 
     @Override

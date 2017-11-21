@@ -10,6 +10,8 @@ public interface PersistentObject {
 
     public long getObjectID();
 
+    public void setObjectID(long objectID);
+
     public boolean isPersistent();
 
 }

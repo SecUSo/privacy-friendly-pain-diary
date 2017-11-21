@@ -18,6 +18,11 @@ public abstract class AbstractPersistentObject implements PersistentObject {
     }
 
     @Override
+    public void setObjectID(long objectID) {
+        this.objectID = objectID;
+    }
+
+    @Override
     public boolean isPersistent() {
         if (objectID > 0L && objectID != INVALID_OBJECT_ID) {
             return true;

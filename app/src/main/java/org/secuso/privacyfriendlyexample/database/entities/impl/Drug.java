@@ -22,7 +22,7 @@ public class Drug extends AbstractPersistentObject implements DrugInterface {
     public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT, " +
-            COLUMN_DOSE + "TEXT, " +
+            COLUMN_DOSE + " TEXT, " +
             COLUMN_CURRENTLY_TAKEN + " BOOLEAN NOT NULL CHECK(" + COLUMN_CURRENTLY_TAKEN + " IN (0,1)));";
 
     private String name;

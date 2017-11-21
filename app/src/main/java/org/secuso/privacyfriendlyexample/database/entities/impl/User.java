@@ -30,8 +30,7 @@ public class User extends AbstractPersistentObject implements UserInterface {
     private Gender gender;
     private Date dateOfBirth;
 
-    public User(long objectID, String firstName, String lastName, Gender gender, Date dateOfBirth) {
-        this.objectID = objectID;
+    public User(String firstName, String lastName, Gender gender, Date dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
