@@ -19,6 +19,7 @@ package org.secuso.privacyfriendlyexample.tutorial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlyexample.R;
 import org.secuso.privacyfriendlyexample.activities.MainActivity;
+import org.secuso.privacyfriendlyexample.database.DBService;
 
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
@@ -67,6 +69,11 @@ public class TutorialActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         if (!prefManager.isFirstTimeLaunch() && (i == null || !ACTION_SHOW_ANYWAYS.equals(i.getAction()))) {
+
+            DBService handler = DBService.getInstance(this);
+            SQLiteDatabase db = handler.getWritableDatabase();
+            handler.onUpgrade(db, 1, 1);
+
             launchHomeScreen();
             return;
         }
