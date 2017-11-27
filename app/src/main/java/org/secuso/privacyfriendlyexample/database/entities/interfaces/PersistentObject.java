@@ -10,6 +10,10 @@ public interface PersistentObject {
 
     public long getObjectID();
 
+    /**
+     * Sets the object's ID. Should not be set unless object is retrieved from the database!
+     * @param objectID
+     */
     public void setObjectID(long objectID);
 
     public boolean isPersistent();

@@ -12,17 +12,21 @@ import org.secuso.privacyfriendlyexample.database.entities.enums.Condition;
 import org.secuso.privacyfriendlyexample.database.entities.enums.Gender;
 import org.secuso.privacyfriendlyexample.database.entities.impl.DiaryEntry;
 import org.secuso.privacyfriendlyexample.database.entities.impl.Drug;
+import org.secuso.privacyfriendlyexample.database.entities.impl.DrugIntake;
 import org.secuso.privacyfriendlyexample.database.entities.impl.PainDescription;
 import org.secuso.privacyfriendlyexample.database.entities.impl.User;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlyexample.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.DrugInterface;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlyexample.database.entities.interfaces.UserInterface;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -70,7 +74,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         db.execSQL(Drug.TABLE_CREATE);
         db.execSQL(PainDescription.TABLE_CREATE);
         db.execSQL(DiaryEntry.TABLE_CREATE);
-        db.execSQL(DiaryEntry.TABLE_ASSOCIATIVE_CREATE);
+        db.execSQL(DrugIntake.TABLE_CREATE);
         Log.i(TAG,"Created database.");
      }
 
@@ -88,7 +92,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         entry.setPainDescription(painDescription);
         entry.setCondition(Condition.OKAY);
         DrugInterface drug = new Drug("Ibuprofen", "400mg");
-        entry.addDrug(drug);
+        DrugIntakeInterface drugIntake = new DrugIntake(drug, 0,0, 1,0);
+        entry.addDrugIntake(drugIntake);
         storeDiaryEntryAndAssociatedObjects(entry);
 
     }
@@ -98,7 +103,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         db.execSQL("DROP TABLE IF EXISTS " + Drug.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PainDescription.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DiaryEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DiaryEntry.TABLE_ASSOCIATIVE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DrugIntake.TABLE_NAME);
     }
 
     @Override
@@ -148,42 +153,44 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
                 new String[]{String.valueOf(id)}, null, null, null, null);
         UserInterface user = null;
         if( cursor != null && cursor.moveToFirst() ){
-            long objectID = cursor.getLong(cursor.getColumnIndex(User.COLUMN_ID));
-
-            int indexFirstName = cursor.getColumnIndex(User.COLUMN_FIRST_NAME);
-            String firstName = null;
-            if(!cursor.isNull(indexFirstName)) {
-                firstName = cursor.getString(indexFirstName);
-            }
-
-            int indexLastName = cursor.getColumnIndex(User.COLUMN_LAST_NAME);
-            String lastName = null;
-            if(!cursor.isNull(indexLastName)) {
-                lastName = cursor.getString(indexLastName);
-            }
-
-            int indexGender = cursor.getColumnIndex(User.COLUMN_GENDER);
-            Gender gender = null;
-            if(!cursor.isNull(indexGender)) {
-                gender = Gender.valueOf(cursor.getInt(indexGender));
-            }
-
-            int indexDate = cursor.getColumnIndex(User.COLUMN_DATE_OF_BIRTH);
-            Date dateOfBirth = null;
-            if(!cursor.isNull(indexDate)) {
-                String date = cursor.getString(cursor.getColumnIndex(User.COLUMN_DATE_OF_BIRTH));
-                SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-                try {
-                    dateOfBirth = dateFormat.parse(date);
-                } catch (ParseException e) {
-                    Log.e(TAG, "Error parsing date of birth." + e);
-                }
-            }
-
-            user = new User(firstName, lastName, gender, dateOfBirth);
-            user.setObjectID(objectID);
-            cursor.close();
+            user = instantiateUserFromCursor(cursor);
         }
+        cursor.close();
+
+        return user;
+    }
+
+    private UserInterface instantiateUserFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(User.COLUMN_ID));
+        int indexFirstName = cursor.getColumnIndex(User.COLUMN_FIRST_NAME);
+        String firstName = null;
+        if(!cursor.isNull(indexFirstName)) {
+            firstName = cursor.getString(indexFirstName);
+        }
+        int indexLastName = cursor.getColumnIndex(User.COLUMN_LAST_NAME);
+        String lastName = null;
+        if(!cursor.isNull(indexLastName)) {
+            lastName = cursor.getString(indexLastName);
+        }
+        int indexGender = cursor.getColumnIndex(User.COLUMN_GENDER);
+        Gender gender = null;
+        if(!cursor.isNull(indexGender)) {
+            gender = Gender.valueOf(cursor.getInt(indexGender));
+        }
+        int indexDate = cursor.getColumnIndex(User.COLUMN_DATE_OF_BIRTH);
+        Date dateOfBirth = null;
+        if(!cursor.isNull(indexDate)) {
+            String date = cursor.getString(indexDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            try {
+                dateOfBirth = dateFormat.parse(date);
+            } catch (ParseException e) {
+                Log.e(TAG, "Error parsing user date of birth." + e);
+            }
+        }
+        UserInterface user = new User(firstName, lastName, gender, dateOfBirth);
+        user.setObjectID(objectID);
+
         return user;
     }
 
@@ -196,13 +203,37 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     @Override
+    public long storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface intake) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        DrugInterface drug = intake.getDrug();
+        long drugID;
+        if(!drug.isPersistent()) {
+            drugID = storeDrug(drug);
+        } else {
+            drugID = drug.getObjectID();
+        }
+        ContentValues values = new ContentValues();
+        values.put(DrugIntake.COLUMN_MORNING, intake.getQuantityMorning());
+        values.put(DrugIntake.COLUMN_NOON, intake.getQuantityNoon());
+        values.put(DrugIntake.COLUMN_EVENING, intake.getQuantityEvening());
+        values.put(DrugIntake.COLUMN_NIGHT, intake.getQuantityNight());
+        values.put(Drug.TABLE_NAME + "_id", drugID);
+        values.put(DiaryEntry.TABLE_NAME + "_id", intake.getDiaryEntry().getObjectID());
+
+        return db.insert(DrugIntake.TABLE_NAME, null, values);
+    }
+
+    //TODO update method, getAllDrugIntakes for one diary entry
+
+    @Override
     public long createAndStoreDrug(String name, String dose) {
         DrugInterface drug = new Drug(name, dose);
-        return createAndStoreDrug(drug);
+        return storeDrug(drug);
     }
 
     @Override
-    public long createAndStoreDrug(DrugInterface drug) {
+    public long storeDrug(DrugInterface drug) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -214,6 +245,97 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         Log.d(TAG, "Created drug.");
 
         return id;
+    }
+
+    @Override
+    public void updateDrug(DrugInterface drug) {
+//        if(!drug.isPersistent()) {
+//            throw new IllegalArgumentException();
+//        }
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Drug.COLUMN_NAME, drug.getName());
+        values.put(Drug.COLUMN_DOSE, drug.getDose());
+        values.put(Drug.COLUMN_CURRENTLY_TAKEN, drug.isCurrentlyTaken());
+
+        db.update(Drug.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
+                new String[] { String.valueOf(drug.getObjectID()) });
+    }
+
+    @Override
+    public DrugInterface getDrugByID(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(Drug.TABLE_NAME, null, Drug.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        DrugInterface drug = null;
+        if( cursor != null && cursor.moveToFirst() ){
+            drug = instantiateDrugFromCursor(cursor);
+        }
+        cursor.close();
+
+        return drug;
+    }
+
+    @Override
+    public List<DrugInterface> getAllDrugs() {
+        List<DrugInterface> drugs = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + Drug.TABLE_NAME;
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        DrugInterface drug = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                drug = instantiateDrugFromCursor(cursor);
+                drugs.add(drug);
+            } while (cursor.moveToNext());
+        }
+
+        return drugs;
+    }
+
+    @Override
+    public List<DrugInterface> getAllCurrentlyTakenDrugs() {
+        List<DrugInterface> drugs = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + Drug.TABLE_NAME + "WHERE " + Drug.COLUMN_CURRENTLY_TAKEN + " = 1";
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        DrugInterface drug = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                drug = instantiateDrugFromCursor(cursor);
+                drugs.add(drug);
+            } while (cursor.moveToNext());
+        }
+
+        return drugs;
+    }
+
+    private DrugInterface instantiateDrugFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(Drug.COLUMN_ID));
+        String name = cursor.getString(cursor.getColumnIndex(Drug.COLUMN_NAME));
+        int indexDose = cursor.getColumnIndex(Drug.COLUMN_DOSE);
+        String dose = null;
+        if(!cursor.isNull(indexDose)) {
+            dose = cursor.getString(indexDose);
+        }
+        int currentlyTakenInt = cursor.getInt(cursor.getColumnIndex(Drug.COLUMN_CURRENTLY_TAKEN));
+        boolean currentlyTaken = true;
+        DrugInterface drug = new Drug(name, dose);
+        drug.setObjectID(objectID);
+        if(currentlyTakenInt == 0) currentlyTaken = false;
+        drug.setCurrentlyTaken(currentlyTaken);
+
+        return drug;
     }
 
     public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
@@ -237,18 +359,97 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         diaryEntryValues.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
         long diaryEntryID = db.insert(DiaryEntry.TABLE_NAME, null, diaryEntryValues);
 
-        //TODO: check whether drug is already persistent -> get from database instead of create
-        for(DrugInterface drug : diaryEntry.getDrugs()) {
-            long drugID = createAndStoreDrug(drug);
-
-            ContentValues associativeValues = new ContentValues();
-            associativeValues.put(DiaryEntry.TABLE_NAME + "_id", diaryEntryID);
-            associativeValues.put(Drug.TABLE_NAME + "_id", drugID);
-            //TODO: insert information when drug is taken (morning, noon, evening, night)
-            db.insert(DiaryEntry.TABLE_ASSOCIATIVE_NAME, null, associativeValues);
+        for(DrugIntakeInterface intake : diaryEntry.getDrugIntakes()) {
+            intake.getDiaryEntry().setObjectID(diaryEntryID); //maybe get diary entry from database instead
+            storeDrugIntakeAndAssociatedDrug(intake);
         }
 
         return diaryEntryID;
+    }
+
+    /**
+     * Fetches the list of diary entries for the given date from the database.
+     * @param date
+     * @return list of diary entries for the given date --> list should only contain one element (one entry per day)
+     */
+    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date) {
+        List<DiaryEntryInterface> diaryEntries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+
+        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry.COLUMN_DATE + "=?",
+                new String[]{dateFormat.format(date)}, null, null, null, null);
+
+        DiaryEntryInterface diaryEntry = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                diaryEntry = instantiateDiaryEntryFromCursor(cursor);
+                diaryEntries.add(diaryEntry);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return diaryEntries;
+    }
+
+    private PainDescriptionInterface getPainDescriptionByID(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(PainDescription.TABLE_NAME, null, PainDescription.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        PainDescriptionInterface painDescription = null;
+        if(cursor != null && cursor.moveToFirst() ){
+            painDescription = instantiatePainDescriptionFromCursor(cursor);
+        }
+        cursor.close();
+
+        return painDescription;
+    }
+
+    /**
+     * Instantiates a diary entry object from the given cursor.
+     * @param cursor
+     * @return diary entry object with associated pain description
+     */
+    private DiaryEntryInterface instantiateDiaryEntryFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(DiaryEntry.COLUMN_ID));
+        int indexDate = cursor.getColumnIndex(DiaryEntry.COLUMN_DATE);
+        Date dateOfEntry = null;
+        if(!cursor.isNull(indexDate)) {
+            String date = cursor.getString(indexDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            try {
+                dateOfEntry = dateFormat.parse(date);
+            } catch (ParseException e) {
+                Log.e(TAG, "Error parsing diary entry date." + e);
+            }
+        }
+        DiaryEntryInterface diaryEntry = new DiaryEntry(dateOfEntry);
+        diaryEntry.setObjectID(objectID);
+
+        int indexNotes = cursor.getColumnIndex(DiaryEntry.COLUMN_NOTES);
+        if(!cursor.isNull(indexNotes)) {
+            diaryEntry.setNotes(cursor.getString(indexNotes));
+        }
+        diaryEntry.setCondition(Condition.valueOf(cursor.getInt(cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION))));
+
+        long painDescriptionID = cursor.getLong(cursor.getColumnIndex(PainDescription.TABLE_NAME + "_id"));
+        PainDescriptionInterface painDescription = getPainDescriptionByID(painDescriptionID);
+        diaryEntry.setPainDescription(painDescription);
+
+        //TODO: get drug intakes by diary entry ID and attach to diary entry object
+
+        return diaryEntry;
+    }
+
+    private PainDescriptionInterface instantiatePainDescriptionFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
+        int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
+        BodyRegion bodyRegion = BodyRegion.valueOf(cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION)));
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion);
+        painDescription.setObjectID(objectID);
+        //TODO
+        return painDescription;
     }
 
 }

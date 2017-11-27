@@ -18,6 +18,8 @@ public class PainDescription extends AbstractPersistentObject implements PainDes
             COLUMN_PAIN_LEVEL + " INTEGER NOT NULL, " +
             COLUMN_BODY_REGION + " INTEGER NOT NULL);";
 
+    //TODO: bidirectional association to diary entry?
+
     private int painLevel;
     private BodyRegion bodyRegion;
     /* {stabbing, dull, shooting, ... }

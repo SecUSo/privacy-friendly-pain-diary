@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * @author Susanne Felsen
- * @version 20171121
+ * @version 20171124
  */
 public interface DiaryEntryInterface extends PersistentObject {
 
@@ -21,8 +21,8 @@ public interface DiaryEntryInterface extends PersistentObject {
     public void setPainDescription(PainDescriptionInterface painDescription);
     public String getNotes();
     public void setNotes(String notes);
-    public Set<DrugInterface> getDrugs();
-    public void addDrug(DrugInterface drug);
-    public void removeDrug(DrugInterface drug);
+    public Set<DrugIntakeInterface> getDrugIntakes();
+    public void addDrugIntake(DrugIntakeInterface intake);
+    public void removeDrugIntake(DrugIntakeInterface intake);
 
 }
