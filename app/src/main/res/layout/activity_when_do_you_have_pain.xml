@@ -9,11 +9,11 @@
     android:background="#FFFFFF">
 
     <!--<include-->
-        <!--layout="@layout/activity_next_and_back" />-->
+    <!--layout="@layout/activity_next_and_back" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
@@ -21,8 +21,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:weightSum="1"
-        tools:context=".activities.wieFuelenSieSich">
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/textFieldAffiliation"
@@ -30,17 +29,33 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:text="@string/wieStarkSindDieSchmerzen"
+            android:text="@string/whenDoYouHavePain"
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <SeekBar
-            android:id="@+id/seekBar2"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
+        <CheckBox
+            android:id="@+id/checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="3" />
+            android:text="During the day" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="In the morning" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Midday / at lunchtime" />
+
+        <CheckBox
+            android:id="@+id/checkBox4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="In the evening" />
 
 
     </LinearLayout>

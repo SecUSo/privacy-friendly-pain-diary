@@ -90,7 +90,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     btnSkip =(Button)
 
-    findViewById(R.id.btn_skip);
+    findViewById(R.id.btn_back);
 
     btnNext =(Button)
 

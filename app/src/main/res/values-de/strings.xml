@@ -80,10 +80,12 @@
     <string name="skip">Überspringen</string>
     <string name="main_button_add">Add New Diary Entry</string>
     <string name="main_button_remove">Remove Diary Entry</string>
-    <string name="howAreYou">Wie fühlen sie sich?</string>
+    <string name="HowDoYouFeel">How do you feel?</string>
     <string name="diary_next">Next</string>
-    <string name="diary_back">Back</string>
-    <string name="wieStarkSindDieSchmerzen">Wie stark sind die Schmerzen</string>
+    <string name="diary_backd">Back</string>
+    <string name="howStrongIsYourPain">How strong is your pain?</string>
     <string name="title_activity_Diary">activityDiary</string>
+    <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
+    <string name="whenDoYouHavePain">When do you have pain</string>
 
 </resources>

@@ -33,6 +33,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlyexample.R;
@@ -52,7 +53,7 @@ public class PainDiaryActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnBack, btnNext, btnDone;
     private PrefManager prefManager;
 
     private static final String TAG = PainDiaryActivity.class.getSimpleName();
@@ -71,41 +72,36 @@ public class PainDiaryActivity extends AppCompatActivity {
             return;
         }
 
-    // Making notification bar transparent
-        if(Build.VERSION.SDK_INT >=21)
+        // Making notification bar transparent
+        if(Build.VERSION.SDK_INT >=21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
-    {
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
+    setContentView(R.layout.activity_next_and_back);
 
-    setContentView(R.layout.activity_tutorial);
+    viewPager =(ViewPager) findViewById(R.id.view_pager);
 
-    viewPager =(ViewPager)
+    dotsLayout =(LinearLayout) findViewById(R.id.layoutDots);
 
-    findViewById(R.id.view_pager);
+    btnBack =(Button) findViewById(R.id.btn_back);
 
-    dotsLayout =(LinearLayout)
+    btnBack.setVisibility(View.GONE);
 
-    findViewById(R.id.layoutDots);
+    btnNext =(Button) findViewById(R.id.btn_next);
 
-    btnSkip =(Button)
-
-    findViewById(R.id.btn_skip);
-
-    btnNext =(Button)
-
-    findViewById(R.id.btn_next);
-
+    btnDone =(Button) findViewById(R.id.btn_done);
 
     // layouts of all welcome sliders
     // add few more layouts if you want
     layouts =new int[]
 
     {
-            R.layout.activity_wie_fuehlen_sie_sich,
-            R.layout.tutorial_slide1,
-            R.layout.activity_wie_strak_sind_ihre_schmerzen,
-            R.layout.activity_wo_ist_der_schmerz,}
+            R.layout.activity_how_do_you_feel,
+            R.layout.activity_how_strong_is_your_pain,
+            R.layout.activity_where_is_the_pain,
+            R.layout.activity_describe_your_pain_more_closely,
+            R.layout.activity_when_do_you_have_pain
+    }
 
     ;
 
@@ -118,35 +114,64 @@ public class PainDiaryActivity extends AppCompatActivity {
     myViewPagerAdapter =new
 
     MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+    viewPager.setAdapter(myViewPagerAdapter);
+    viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener()
-
-    {
-        @Override
-        public void onClick (View v){
-        launchHomeScreen();
-    }
-    });
-
-        btnNext.setOnClickListener(new View.OnClickListener()
-
+    btnNext.setOnClickListener(new View.OnClickListener()
     {
         @Override
         public void onClick (View v){
         // checking for last page
         // if last page home screen will be launched
         int current = getItem(+1);
-        if (current < layouts.length) {
-            // move to next screen
-            viewPager.setCurrentItem(current);
-        } else {
-            launchHomeScreen();
-        }
+        viewPager.setCurrentItem(current);
+
     }
     });
+
+    btnBack.setOnClickListener(new View.OnClickListener()
+    {
+        @Override
+        public void onClick (View v){
+            // checking for last page
+            // if last page home screen will be launched
+            int current = getItem(-1);
+            viewPager.setCurrentItem(current);
+
+        }
+    });
+
+    btnDone.setOnClickListener(new View.OnClickListener()
+    {
+        @Override
+        public void onClick (View v){
+            // checking for last page
+            // if last page home screen will be launched
+            launchHomeScreen();
+        }
+    });
+
 }
+
+    public void changeRadioButtonColor(View view){
+        RadioButton[] arrayOfRadioButtons = new RadioButton[]{
+                (RadioButton) findViewById( R.id.image_very_satisfied),
+                (RadioButton) findViewById( R.id.image_satisfied),
+                (RadioButton) findViewById( R.id.image_neutral),
+                (RadioButton) findViewById( R.id.image_dissatisfied),
+                (RadioButton) findViewById( R.id.image_very_dissatisfied)};
+        RadioButton rb = ((RadioButton) view);
+
+        for (int i = 0 ; i < arrayOfRadioButtons.length ; i++){
+            if(arrayOfRadioButtons[i].isChecked()){
+                arrayOfRadioButtons[i].setBackgroundColor(Color.GREEN);
+            }else{
+                arrayOfRadioButtons[i].setBackgroundColor(Color.WHITE);
+
+            }
+        }
+
+    }
 
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
@@ -187,14 +212,20 @@ public class PainDiaryActivity extends AppCompatActivity {
             addBottomDots(position);
 
             // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == layouts.length - 1) {
+            if (position == 0) {
                 // last page. make button text to GOT IT
-                btnNext.setText(getString(R.string.okay));
-                btnSkip.setVisibility(View.GONE);
-            } else {
+                btnNext.setVisibility(View.VISIBLE);
+
+                btnBack.setVisibility(View.GONE);
+            } else  if(position == layouts.length-1){
                 // still pages are left
-                btnNext.setText(getString(R.string.next));
-                btnSkip.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.GONE);
+                btnDone.setVisibility(View.VISIBLE);
+
+            }else{
+                btnNext.setVisibility(View.VISIBLE);
+                btnDone.setVisibility(View.GONE);
+                btnBack.setVisibility(View.VISIBLE);
             }
         }
 
@@ -257,3 +288,40 @@ public class MyViewPagerAdapter extends PagerAdapter {
     }
 }
 }
+
+//
+//<Button
+//        android:id="@+id/btn_next"
+//                android:layout_width="wrap_content"
+//                android:layout_height="wrap_content"
+//                android:layout_alignParentBottom="true"
+//                android:layout_alignParentRight="true"
+//                android:layout_alignTop="@+id/btn_back"
+//                android:background="@null"
+//                android:drawableTop="@drawable/ic_next"
+//                android:visibility="visible"
+//
+//                android:textColor="@android:color/black" />
+//
+//<Button
+//        android:id="@+id/btn_back"
+//                android:layout_width="wrap_content"
+//                android:layout_height="35dp"
+//                android:layout_alignParentBottom="true"
+//                android:layout_alignParentLeft="true"
+//
+//                android:background="@null"
+//                android:drawableTop="@drawable/ic_black"
+//                android:textColor="@android:color/black" />
+//
+//<Button
+//        android:id="@+id/btn_done"
+//                android:layout_width="wrap_content"
+//                android:layout_height="wrap_content"
+//                android:layout_alignParentBottom="true"
+//                android:layout_alignParentRight="true"
+//                android:layout_alignTop="@+id/btn_back"
+//                android:background="@null"
+//                android:drawableTop="@drawable/ic_done"
+//                android:visibility="invisible"
+//                android:textColor="@android:color/black" />

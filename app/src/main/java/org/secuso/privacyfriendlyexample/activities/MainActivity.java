@@ -25,8 +25,6 @@ import android.widget.CalendarView;
 
 import org.secuso.privacyfriendlyexample.R;
 import org.secuso.privacyfriendlyexample.tutorial.PrefManager;
-import org.secuso.privacyfriendlyexample.tutorial.TutorialActivity2;
-import org.secuso.privacyfriendlyexample.activities.PainDiaryActivity;
 
 /**
  * @author Christopher Beckmann, Karola Marky

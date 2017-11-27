@@ -21,71 +21,60 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:weightSum="1"
-        tools:context=".activities.wieFuelenSieSich">
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/textFieldAffiliation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:text="@string/howAreYou"
+            android:text="@string/howStrongIsYourPain"
+            android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />
 
+        <SeekBar
+            android:id="@+id/seekBar2"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:min="0"
 
-        <RadioGroup
+            android:progress="5" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/imageLol"
+            <TextView
+                android:id="@+id/text0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="@color/green"
-                android:button="@drawable/lol" />
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="   0" />
 
-            <RadioButton
-                android:id="@+id/imageHappy"
+            <TextView
+                android:id="@+id/text10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:button="@drawable/happy" />
+                android:layout_weight="1"
 
-            <RadioButton
-                android:id="@+id/imageNeutral"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:button="@drawable/neutral" />
+                android:gravity="right"
+                android:text="10  " />
 
-            <RadioButton
-                android:id="@+id/imageConfused"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:button="@drawable/ic_sentiment_dissatisfied_black" />
+        </LinearLayout>
 
-            <RadioButton
-                android:id="@+id/imageSad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:button="@drawable/ic_sentiment_very_dissatisfied" />
-
-
-        </RadioGroup>
 
     </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>
 
-
+    <!--android:thumb="@drawable/ic_thumb"-->
 
     <!--<ImageView-->
     <!--android:id="@+id/imageHappy"-->

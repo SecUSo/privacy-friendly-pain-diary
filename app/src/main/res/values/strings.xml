@@ -18,7 +18,7 @@
     <!-- ###MAIN### -->
 
     <string name="main_button_add">Add New Diary Entry</string>
-    <string name="wieStarkSindDieSchmerzen">Wie stark sind die Schmerzen?</string>
+    <string name="howStrongIsYourPain">How strong is your pain?</string>
 
     <string name="main_button_text">Full Width Button</string>
     <string name="main_button_disabled_text">Inactive Button</string>
@@ -87,9 +87,12 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="main_button_remove">Remove Diary Entry</string>
-    <string name="howAreYou">Wie fühlen sie sich?</string>
+    <string name="HowDoYouFeel">How do you feel?</string>
     <string name="diary_next">Next</string>
-    <string name="diary_back">Back</string>
+    <string name="diary_backd">Back</string>
     <string name="title_activity_Diary">activityDiary</string>
+    <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
+    <string name="time_course">Discribe the time course</string>
+    <string name="whenDoYouHavePain">When do you have pain</string>
 
 </resources>
