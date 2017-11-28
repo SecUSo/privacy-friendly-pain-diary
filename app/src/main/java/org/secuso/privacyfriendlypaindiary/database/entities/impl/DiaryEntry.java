@@ -108,4 +108,14 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
         intake.setDiaryEntry(null);
     }
 
+    @Override
+    public DrugIntakeInterface getDrugIntakeByID(long id) {
+        for(DrugIntakeInterface intake : intakes) {
+            if(intake.getObjectID() == id) {
+                return intake;
+            }
+        }
+        return null;
+    }
+
 }

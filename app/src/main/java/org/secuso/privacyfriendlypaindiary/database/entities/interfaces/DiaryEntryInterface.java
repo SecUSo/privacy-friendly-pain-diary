@@ -23,4 +23,11 @@ public interface DiaryEntryInterface extends PersistentObject {
     public void addDrugIntake(DrugIntakeInterface intake);
     public void removeDrugIntake(DrugIntakeInterface intake);
 
+    /**
+     *
+     * @param id
+     * @return drug intake object or <code>null</code>
+     */
+    public DrugIntakeInterface getDrugIntakeByID(long id);
+
 }

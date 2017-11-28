@@ -24,9 +24,10 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Karola Marky, Susanne Felsen
@@ -59,7 +60,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createAll(db);
-        test();
     }
 
     @Override
@@ -77,26 +77,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         Log.i(TAG, "Created database.");
     }
 
-    //TODO: remove - just for testing purposes
-    private void test() {
-        Calendar c = Calendar.getInstance();
-        c.set(2010, 2, 7);
-        long id = createAndStoreUser("Max", "Mustermann", Gender.MALE, c.getTime());
-        UserInterface user = getUserByID(id);
-        Log.d(TAG, user.getFirstName() + ", " + user.getLastName() + ", " + user.getGender() + ", " + user.getDateOfBirth().toString());
-//        deleteUser(user);
-
-        DiaryEntryInterface entry = new DiaryEntry(new Date());
-        PainDescriptionInterface painDescription = new PainDescription(0, BodyRegion.HEAD);
-        entry.setPainDescription(painDescription);
-        entry.setCondition(Condition.OKAY);
-        DrugInterface drug = new Drug("Ibuprofen", "400mg");
-        DrugIntakeInterface drugIntake = new DrugIntake(drug, 0, 0, 1, 0);
-        entry.addDrugIntake(drugIntake);
-        storeDiaryEntryAndAssociatedObjects(entry);
-
-    }
-
     private void dropAll(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + User.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Drug.TABLE_NAME);
@@ -106,10 +86,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     @Override
-    public long createAndStoreUser(String firstName, String lastName, Gender gender, Date dateOfBirth) {
+    public long storeUser(UserInterface user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        UserInterface user = new User(firstName, lastName, gender, dateOfBirth);
         ContentValues values = getUserContentValues(user);
 
         long id = db.insert(User.TABLE_NAME, null, values);
@@ -138,6 +117,14 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
             values.put(User.COLUMN_DATE_OF_BIRTH, dateFormat.format(dateOfBirth));
         }
         return values;
+    }
+
+    @Override
+    public void deleteUser(UserInterface user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG, "Deleted user with name '" + user.getFirstName() + " " + user.getLastName() + "'.");
+        db.delete(User.TABLE_NAME, User.COLUMN_ID + " = ?",
+                new String[]{Long.toString(user.getObjectID())});
     }
 
     @Override
@@ -191,15 +178,216 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     @Override
-    public void deleteUser(UserInterface user) {
+    public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d(TAG, "Deleted user with name '" + user.getFirstName() + " " + user.getLastName() + "'.");
-        db.delete(User.TABLE_NAME, User.COLUMN_ID + " = ?",
-                new String[]{Long.toString(user.getObjectID())});
+
+        PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
+        long painDescriptionID = storePainDescription(painDescription);
+
+        ContentValues values = new ContentValues();
+        values.put(PainDescription.TABLE_NAME + "_id", painDescriptionID); //foreign key
+        Date date = diaryEntry.getDate();
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            values.put(DiaryEntry.COLUMN_DATE, dateFormat.format(date));
+        }
+        values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        values.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
+        long diaryEntryID = db.insert(DiaryEntry.TABLE_NAME, null, values);
+
+        for (DrugIntakeInterface intake : diaryEntry.getDrugIntakes()) {
+            intake.getDiaryEntry().setObjectID(diaryEntryID); //maybe get diary entry from database instead
+            storeDrugIntakeAndAssociatedDrug(intake);
+        }
+        return diaryEntryID;
     }
 
     @Override
-    public long storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface intake) {
+    public void updateDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
+        updatePainDescription(painDescription);
+
+        ContentValues values = new ContentValues();
+        values.put(PainDescription.TABLE_NAME + "_id", painDescription.getObjectID()); //foreign key
+        Date date = diaryEntry.getDate();
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            values.put(DiaryEntry.COLUMN_DATE, dateFormat.format(date));
+        }
+        values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        values.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
+        db.update(DiaryEntry.TABLE_NAME, values, DiaryEntry.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(diaryEntry.getObjectID())});
+
+        Set<DrugIntakeInterface> oldIntakes = getDrugIntakesForDiaryEntry(diaryEntry.getObjectID());
+        Set<DrugIntakeInterface> newIntakes = diaryEntry.getDrugIntakes();
+        Set<Long> newIntakeIDs = new HashSet<>();
+        for(DrugIntakeInterface intake : newIntakes) {
+            if(!intake.isPersistent()) {
+                storeDrugIntakeAndAssociatedDrug(intake);
+            } else {
+                newIntakeIDs.add(intake.getObjectID());
+                updateDrugIntake(intake);
+            }
+        }
+        //all drug intake objects that are no longer associated with the diary entry object are deleted
+        for(DrugIntakeInterface intake : oldIntakes) {
+            if(!newIntakeIDs.contains(intake.getObjectID())) {
+                deleteDrugIntake(intake);
+            }
+        }
+    }
+
+    @Override
+    public void deleteDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
+        deletePainDescription(diaryEntry.getPainDescription());
+        for(DrugIntakeInterface intake : diaryEntry.getDrugIntakes()) {
+            deleteDrugIntake(intake);
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(PainDescription.TABLE_NAME, PainDescription.COLUMN_ID + " = ?",
+                new String[]{Long.toString(diaryEntry.getObjectID())});
+    }
+
+    @Override
+    public DiaryEntryInterface getDiaryEntryByID(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        DiaryEntryInterface diaryEntry = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            diaryEntry = instantiateDiaryEntryFromCursor(cursor);
+        }
+        cursor.close();
+
+        return diaryEntry;
+    }
+
+    /**
+     * Fetches the list of diary entries for the given date from the database.
+     *
+     * @param date
+     * @return list of diary entries for the given date --> list should only contain one element (one entry per day)
+     */
+    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date) {
+        List<DiaryEntryInterface> diaryEntries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+
+        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry.COLUMN_DATE + "=?",
+                new String[]{dateFormat.format(date)}, null, null, null, null);
+
+        DiaryEntryInterface diaryEntry = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                diaryEntry = instantiateDiaryEntryFromCursor(cursor);
+                diaryEntries.add(diaryEntry);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return diaryEntries;
+    }
+
+    /**
+     * Instantiates a diary entry object from the given cursor.
+     *
+     * @param cursor
+     * @return diary entry object with associated pain description and drug intakes.
+     */
+    private DiaryEntryInterface instantiateDiaryEntryFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(DiaryEntry.COLUMN_ID));
+        int indexDate = cursor.getColumnIndex(DiaryEntry.COLUMN_DATE);
+        Date dateOfEntry = null;
+        if (!cursor.isNull(indexDate)) {
+            String date = cursor.getString(indexDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            try {
+                dateOfEntry = dateFormat.parse(date);
+            } catch (ParseException e) {
+                Log.e(TAG, "Error parsing diary entry date." + e);
+            }
+        }
+        DiaryEntryInterface diaryEntry = new DiaryEntry(dateOfEntry);
+        diaryEntry.setObjectID(objectID);
+
+        int indexNotes = cursor.getColumnIndex(DiaryEntry.COLUMN_NOTES);
+        if (!cursor.isNull(indexNotes)) {
+            diaryEntry.setNotes(cursor.getString(indexNotes));
+        }
+        diaryEntry.setCondition(Condition.valueOf(cursor.getInt(cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION))));
+
+        long painDescriptionID = cursor.getLong(cursor.getColumnIndex(PainDescription.TABLE_NAME + "_id"));
+        PainDescriptionInterface painDescription = getPainDescriptionByID(painDescriptionID);
+        diaryEntry.setPainDescription(painDescription);
+
+        Set<DrugIntakeInterface> intakes = getDrugIntakesForDiaryEntry(objectID);
+        for(DrugIntakeInterface intake : intakes) {
+            diaryEntry.addDrugIntake(intake);
+        }
+
+        return diaryEntry;
+    }
+
+    private long storePainDescription(PainDescriptionInterface painDescription) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
+        values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
+        //TODO
+        return db.insert(PainDescription.TABLE_NAME, null, values);
+    }
+
+    private void updatePainDescription(PainDescriptionInterface painDescription) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
+        values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
+        //TODO
+        db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(painDescription.getObjectID())});
+    }
+
+    private void deletePainDescription(PainDescriptionInterface painDescription) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(PainDescription.TABLE_NAME, PainDescription.COLUMN_ID + " = ?",
+                new String[]{Long.toString(painDescription.getObjectID())});
+    }
+
+    private PainDescriptionInterface getPainDescriptionByID(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(PainDescription.TABLE_NAME, null, PainDescription.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        PainDescriptionInterface painDescription = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            painDescription = instantiatePainDescriptionFromCursor(cursor);
+        }
+        cursor.close();
+
+        return painDescription;
+    }
+
+    private PainDescriptionInterface instantiatePainDescriptionFromCursor(Cursor cursor) {
+        long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
+        int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
+        BodyRegion bodyRegion = BodyRegion.valueOf(cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION)));
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion);
+        painDescription.setObjectID(objectID);
+        //TODO
+        return painDescription;
+    }
+
+    /**
+     * Stores the given drug intake and the associated drug (if not yet persistent).
+     *
+     * @param intake intake to be stored; associated diary entry object has to be persistent (objectID must be set)
+     * @return
+     */
+    private long storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface intake) {
         SQLiteDatabase db = this.getWritableDatabase();
         DrugInterface drug = intake.getDrug();
         long drugID;
@@ -214,8 +402,13 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return db.insert(DrugIntake.TABLE_NAME, null, values);
     }
 
-    @Override
-    public void updateDrugIntake(DrugIntakeInterface intake) {
+    /**
+     * Updates the given drug intake. Associated drug can not be updated (call {@link DBService#deleteDrugIntake(DrugIntakeInterface)}
+     * and {@link DBService#storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface)} instead.)
+     *
+     * @param intake drug intake to update; must be persistent (see {@link DrugIntakeInterface#isPersistent()})
+     */
+    private void updateDrugIntake(DrugIntakeInterface intake) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = getDrugIntakeContentValues(intake);
         db.update(DrugIntake.TABLE_NAME, values, User.COLUMN_ID + " = ?",
@@ -237,8 +430,12 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return values;
     }
 
-    @Override
-    public void deleteDrugIntake(DrugIntakeInterface intake) {
+    /**
+     * Deletes the given drug intake object and calls {@link DBServiceInterface#deleteDrug(DrugInterface)} with the associated drug.
+     *
+     * @param intake drug intake to delete
+     */
+    private void deleteDrugIntake(DrugIntakeInterface intake) {
         SQLiteDatabase db = this.getWritableDatabase();
         DrugInterface drug = intake.getDrug();
         db.delete(DrugIntake.TABLE_NAME, DrugIntake.COLUMN_ID + " = ?",
@@ -246,8 +443,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         deleteDrug(drug); //only deletes drug if there are no more references to it
     }
 
-    public List<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID) {
-        List<DrugIntakeInterface> intakes = new ArrayList<>();
+    public Set<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID) {
+        Set<DrugIntakeInterface> intakes = new HashSet<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + DrugIntake.TABLE_NAME + " WHERE " + DiaryEntry.TABLE_NAME + "_id = ?";
@@ -285,12 +482,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     @Override
-    public long createAndStoreDrug(String name, String dose) {
-        DrugInterface drug = new Drug(name, dose);
-        return storeDrug(drug);
-    }
-
-    @Override
     public long storeDrug(DrugInterface drug) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -307,9 +498,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
     @Override
     public void updateDrug(DrugInterface drug) {
-//        if(!drug.isPersistent()) {
-//            throw new IllegalArgumentException();
-//        }
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -324,7 +512,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     @Override
     public void deleteDrug(DrugInterface drug) {
         SQLiteDatabase database = this.getWritableDatabase();
-        String selectQuery = "SELECT COUNT(*) FROM " + DrugIntake.TABLE_NAME + "WHERE " + Drug.TABLE_NAME + "_id = ?";
+        String selectQuery = "SELECT COUNT(*) FROM " + DrugIntake.TABLE_NAME + " WHERE " + Drug.TABLE_NAME + "_id = ?";
         Cursor cursor = database.rawQuery(selectQuery, new String[]{Long.toString(drug.getObjectID())});
 
         int count = -1;
@@ -410,125 +598,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         drug.setCurrentlyTaken(currentlyTaken);
 
         return drug;
-    }
-
-    public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
-        ContentValues painDescriptionValues = new ContentValues();
-        painDescriptionValues.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        painDescriptionValues.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        //TODO
-        long painDescriptionID = db.insert(PainDescription.TABLE_NAME, null, painDescriptionValues);
-
-        ContentValues diaryEntryValues = new ContentValues();
-        diaryEntryValues.put(PainDescription.TABLE_NAME + "_id", painDescriptionID); //foreign key
-        Date date = diaryEntry.getDate();
-        if (date != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-            diaryEntryValues.put(DiaryEntry.COLUMN_DATE, dateFormat.format(date));
-        }
-        diaryEntryValues.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
-        diaryEntryValues.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
-        long diaryEntryID = db.insert(DiaryEntry.TABLE_NAME, null, diaryEntryValues);
-
-        for (DrugIntakeInterface intake : diaryEntry.getDrugIntakes()) {
-            intake.getDiaryEntry().setObjectID(diaryEntryID); //maybe get diary entry from database instead
-            storeDrugIntakeAndAssociatedDrug(intake);
-        }
-
-        return diaryEntryID;
-    }
-
-    /**
-     * Fetches the list of diary entries for the given date from the database.
-     *
-     * @param date
-     * @return list of diary entries for the given date --> list should only contain one element (one entry per day)
-     */
-    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date) {
-        List<DiaryEntryInterface> diaryEntries = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-
-        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry.COLUMN_DATE + "=?",
-                new String[]{dateFormat.format(date)}, null, null, null, null);
-
-        DiaryEntryInterface diaryEntry = null;
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                diaryEntry = instantiateDiaryEntryFromCursor(cursor);
-                diaryEntries.add(diaryEntry);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return diaryEntries;
-    }
-
-    private PainDescriptionInterface getPainDescriptionByID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(PainDescription.TABLE_NAME, null, PainDescription.COLUMN_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        PainDescriptionInterface painDescription = null;
-        if (cursor != null && cursor.moveToFirst()) {
-            painDescription = instantiatePainDescriptionFromCursor(cursor);
-        }
-        cursor.close();
-
-        return painDescription;
-    }
-
-    /**
-     * Instantiates a diary entry object from the given cursor.
-     *
-     * @param cursor
-     * @return diary entry object with associated pain description
-     */
-    private DiaryEntryInterface instantiateDiaryEntryFromCursor(Cursor cursor) {
-        long objectID = cursor.getLong(cursor.getColumnIndex(DiaryEntry.COLUMN_ID));
-        int indexDate = cursor.getColumnIndex(DiaryEntry.COLUMN_DATE);
-        Date dateOfEntry = null;
-        if (!cursor.isNull(indexDate)) {
-            String date = cursor.getString(indexDate);
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-            try {
-                dateOfEntry = dateFormat.parse(date);
-            } catch (ParseException e) {
-                Log.e(TAG, "Error parsing diary entry date." + e);
-            }
-        }
-        DiaryEntryInterface diaryEntry = new DiaryEntry(dateOfEntry);
-        diaryEntry.setObjectID(objectID);
-
-        int indexNotes = cursor.getColumnIndex(DiaryEntry.COLUMN_NOTES);
-        if (!cursor.isNull(indexNotes)) {
-            diaryEntry.setNotes(cursor.getString(indexNotes));
-        }
-        diaryEntry.setCondition(Condition.valueOf(cursor.getInt(cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION))));
-
-        long painDescriptionID = cursor.getLong(cursor.getColumnIndex(PainDescription.TABLE_NAME + "_id"));
-        PainDescriptionInterface painDescription = getPainDescriptionByID(painDescriptionID);
-        diaryEntry.setPainDescription(painDescription);
-
-        List<DrugIntakeInterface> intakes = getDrugIntakesForDiaryEntry(objectID);
-        for(DrugIntakeInterface intake : intakes) {
-            diaryEntry.addDrugIntake(intake);
-        }
-
-        return diaryEntry;
-    }
-
-    private PainDescriptionInterface instantiatePainDescriptionFromCursor(Cursor cursor) {
-        long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
-        int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
-        BodyRegion bodyRegion = BodyRegion.valueOf(cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION)));
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion);
-        painDescription.setObjectID(objectID);
-        //TODO
-        return painDescription;
     }
 
 }

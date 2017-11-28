@@ -4,6 +4,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface DBServiceInterface {
 
-    public long createAndStoreUser(String firstName, String lastName, Gender gender, Date dateOfBirth);
+    public long storeUser(UserInterface user);
 
     /**
      * Updates the given user.
@@ -24,34 +25,24 @@ public interface DBServiceInterface {
      */
     public void updateUser(UserInterface user);
 
-    public UserInterface getUserByID(long id);
-
     public void deleteUser(UserInterface user);
 
-    /**
-     * Stores the given drug intake and the associated drug (if not yet persistent).
-     *
-     * @param intake intake to be stored; associated diary entry object has to be persistent (objectID must be set)
-     * @return
-     */
-    public long storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface intake);
+    public UserInterface getUserByID(long id);
+
+    public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry);
 
     /**
-     * Updates the given drug intake. Associated drug can not be updated (call {@link DBServiceInterface#deleteDrugIntake(DrugIntakeInterface)}
-     * and {@link DBServiceInterface#storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface)} instead.)
+     * Updates the given diary entry and associated pain description and drug intakes.
      *
-     * @param intake drug intake to update; must be persistent (see {@link DrugIntakeInterface#isPersistent()})
+     * @param diaryEntry diary entry to update; must be persistent, as does the pain description object
      */
-    public void updateDrugIntake(DrugIntakeInterface intake);
+    public void updateDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry);
 
-    /**
-     * Deletes the given drug intake object and calls {@link DBServiceInterface#deleteDrug(DrugInterface)} with the associated drug.
-     *
-     * @param intake drug intake to delete
-     */
-    public void deleteDrugIntake(DrugIntakeInterface intake);
+    public void deleteDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry);
 
-    public long createAndStoreDrug(String name, String dose);
+    public DiaryEntryInterface getDiaryEntryByID(long id);
+
+    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date);
 
     public long storeDrug(DrugInterface drug);
 
@@ -74,9 +65,5 @@ public interface DBServiceInterface {
     public List<DrugInterface> getAllDrugs();
 
     public List<DrugInterface> getAllCurrentlyTakenDrugs();
-
-    public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry);
-
-    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date);
 
 }
