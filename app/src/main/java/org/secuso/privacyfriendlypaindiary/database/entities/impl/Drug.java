@@ -61,7 +61,8 @@ public class Drug extends AbstractPersistentObject implements DrugInterface {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+//        int result = super.hashCode();
+        int result = 1;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (dose != null ? dose.hashCode() : 0);
         result = 31 * result + (currentlyTaken ? 1 : 0);
@@ -72,7 +73,7 @@ public class Drug extends AbstractPersistentObject implements DrugInterface {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+//        if (!super.equals(o)) return false;
 
         Drug drug = (Drug) o;
 

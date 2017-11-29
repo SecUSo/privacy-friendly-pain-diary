@@ -92,7 +92,6 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
 
     @Override
     public Set<DrugIntakeInterface> getDrugIntakes() {
-        //TODO unmodifiable?
         return Collections.unmodifiableSet(intakes);
     }
 

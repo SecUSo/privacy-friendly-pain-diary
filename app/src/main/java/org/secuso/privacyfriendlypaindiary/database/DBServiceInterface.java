@@ -1,10 +1,7 @@
 package org.secuso.privacyfriendlypaindiary.database;
 
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 
 import java.util.Date;

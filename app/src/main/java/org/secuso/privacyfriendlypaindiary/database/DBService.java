@@ -246,7 +246,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
             deleteDrugIntake(intake);
         }
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(PainDescription.TABLE_NAME, PainDescription.COLUMN_ID + " = ?",
+        db.delete(DiaryEntry.TABLE_NAME, DiaryEntry.COLUMN_ID + " = ?",
                 new String[]{Long.toString(diaryEntry.getObjectID())});
     }
 
@@ -431,7 +431,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     /**
-     * Deletes the given drug intake object and calls {@link DBServiceInterface#deleteDrug(DrugInterface)} with the associated drug.
+     * Deletes the given drug intake object. The associated drug is not deleted from the database.
      *
      * @param intake drug intake to delete
      */
@@ -440,7 +440,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         DrugInterface drug = intake.getDrug();
         db.delete(DrugIntake.TABLE_NAME, DrugIntake.COLUMN_ID + " = ?",
                 new String[]{Long.toString(intake.getObjectID())});
-        deleteDrug(drug); //only deletes drug if there are no more references to it
     }
 
     public Set<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID) {

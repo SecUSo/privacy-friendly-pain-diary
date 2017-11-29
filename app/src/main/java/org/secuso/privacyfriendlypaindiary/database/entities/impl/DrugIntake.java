@@ -102,7 +102,8 @@ public class DrugIntake extends AbstractPersistentObject implements DrugIntakeIn
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+//        int result = super.hashCode();
+        int result = 1;
         result = 31 * result + (drug != null ? drug.hashCode() : 0);
         result = 31 * result + quantityMorning;
         result = 31 * result + quantityNoon;
@@ -115,7 +116,7 @@ public class DrugIntake extends AbstractPersistentObject implements DrugIntakeIn
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+//        if (!super.equals(o)) return false;
 
         DrugIntake that = (DrugIntake) o;
 

@@ -30,9 +30,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Susanne Felsen
@@ -94,7 +96,7 @@ public class DBServiceTest {
     }
 
     @Test
-    public void testDiaryEntry() {
+    public void testDiaryEntryAndAssociatedObjects() {
         //create
         SimpleDateFormat dateFormat = new SimpleDateFormat(DBService.DATE_PATTERN);
         Date date = null;
@@ -115,20 +117,25 @@ public class DBServiceTest {
         entry.setPainDescription(painDescription);
 
         String drugName = "Ibuprofen";
-        String dose = "400mg";
-        DrugInterface drug = new Drug(drugName, dose);
+        String dose1 = "400mg";
+        String dose2 = "600mg";
+        DrugInterface drug1 = new Drug(drugName, dose1);
+        DrugInterface drug2 = new Drug(drugName, dose2);
 
         int quantityMorning = 0;
         int quantityNoon = 0;
         int quantityEvening = 1;
         int quantityNight = 0;
-        DrugIntakeInterface drugIntake = new DrugIntake(drug, quantityMorning, quantityNoon, quantityEvening, quantityNight);
+        DrugIntakeInterface drugIntake = new DrugIntake(drug1, quantityMorning, quantityNoon, quantityEvening, quantityNight);
 
         entry.addDrugIntake(drugIntake);
         long entryID = service.storeDiaryEntryAndAssociatedObjects(entry);
 
         //get
         entry = service.getDiaryEntryByID(entryID);
+        List<DiaryEntryInterface> entries = service.getDiaryEntriesByDate(date);
+        assertEquals("Number of entries was incorrect.", 1, entries.size());
+
         assertEquals("Date was incorrect.", date, entry.getDate());
         assertEquals("Condition was incorrect.", condition, entry.getCondition());
         assertEquals("Notes were incorrect.", notes, entry.getNotes());
@@ -145,9 +152,9 @@ public class DBServiceTest {
         assertEquals("Quantity Evening was incorrect.", quantityEvening, drugIntake.getQuantityEvening());
         assertEquals("Quantity Night was incorrect.", quantityNight, drugIntake.getQuantityNight());
 
-        drug = drugIntake.getDrug();
-        assertEquals("Drug Name was incorrect.", drugName, drug.getName());
-        assertEquals("Drug Dose was incorrect.", dose, drug.getDose());
+        drug1 = drugIntake.getDrug();
+        assertEquals("Drug Name was incorrect.", drugName, drug1.getName());
+        assertEquals("Drug Dose was incorrect.", dose1, drug1.getDose());
 
         //update
         Condition newCondition = Condition.BAD;
@@ -156,8 +163,8 @@ public class DBServiceTest {
         painDescription.setPainLevel(newPainLevel);
         int newQuantityMorning = 1;
         drugIntake.setQuantityMorning(newQuantityMorning);
-//        entry.addDrugIntake(new DrugIntake(drug, quantityMorning, quantityNoon, quantityEvening, quantityNight));
         service.updateDiaryEntryAndAssociatedObjects(entry);
+
         entry = service.getDiaryEntryByID(entryID);
         assertEquals("Condition was incorrect.", newCondition, entry.getCondition());
         painDescription = entry.getPainDescription();
@@ -167,6 +174,24 @@ public class DBServiceTest {
         drugIntake = intakes.iterator().next();
         assertEquals("Quantity Morning was incorrect.", newQuantityMorning, drugIntake.getQuantityMorning());
 
+        entry.addDrugIntake(new DrugIntake(drug2, quantityMorning, quantityNoon, quantityEvening, quantityNight));
+        entry.removeDrugIntake(drugIntake);
+        service.updateDiaryEntryAndAssociatedObjects(entry);
+        intakes = entry.getDrugIntakes();
+        assertEquals("Number of Drug Intakes was incorrect.", 1, intakes.size());
+        drugIntake = intakes.iterator().next();
+        drug2 = drugIntake.getDrug();
+        assertEquals("Drug Name was incorrect.", drugName, drug2.getName());
+        assertEquals("Drug Dose was incorrect.", dose2, drug2.getDose());
+        drug1 = service.getDrugByID(drug1.getObjectID());
+        assertNotNull(drug1);
+
+        //delete
+        service.deleteDiaryEntryAndAssociatedObjects(entry);
+        entry = service.getDiaryEntryByID(entryID);
+        assertNull(entry);
+        entries = service.getDiaryEntriesByDate(date);
+        assertTrue(entries.isEmpty());
     }
 
 }
