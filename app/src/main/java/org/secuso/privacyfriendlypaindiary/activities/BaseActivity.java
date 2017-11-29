@@ -157,10 +157,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.nav_game:
-                intent = new Intent(this, GameActivity.class);
-                createBackStack(intent);
-                break;
             case R.id.nav_tutorial:
                 intent = new Intent(this, TutorialActivity.class);
                 intent.setAction(TutorialActivity.ACTION_SHOW_ANYWAYS);

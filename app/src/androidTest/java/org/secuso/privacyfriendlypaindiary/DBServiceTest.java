@@ -25,7 +25,6 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +63,7 @@ public class DBServiceTest {
         String firstName = "Max";
         String lastName = "Mustermann";
         Gender gender = Gender.MALE;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DBService.DATE_PATTERN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date dateOfBirth = null;
         try {
             dateOfBirth = dateFormat.parse("01.01.1965");
@@ -98,7 +97,7 @@ public class DBServiceTest {
     @Test
     public void testDiaryEntryAndAssociatedObjects() {
         //create
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DBService.DATE_PATTERN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = null;
         try {
             date = dateFormat.parse("28.11.2017");
@@ -192,6 +191,44 @@ public class DBServiceTest {
         assertNull(entry);
         entries = service.getDiaryEntriesByDate(date);
         assertTrue(entries.isEmpty());
+    }
+
+    @Test
+    public void testGetDiaryEntriesByTimeSpan() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = null;
+        Date date2 = null;
+        Date date3 = null;
+        Date date4 = null;
+        try {
+            date1 = dateFormat.parse("01.11.2017");
+            date2 = dateFormat.parse("28.11.2017");
+            date3 = dateFormat.parse("01.12.2017");
+            date4 = dateFormat.parse("30.11.2017");
+        } catch (ParseException e) {
+            fail("Error parsing date.");
+        }
+        DiaryEntryInterface entry1 = new DiaryEntry(date1, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        service.storeDiaryEntryAndAssociatedObjects(entry1);
+        List<DiaryEntryInterface> entries = service.getDiaryEntriesByMonth(11, 2017);
+        assertEquals(1, entries.size());
+
+        DiaryEntryInterface entry2 = new DiaryEntry(date2, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        service.storeDiaryEntryAndAssociatedObjects(entry2);
+        entries = service.getDiaryEntriesByMonth(11, 2017);
+        assertEquals(2, entries.size());
+
+        DiaryEntryInterface entry3 = new DiaryEntry(date3, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        service.storeDiaryEntryAndAssociatedObjects(entry3);
+        entries = service.getDiaryEntriesByMonth(11, 2017);
+        assertEquals(2, entries.size());
+        entries = service.getDiaryEntriesByMonth(12, 2017);
+        assertEquals(1, entries.size());
+
+        DiaryEntryInterface entry4 = new DiaryEntry(date4, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        service.storeDiaryEntryAndAssociatedObjects(entry4);
+        entries = service.getDiaryEntriesByMonth(11, 2017);
+        assertEquals(3, entries.size());
     }
 
 }

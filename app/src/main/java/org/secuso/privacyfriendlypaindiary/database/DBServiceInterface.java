@@ -41,6 +41,24 @@ public interface DBServiceInterface {
 
     public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date);
 
+    /**
+     * Returns a list of all diary entries for the given month.
+     *
+     * @param month 1-based (1 = january, 2 = february and so on)
+     * @param year
+     * @return
+     */
+    public List<DiaryEntryInterface> getDiaryEntriesByMonth(int month, int year);
+
+    /**
+     * Returns a list of all diary entries for the given time span (including startDate and endDate).
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List<DiaryEntryInterface> getDiaryEntriesByTimeSpan(Date startDate, Date endDate);
+
     public long storeDrug(DrugInterface drug);
 
     /**

@@ -24,6 +24,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "paindiary";
 
-    public static final String DATE_PATTERN = "dd.MM.yyyy";
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
     private DBService(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -288,6 +289,42 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         }
         cursor.close();
 
+        return diaryEntries;
+    }
+
+    @Override
+    public List<DiaryEntryInterface> getDiaryEntriesByMonth(int month, int year) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, month - 1);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = c.getTime();
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = c.getTime();
+        return getDiaryEntriesByTimeSpan(startDate, endDate);
+    }
+
+    @Override
+    public List<DiaryEntryInterface> getDiaryEntriesByTimeSpan(Date startDate, Date endDate) {
+        List<DiaryEntryInterface> diaryEntries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+
+        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, "DATE(" + DiaryEntry.COLUMN_DATE + ") >= ? AND " + "DATE(" + DiaryEntry.COLUMN_DATE + ") <= ?",
+                new String[]{dateFormat.format(startDate), dateFormat.format(endDate)}, null, null, null, null);
+
+        DiaryEntryInterface diaryEntry = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                diaryEntry = instantiateDiaryEntryFromCursor(cursor);
+                diaryEntries.add(diaryEntry);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        for(DiaryEntryInterface entry : diaryEntries) {
+            Log.d(TAG, entry.getDate().toString());
+        }
         return diaryEntries;
     }
 
