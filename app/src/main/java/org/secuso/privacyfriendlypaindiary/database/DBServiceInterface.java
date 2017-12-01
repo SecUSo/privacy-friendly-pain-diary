@@ -9,9 +9,16 @@ import java.util.List;
 
 /**
  * @author Susanne Felsen
- * @version 20171121
+ * @version 20171201
  */
 public interface DBServiceInterface {
+
+    public void initializeDatabase();
+
+    /**
+     * Reinitializes the database. All data will be lost.
+     */
+    public void reinitializeDatabase();
 
     public long storeUser(UserInterface user);
 
@@ -25,6 +32,8 @@ public interface DBServiceInterface {
     public void deleteUser(UserInterface user);
 
     public UserInterface getUserByID(long id);
+
+    public List<UserInterface> getAllUsers();
 
     public long storeDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry);
 

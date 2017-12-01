@@ -31,11 +31,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Karola Marky, Susanne Felsen
- * @version 20171121
- *          Structure based on http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/ (last access: 18.11.17)
- *          <p>
- *          This class defines the structure of our database.
+ * @author Susanne Felsen
+ * @version 20171201
  */
 public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
@@ -67,6 +64,19 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         dropAll(db);
         onCreate(db);
+    }
+
+    @Override
+    public void initializeDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        createAll(db);
+    }
+
+    @Override
+    public void reinitializeDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        dropAll(db);
+        initializeDatabase();
     }
 
     private void createAll(SQLiteDatabase db) {
@@ -111,7 +121,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         ContentValues values = new ContentValues();
         values.put(User.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(User.COLUMN_LAST_NAME, user.getLastName());
-        values.put(User.COLUMN_GENDER, user.getGender().getValue());
+        Gender gender = user.getGender();
+        if(gender != null) values.put(User.COLUMN_GENDER, gender.getValue());
         Date dateOfBirth = user.getDateOfBirth();
         if (dateOfBirth != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
@@ -142,6 +153,27 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         cursor.close();
 
         return user;
+    }
+
+    @Override
+    public List<UserInterface> getAllUsers() {
+        List<UserInterface> users = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + User.TABLE_NAME;
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        UserInterface user = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                user = instantiateUserFromCursor(cursor);
+                users.add(user);
+            } while (cursor.moveToNext());
+        }
+
+        return users;
     }
 
     private UserInterface instantiateUserFromCursor(Cursor cursor) {

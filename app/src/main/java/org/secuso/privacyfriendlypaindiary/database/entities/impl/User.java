@@ -17,7 +17,7 @@ public class User extends AbstractPersistentObject implements UserInterface {
     public static final String COLUMN_GENDER = "gender";
     public static final String COLUMN_DATE_OF_BIRTH = "dateofbirth";
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_FIRST_NAME + " TEXT, " +
             COLUMN_LAST_NAME + " TEXT, " +
@@ -29,6 +29,9 @@ public class User extends AbstractPersistentObject implements UserInterface {
     private String lastName;
     private Gender gender;
     private Date dateOfBirth;
+
+    public User() {
+    }
 
     public User(String firstName, String lastName, Gender gender, Date dateOfBirth) {
         this.firstName = firstName;

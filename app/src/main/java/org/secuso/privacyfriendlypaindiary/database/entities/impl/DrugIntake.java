@@ -16,7 +16,7 @@ public class DrugIntake extends AbstractPersistentObject implements DrugIntakeIn
     public static final String COLUMN_EVENING = "evening";
     public static final String COLUMN_NIGHT = "night";
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_MORNING + " INT NOT NULL DEFAULT 0, " +
             COLUMN_NOON + " INT NOT NULL DEFAULT 0, " +

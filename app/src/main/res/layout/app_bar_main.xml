@@ -10,35 +10,22 @@
 
     <include layout="@layout/toolbar"/>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/activity_main_content" />
 
-    <Button
-        android:id="@+id/button_main_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@drawable/button_normal"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:text="@string/main_button_add"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/button_main_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@drawable/button_normal"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:text="@string/main_button_remove"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteY="482dp" />
+    <!--<Button-->
+    <!--android:id="@+id/btn_back"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:background="@drawable/button_normal"-->
+    <!--android:paddingEnd="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingStart="@dimen/activity_horizontal_margin"-->
+    <!--android:text="@string/main_button_add"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textStyle="bold"-->
+    <!--android:onClick="onClick" />-->
 
 </android.support.design.widget.CoordinatorLayout>

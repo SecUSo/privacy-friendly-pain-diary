@@ -38,13 +38,15 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
+import org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
+import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  *
- * @author Karola Marky
- * @version 20161214
+ * @author Karola Marky, Susanne Felsen
+ * @version 20171129
  */
 
 public class TutorialActivity extends AppCompatActivity {
@@ -69,13 +71,12 @@ public class TutorialActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         if (!prefManager.isFirstTimeLaunch() && (i == null || !ACTION_SHOW_ANYWAYS.equals(i.getAction()))) {
-
-            DBService handler = DBService.getInstance(this);
-            SQLiteDatabase db = handler.getWritableDatabase();
-            handler.onUpgrade(db, 1, 1);
-
             launchHomeScreen();
             return;
+        } else {
+            //initialize database on first time launch
+            DBServiceInterface service = DBService.getInstance(this);
+            service.initializeDatabase();
         }
 
     // Making notification bar transparent
@@ -106,7 +107,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     // layouts of all welcome sliders
     // add few more layouts if you want
-    layouts =new int[]
+    layouts = new int[]
 
     {
         R.layout.tutorial_slide1,
@@ -148,7 +149,12 @@ public class TutorialActivity extends AppCompatActivity {
             // move to next screen
             viewPager.setCurrentItem(current);
         } else {
-            launchHomeScreen();
+            //TODO: always show enter user details at the end of tutorial??
+            if(prefManager.isFirstTimeLaunch()) {
+                launchEnterUserDetails();
+            } else {
+                launchHomeScreen();
+            }
         }
     }
     });
@@ -175,6 +181,14 @@ public class TutorialActivity extends AppCompatActivity {
 
     private int getItem(int i) {
         return viewPager.getCurrentItem() + i;
+    }
+
+    private void launchEnterUserDetails() {
+        prefManager.setFirstTimeLaunch(false);
+        Intent intent = new Intent(TutorialActivity.this, UserDetailsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void launchHomeScreen() {

@@ -4,9 +4,13 @@
     <group android:id="@+id/nav_group_main"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_example"
+            android:id="@+id/nav_main"
             android:icon="@drawable/ic_menu_home"
             android:title="@string/action_main" />
+        <item
+            android:id="@+id/nav_user_details"
+            android:icon="@drawable/ic_user"
+            android:title="@string/user_details" />
         <item
             android:id="@+id/nav_tutorial"
             android:icon="@drawable/ic_menu_tutorial"

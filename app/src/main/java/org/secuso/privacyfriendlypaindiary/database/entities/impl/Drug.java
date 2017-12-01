@@ -13,7 +13,7 @@ public class Drug extends AbstractPersistentObject implements DrugInterface {
     public static final String COLUMN_DOSE = "dose";
     public static final String COLUMN_CURRENTLY_TAKEN = "currentlytaken";
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
             COLUMN_DOSE + " TEXT, " +

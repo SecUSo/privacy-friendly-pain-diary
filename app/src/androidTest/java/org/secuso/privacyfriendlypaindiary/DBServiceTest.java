@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlypaindiary;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -37,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * @author Susanne Felsen
- * @version 20171128
+ * @version 20171129
  * @see <a href="http://www.singhajit.com/testing-android-database/"></a>
  */
 @RunWith(AndroidJUnit4.class)
@@ -48,8 +47,7 @@ public class DBServiceTest {
     @Before
     public void setUp() {
         service = DBService.getInstance(InstrumentationRegistry.getTargetContext());
-        SQLiteDatabase db = service.getWritableDatabase();
-        service.onUpgrade(db, 1, 1);
+        service.reinitializeDatabase();
     }
 
     @After

@@ -20,11 +20,8 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 /**
  * @author Christopher Beckmann, Karola Marky
@@ -38,24 +35,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.calendarView); // get the reference of CalendarView
-
-        // Add a new diary Entry
-        Button add = (Button) findViewById(R.id.button_main_add);
-        if(add != null) {
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PrefManager prefManager = new PrefManager(getBaseContext());
-                    prefManager.setFirstTimeLaunch(true);
-                    Intent intent = new Intent(MainActivity.this, PainDiaryActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
-        }
-
         overridePendingTransition(0, 0);
+
+//        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.calendar_view); // get the reference of CalendarView
     }
 
     /**
@@ -64,13 +46,18 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     protected int getNavigationDrawerID() {
-        return R.id.nav_example;
+        return R.id.nav_main;
     }
 
     public void onClick(View view) {
         switch(view.getId()) {
-            // do something with all these buttons?
+            case R.id.btn_add_entry:
+                Intent intent = new Intent(MainActivity.this, PainDiaryActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             default:
+                break;
         }
     }
 }

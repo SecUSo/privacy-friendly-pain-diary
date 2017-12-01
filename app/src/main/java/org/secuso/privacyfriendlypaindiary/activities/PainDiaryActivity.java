@@ -37,7 +37,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
@@ -54,7 +53,6 @@ public class PainDiaryActivity extends AppCompatActivity {
     private TextView[] dots;
     private int[] layouts;
     private Button btnBack, btnNext, btnDone;
-    private PrefManager prefManager;
 
     private static final String TAG = PainDiaryActivity.class.getSimpleName();
     public static final String ACTION_SHOW_ANYWAYS = TAG + ".ACTION_SHOW_ANYWAYS";
@@ -62,15 +60,6 @@ public class PainDiaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Checking for first time launch - before calling setContentView()
-        prefManager = new PrefManager(this);
-        Intent i = getIntent();
-
-        if (!prefManager.isFirstTimeLaunch() && (i == null || !ACTION_SHOW_ANYWAYS.equals(i.getAction()))) {
-            launchHomeScreen();
-            return;
-        }
 
         // Making notification bar transparent
         if(Build.VERSION.SDK_INT >=21) {
@@ -197,7 +186,6 @@ public class PainDiaryActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        prefManager.setFirstTimeLaunch(false);
         Intent intent = new Intent(PainDiaryActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

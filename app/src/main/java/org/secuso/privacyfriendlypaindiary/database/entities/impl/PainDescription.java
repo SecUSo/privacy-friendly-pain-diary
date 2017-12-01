@@ -13,7 +13,7 @@ public class PainDescription extends AbstractPersistentObject implements PainDes
     public static final String COLUMN_PAIN_LEVEL = "painlevel";
     public static final String COLUMN_BODY_REGION = "bodyregion";
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_PAIN_LEVEL + " INTEGER NOT NULL, " +
             COLUMN_BODY_REGION + " INTEGER NOT NULL);";

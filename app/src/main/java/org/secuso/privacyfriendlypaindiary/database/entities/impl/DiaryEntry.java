@@ -21,7 +21,7 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
     public static final String COLUMN_CONDITION = "condition";
     public static final String COLUMN_NOTES = "notes";
 
-    public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_DATE + " TEXT UNIQUE NOT NULL, " +
             PainDescription.TABLE_NAME + "_id INTEGER REFERENCES " + PainDescription.TABLE_NAME + "(" + COLUMN_ID + "), " +
