@@ -89,7 +89,9 @@ public class PainDiaryActivity extends AppCompatActivity {
             R.layout.activity_how_strong_is_your_pain,
             R.layout.activity_where_is_the_pain,
             R.layout.activity_describe_your_pain_more_closely,
-            R.layout.activity_when_do_you_have_pain
+            R.layout.activity_when_do_you_have_pain,
+            R.layout.activity_do_you_hava_any_remarks,
+            R.layout.activity_what_medications_do_you_take
     }
 
     ;

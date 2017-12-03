@@ -93,5 +93,7 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
     <string name="time_course">Describe the time course</string>
     <string name="whenDoYouHavePain">When do you have pain</string>
+    <string name="doYouHavaAnyRemarks">Do you hava any remarks or comments?</string>
+    <string name="WhatMedicationsDoYouTake">What medications do you take?</string>
 
 </resources>

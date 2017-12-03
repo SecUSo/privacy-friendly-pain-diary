@@ -29,31 +29,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:text="@string/describeYourPainMoreClosely"
+            android:text="@string/doYouHavaAnyRemarks"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="150dp"
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="pungent / piercing"
-            android:layout_gravity="center_horizontal" />
-
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="dull / muffled"
-            android:layout_gravity="center_horizontal" />
-
-        <CheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="inclusive / einschließend"
-            android:layout_gravity="center_horizontal" />
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6"
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+        />
 
 
     </LinearLayout>

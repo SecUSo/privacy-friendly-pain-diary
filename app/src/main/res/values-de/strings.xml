@@ -87,5 +87,7 @@
     <string name="title_activity_Diary">activityDiary</string>
     <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
     <string name="whenDoYouHavePain">When do you have pain</string>
+    <string name="doYouHavaAnyRemarks">Do you hava any remarks or comments?</string>
+    <string name="WhatMedicationsDoYouTake">What medications do you take?</string>
 
 </resources>
