@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="org.secuso.privacyfriendlypaindiary.activities.SettingsActivity">
+        tools:context=".activities.SettingsActivity">
 
         <include layout="@layout/toolbar"/>
 

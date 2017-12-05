@@ -18,26 +18,89 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
 import org.secuso.privacyfriendlypaindiary.R;
+import org.secuso.privacyfriendlypaindiary.database.DBService;
+import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @author Christopher Beckmann, Karola Marky
- * @version 20171016
+ * @author Christopher Beckmann, Karola Marky, Susanne Felsen
+ * @version 20171205
  */
-
 public class MainActivity extends BaseActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private MaterialCalendarView calendar;
+    private EventDecorator decorator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        overridePendingTransition(0, 0);
+        calendar = (MaterialCalendarView) findViewById(R.id.calendar_view);
+        calendar.setSelectedDate(CalendarDay.today());
+        decorator = new EventDecorator(Color.parseColor("#8aa5ce"));
+        calendar.addDecorator(decorator);
+        getDiaryEntryDates(calendar.getSelectedDate().getMonth(), calendar.getSelectedDate().getYear());
+        calendar.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                getDiaryEntryDates(date.getMonth(), date.getYear());
+            }
+        });
+//        calendar.setOnDateChangedListener(new OnDateSelectedListener() {
+//
+//            @Override
+//            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+//
+//            }
+//        });
+    }
 
-//        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.calendar_view); // get the reference of CalendarView
+    private void getDiaryEntryDates(int month, int year) {
+        DBServiceInterface service = DBService.getInstance(this);
+
+        Calendar c = Calendar.getInstance();
+        if(month > 0) {
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month - 1);
+        } else {
+            c.set(Calendar.YEAR, year - 1);
+            c.set(Calendar.MONTH, 11);
+        }
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH) - 6);
+        Date startDate = c.getTime();
+        if(month < 11) {
+            c.set(Calendar.MONTH, month + 1);
+        } else {
+            c.set(Calendar.YEAR, year + 1);
+            c.set(Calendar.MONTH, 0);
+        }
+        c.set(Calendar.DAY_OF_MONTH, 7);
+        Date endDate = c.getTime();
+
+        Set<Date> dates = service.getDiaryEntryDatesByTimeSpan(startDate, endDate);
+        Set<CalendarDay> calendarDates = new HashSet<>();
+        for(Date date : dates) {
+            calendarDates.add(CalendarDay.from(date));
+        }
+        decorator.setDates(calendarDates);
+        calendar.invalidateDecorators();
     }
 
     /**
@@ -52,7 +115,7 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.btn_add_entry:
-                Intent intent = new Intent(MainActivity.this, PainDiaryActivity.class);
+                Intent intent = new Intent(MainActivity.this, DiaryEntryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
@@ -61,22 +124,3 @@ public class MainActivity extends BaseActivity {
         }
     }
 }
-
-
-//        String date = "15/11/2014";
-//        String parts[] = date.split("/");
-//
-//        int day = Integer.parseInt(parts[0]);
-//        int month = Integer.parseInt(parts[1]);
-//        int year = Integer.parseInt(parts[2]);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, year);
-//        calendar.set(Calendar.MONTH, month);
-//        calendar.set(Calendar.DAY_OF_MONTH, day);
-//
-//        long milliTime = calendar.getTimeInMillis();
-//
-//
-//        simpleCalendarView.setDate(milliTime,false,false);
-//

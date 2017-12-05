@@ -17,19 +17,14 @@
 
 package org.secuso.privacyfriendlypaindiary.tutorial;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -41,6 +36,7 @@ import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
 import org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 
 /**
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
@@ -79,52 +75,28 @@ public class TutorialActivity extends AppCompatActivity {
             service.initializeDatabase();
         }
 
-    // Making notification bar transparent
-        if(Build.VERSION.SDK_INT >=21)
+        // Making notification bar transparent
+        if(Build.VERSION.SDK_INT >=21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
-    {
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
+        setContentView(R.layout.activity_tutorial);
 
-    setContentView(R.layout.activity_tutorial);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        dotsLayout = (LinearLayout) findViewById(R.id.layout_dots);
+        btnSkip = (Button) findViewById(R.id.btn_back);
+        btnNext = (Button) findViewById(R.id.btn_next);
 
-    viewPager =(ViewPager)
+        // layouts of all welcome sliders
+        layouts = new int[] {R.layout.tutorial_slide1, R.layout.tutorial_slide2, R.layout.tutorial_slide3,};
 
-    findViewById(R.id.view_pager);
+        // adding bottom dots
+        addBottomDots(0);
 
-    dotsLayout =(LinearLayout)
+        // making notification bar transparent
+        changeStatusBarColor();
 
-    findViewById(R.id.layoutDots);
-
-    btnSkip =(Button)
-
-    findViewById(R.id.btn_back);
-
-    btnNext =(Button)
-
-    findViewById(R.id.btn_next);
-
-
-    // layouts of all welcome sliders
-    // add few more layouts if you want
-    layouts = new int[]
-
-    {
-        R.layout.tutorial_slide1,
-                R.layout.tutorial_slide2,
-                R.layout.tutorial_slide3,}
-
-    ;
-
-    // adding bottom dots
-    addBottomDots(0);
-
-    // making notification bar transparent
-    changeStatusBarColor();
-
-    myViewPagerAdapter =new
-
-    MyViewPagerAdapter();
+        myViewPagerAdapter = new MyViewPagerAdapter(this, layouts);
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
@@ -136,29 +108,27 @@ public class TutorialActivity extends AppCompatActivity {
         launchHomeScreen();
     }
     });
-
         btnNext.setOnClickListener(new View.OnClickListener()
 
     {
         @Override
         public void onClick (View v){
-        // checking for last page
-        // if last page home screen will be launched
-        int current = getItem(+1);
-        if (current < layouts.length) {
-            // move to next screen
-            viewPager.setCurrentItem(current);
-        } else {
-            //TODO: always show enter user details at the end of tutorial??
-            if(prefManager.isFirstTimeLaunch()) {
-                launchEnterUserDetails();
+            // checking for last page; if last page home screen will be launched
+            int current = getItem(+1);
+            if (current < layouts.length) {
+                // move to next screen
+                viewPager.setCurrentItem(current);
             } else {
-                launchHomeScreen();
+                //TODO: always show enter user details at the end of tutorial??
+                if(prefManager.isFirstTimeLaunch()) {
+                    launchEnterUserDetails();
+                } else {
+                    launchHomeScreen();
+                }
             }
         }
+        });
     }
-    });
-}
 
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
@@ -240,40 +210,4 @@ public class TutorialActivity extends AppCompatActivity {
         }
     }
 
-/**
- * View pager adapter
- */
-public class MyViewPagerAdapter extends PagerAdapter {
-    private LayoutInflater layoutInflater;
-
-    public MyViewPagerAdapter() {
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = layoutInflater.inflate(layouts[position], container, false);
-        container.addView(view);
-
-        return view;
-    }
-
-    @Override
-    public int getCount() {
-        return layouts.length;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object obj) {
-        return view == obj;
-    }
-
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
-        container.removeView(view);
-    }
-}
 }

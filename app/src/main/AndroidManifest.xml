@@ -57,6 +57,14 @@
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
         </activity>
         <activity
+            android:name="org.secuso.privacyfriendlypaindiary.activities.DiaryEntryActivity"
+            android:label="@string/new_diary_entry"
+            android:parentActivityName="org.secuso.privacyfriendlypaindiary.activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
+        </activity>
+        <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.PainDiaryActivity"
             android:label="painDiaryActivity"
             android:parentActivityName="org.secuso.privacyfriendlypaindiary.activities.MainActivity"
@@ -66,7 +74,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
         </activity>
-
 
     </application>
 

@@ -6,6 +6,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Susanne Felsen
@@ -67,6 +68,17 @@ public interface DBServiceInterface {
      * @return
      */
     public List<DiaryEntryInterface> getDiaryEntriesByTimeSpan(Date startDate, Date endDate);
+
+    /**
+     * Returns a list of dates for all diary entries for the given month.
+     *
+     * @param month 1-based (1 = january, 2 = february and so on)
+     * @param year
+     * @return
+     */
+    public Set<Date> getDiaryEntryDatesByMonth(int month, int year);
+
+    public Set<Date> getDiaryEntryDatesByTimeSpan(Date startDate, Date endDate);
 
     public long storeDrug(DrugInterface drug);
 

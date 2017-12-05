@@ -37,8 +37,6 @@ public class UserDetailsActivity extends BaseActivity {
     private Date dateOfBirth;
     private Gender gender;
 
-    private boolean allowSaving;
-
     private TextInputLayout firstNameWrapper;
     private TextInputLayout lastNameWrapper;
     private TextInputLayout dateWrapper;

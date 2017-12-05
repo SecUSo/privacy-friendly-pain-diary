@@ -354,10 +354,45 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         }
         cursor.close();
 
-        for(DiaryEntryInterface entry : diaryEntries) {
-            Log.d(TAG, entry.getDate().toString());
-        }
         return diaryEntries;
+    }
+
+    @Override
+    public Set<Date> getDiaryEntryDatesByMonth(int month, int year) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, month - 1);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = c.getTime();
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = c.getTime();
+        return getDiaryEntryDatesByTimeSpan(startDate, endDate);
+    }
+
+    @Override
+    public Set<Date> getDiaryEntryDatesByTimeSpan(Date startDate, Date endDate) {
+        Set<Date> dates = new HashSet<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+
+
+        String selectQuery = "SELECT " + DiaryEntry.COLUMN_DATE + " FROM " + DiaryEntry.TABLE_NAME + " WHERE DATE(" + DiaryEntry.COLUMN_DATE + ") >= ? AND " + "DATE(" + DiaryEntry.COLUMN_DATE + ") <= ?";
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{dateFormat.format(startDate), dateFormat.format(endDate)});
+
+        Date date;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String dateAsString = cursor.getString(cursor.getColumnIndex(DiaryEntry.COLUMN_DATE));
+                try {
+                    date = dateFormat.parse(dateAsString);
+                    dates.add(date);
+                } catch (ParseException e) {
+                    Log.e(TAG, "Error parsing diary entry date." + e);
+                }
+            } while (cursor.moveToNext());
+        }
+
+        return dates;
     }
 
     /**

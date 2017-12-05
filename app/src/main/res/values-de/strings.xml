@@ -77,7 +77,24 @@
     <string name="female">weiblich</string>
     <string name="other">andere</string>
 
+    <!-- ### PAIN DESCRIPTION ### -->
+    <string name="pain_stabbing">stechend</string>
+    <string name="pain_dull">dumpf</string>
+    <string name="pain_shooting">einschießend</string>
+
     <!-- ### DIARY ENTRY ### -->
+    <string name="new_diary_entry">Neuer Eintrag</string>
+    <string name="question_condition">Wie geht es Ihnen?</string>
+    <string name="question_painlevel">Wie stark sind Ihre Schmerzen?</string>
+    <string name="question_bodyregion">Wo sind Ihre Schmerzen?</string>
+    <string name="question_paindescription">Beschreiben Sie Ihren Schmerz</string>
+    <string name="question_timeofpain">Wann haben Sie Schmerzen?</string>
+    <string name="time_day">tagsüber</string>
+    <string name="time_morning">morgens</string>
+    <string name="time_afternoon">nachmittags</string>
+    <string name="time_evening">abends</string>
+
+
     <string name="main_button_add">Add New Diary Entry</string>
     <string name="main_button_remove">Remove Diary Entry</string>
     <string name="HowDoYouFeel">How do you feel?</string>

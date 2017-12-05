@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
     compile 'com.android.support:support-v4:26.+'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
 }
