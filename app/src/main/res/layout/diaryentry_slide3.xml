@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/question_paindescription"
+            android:text="@string/heading_paindescription"
             android:textSize="@dimen/slide_actions"/>
 
         <CheckBox
@@ -32,17 +32,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/pain_stabbing"/>
+            android:text="@string/pain_stabbing"
+            android:onClick="onPainQualityClicked"/>
         <CheckBox
             android:id="@+id/pain_dull"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pain_dull"/>
+            android:text="@string/pain_dull"
+            android:onClick="onPainQualityClicked"/>
         <CheckBox
             android:id="@+id/pain_shooting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pain_shooting"/>
+            android:text="@string/pain_shooting"
+            android:onClick="onPainQualityClicked"/>
 
     </LinearLayout>
 
@@ -56,34 +59,38 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/painlevel"
+            android:id="@+id/timeofpain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/question_timeofpain"
+            android:text="@string/heading_timeofpain"
             android:textSize="@dimen/slide_actions"/>
 
         <CheckBox
-            android:id="@+id/time_day"
+            android:id="@+id/time_all_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/time_day"/>
+            android:text="@string/time_day"
+            android:onClick="onTimeClicked"/>
         <CheckBox
             android:id="@+id/time_morning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/time_morning"/>
+            android:text="@string/time_morning"
+            android:onClick="onTimeClicked"/>
         <CheckBox
             android:id="@+id/time_afternoon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/time_afternoon"/>
+            android:text="@string/time_afternoon"
+            android:onClick="onTimeClicked"/>
         <CheckBox
             android:id="@+id/time_evening"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/time_evening"/>
+            android:text="@string/time_evening"
+            android:onClick="onTimeClicked"/>
 
     </LinearLayout>
 

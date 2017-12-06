@@ -89,15 +89,17 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
 
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">New Diary Entry</string>
-    <string name="question_condition">How do you feel?</string>
-    <string name="question_painlevel">How strong is your pain?</string>
-    <string name="question_bodyregion">Where is the pain located?</string>
-    <string name="question_paindescription">Describe your pain</string>
-    <string name="question_timeofpain">When do you have pain?</string>
+    <string name="heading_condition">How do you feel?</string>
+    <string name="heading_painlevel">How strong is your pain?</string>
+    <string name="heading_bodyregion">Where is the pain located?</string>
+    <string name="heading_paindescription">Describe your pain:</string>
+    <string name="heading_timeofpain">When do you have pain?</string>
     <string name="time_day">during the day</string>
     <string name="time_morning">in the morning</string>
     <string name="time_afternoon">in the afternoon</string>
     <string name="time_evening">in the evening</string>
+    <string name="heading_notes">Additional notes:</string>
+    <string name="heading_medication">Medication:</string>
 
 
     <string name="viewhelp">View Help</string>

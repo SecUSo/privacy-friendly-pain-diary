@@ -11,6 +11,8 @@ import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
+import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
+import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.DrugIntake;
@@ -25,6 +27,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -110,7 +113,9 @@ public class DBServiceTest {
 
         int painLevel = 0;
         BodyRegion bodyRegion = BodyRegion.HEAD;
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion);
+        EnumSet<PainQuality> painQualities = EnumSet.of(PainQuality.SHOOTING);
+        EnumSet<Time> timesOfPain = EnumSet.of(Time.MORNING, Time.EVENING);
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
         entry.setPainDescription(painDescription);
 
         String drugName = "Ibuprofen";
@@ -140,6 +145,8 @@ public class DBServiceTest {
         painDescription = entry.getPainDescription();
         assertEquals("Pain Level was incorrect.", painLevel, painDescription.getPainLevel());
         assertEquals("Body Region was incorrect.", bodyRegion, painDescription.getBodyRegion());
+        assertEquals("Pain Qualities were incorrect.", painQualities, painDescription.getPainQualities());
+        assertEquals("Times of Pain were incorrect.", timesOfPain, painDescription.getTimesOfPain());
 
         Set<DrugIntakeInterface> intakes = entry.getDrugIntakes();
         assertEquals("Number of Drug Intakes was incorrect.", 1,  intakes.size());

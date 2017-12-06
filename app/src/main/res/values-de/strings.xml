@@ -84,15 +84,17 @@
 
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Neuer Eintrag</string>
-    <string name="question_condition">Wie geht es Ihnen?</string>
-    <string name="question_painlevel">Wie stark sind Ihre Schmerzen?</string>
-    <string name="question_bodyregion">Wo sind Ihre Schmerzen?</string>
-    <string name="question_paindescription">Beschreiben Sie Ihren Schmerz</string>
-    <string name="question_timeofpain">Wann haben Sie Schmerzen?</string>
+    <string name="heading_condition">Wie geht es Ihnen?</string>
+    <string name="heading_painlevel">Wie stark sind Ihre Schmerzen?</string>
+    <string name="heading_bodyregion">Wo sind Ihre Schmerzen?</string>
+    <string name="heading_paindescription">Beschreiben Sie Ihren Schmerz</string>
+    <string name="heading_timeofpain">Wann haben Sie Schmerzen?</string>
     <string name="time_day">tagsüber</string>
     <string name="time_morning">morgens</string>
     <string name="time_afternoon">nachmittags</string>
     <string name="time_evening">abends</string>
+    <string name="heading_notes">Notizen:</string>
+    <string name="heading_medication">Medikation:</string>
 
 
     <string name="main_button_add">Add New Diary Entry</string>

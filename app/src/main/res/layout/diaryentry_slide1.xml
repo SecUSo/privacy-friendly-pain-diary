@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/question_condition"
+            android:text="@string/heading_condition"
             android:textSize="@dimen/slide_actions"/>
 
         <RadioGroup
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/question_painlevel"
+            android:text="@string/heading_painlevel"
             android:textSize="@dimen/slide_actions"/>
 
         <SeekBar

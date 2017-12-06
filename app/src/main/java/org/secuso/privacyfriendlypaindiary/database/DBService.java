@@ -10,6 +10,8 @@ import android.util.Log;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
+import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
+import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.DrugIntake;
@@ -26,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -441,7 +444,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
         values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        //TODO
+        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         return db.insert(PainDescription.TABLE_NAME, null, values);
     }
 
@@ -450,9 +454,60 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
         values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        //TODO
+        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});
+    }
+
+    private String convertPainQualityEnumSetToString(EnumSet<PainQuality> painQualities) {
+        String painQualitiesAsString = "";
+        for(PainQuality quality : painQualities) {
+            painQualitiesAsString += quality.toString() + ",";
+        }
+        if(!painQualitiesAsString.isEmpty()) {
+            painQualitiesAsString = painQualitiesAsString.substring(0, painQualitiesAsString.length() - 1);
+        } else {
+            painQualitiesAsString = null;
+        }
+        return painQualitiesAsString;
+    }
+
+    private EnumSet<PainQuality> convertStringToPainQualityEnumSet(String painQualitiesAsString) {
+        EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
+        if(painQualitiesAsString != null && !painQualitiesAsString.isEmpty()) {
+            String[] qualities = painQualitiesAsString.split(",");
+            for (String quality : qualities) {
+                PainQuality q = PainQuality.fromString(quality);
+                if (q != null) painQualities.add(q);
+            }
+        }
+        return painQualities;
+    }
+
+    private String convertTimeEnumSetToString(EnumSet<Time> times) {
+        String timesAsString = "";
+        for(Time time : times) {
+            timesAsString += time.toString() + ",";
+        }
+        if(!timesAsString.isEmpty()) {
+            timesAsString = timesAsString.substring(0, timesAsString.length() - 1);
+        } else {
+            timesAsString = null;
+        }
+        return timesAsString;
+    }
+
+    private EnumSet<Time> convertStringToTimeEnumSet(String timesAsString) {
+        EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
+        if(timesAsString != null && !timesAsString.isEmpty()) {
+            String[] times = timesAsString.split(",");
+            for (String time : times) {
+                Time t = Time.fromString(time);
+                if (t != null) timesOfPain.add(t);
+            }
+        }
+        return timesOfPain;
     }
 
     private void deletePainDescription(PainDescriptionInterface painDescription) {
@@ -479,9 +534,13 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
         int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
         BodyRegion bodyRegion = BodyRegion.valueOf(cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION)));
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion);
+        String painQualitiesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_QUALITY));
+        String timesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_TIME_OF_PAIN));
+        EnumSet<PainQuality> painQualities = convertStringToPainQualityEnumSet(painQualitiesAsString);
+        EnumSet<Time> timesOfPain = convertStringToTimeEnumSet(timesAsString);
+        Log.d(TAG, painQualitiesAsString + "  " + timesAsString);
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
         painDescription.setObjectID(objectID);
-        //TODO
         return painDescription;
     }
 

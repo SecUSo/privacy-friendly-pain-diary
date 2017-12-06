@@ -15,4 +15,7 @@
     <dimen name="slide_actions">20dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
 
+    <dimen name="diaryentry_heading">16dp</dimen>
+    <dimen name="diaryentry_marginTop">10dp</dimen>
+
 </resources>
