@@ -49,19 +49,26 @@ public class HelpDataDump {
         expandableListDetail.put(context.getResources().getString(R.string.help_whatis), general);
 
         List<String> features = new ArrayList<String>();
-        features.add(context.getResources().getString(R.string.help_feature_one_answer));
+        features.add(context.getResources().getString(R.string.help_add_new_diary_answer));
 
-        expandableListDetail.put(context.getResources().getString(R.string.help_feature_one), features);
+        expandableListDetail.put(context.getResources().getString(R.string.help_add_new_diary), features);
+
+        List<String> dirayContent = new ArrayList<String>();
+        dirayContent.add(context.getResources().getString(R.string.help_content_of_diary_answer));
+
+        expandableListDetail.put(context.getResources().getString(R.string.help_content_of_diary), dirayContent);
 
         List<String> privacy = new ArrayList<String>();
         privacy.add(context.getResources().getString(R.string.help_privacy_answer));
 
         expandableListDetail.put(context.getResources().getString(R.string.help_privacy), privacy);
 
-        List<String> permissions = new ArrayList<String>();
-        permissions.add(context.getResources().getString(R.string.help_permission_answer));
+        List<String> permission = new ArrayList<String>();
+        permission.add(context.getResources().getString(R.string.help_permission_answer));
 
-        expandableListDetail.put(context.getResources().getString(R.string.help_permission), permissions);
+        expandableListDetail.put(context.getResources().getString(R.string.help_permission), permission);
+
+
 
         return expandableListDetail;
     }

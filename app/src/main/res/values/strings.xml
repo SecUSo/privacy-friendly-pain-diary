@@ -25,8 +25,14 @@
     <!--### HELP ###-->
     <string name="help">Help</string>
 
-    <string name="help_whatis">What is Privacy Friendly App Example?</string>
-    <string name="help_whatis_answer">Privacy Friendly App Example is an app that demonstrates the design of a Privacy Friendly App.</string>
+    <string name="help_whatis">What is Privacy Friendly Pain Diary App?</string>
+    <string name="help_whatis_answer">Privacy Friendly Pain Diary is an app that helps you to document your well being and your Health in an Calender.</string>
+    <string name="help_add_new_diary">How to add a new Diary entry?</string>
+    <string name="help_add_new_diary_answer">In the calender view you can select the Day you want add a Diary entry. To start the Diary for your chosen day you have to press the blue + button.</string>
+    <string name="help_content_of_diary">What are the Questions in an Diary entry?</string>
+    <string name="help_content_of_diary_answer">There will be several questions like how do you fell, how strong is your pain, where you have pain and more.</string>
+
+
     <string name="help_feature_one">Feature 1</string>
     <string name="help_feature_one_answer">Description of first feature.
 Lorem ipsum dolor sit amet, eu ius alia fierent indoctum, ad pri sale tation. Elit dictas sit an, ad volumus urbanitas duo. Ei clita iracundia mel, eum et laoreet pertinax abhorreant. Nonumy suavitate dignissim quo id, ius audire prodesset adipiscing ei, altera saperet his et. Nostrud pertinax eu has, qui munere complectitur an.
@@ -34,10 +40,11 @@ Lorem ipsum dolor sit amet, eu ius alia fierent indoctum, ad pri sale tation. El
 Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constituto ex. Per soleat impedit delicatissimi cu. Inermis volumus his ea, id quo praesent eloquentiam conclusionemque. Dolores mediocrem ad sit, ex cibo evertitur cotidieque eos.
 
     </string>
+
     <string name="help_privacy">What makes the app privacy-friendly?</string>
-    <string name="help_privacy_answer">Privacy Friendly App Example does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
+    <string name="help_privacy_answer">Pain Diary App does not require any permission. It further does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions requires the app?</string>
-    <string name="help_permission_answer">Privacy Friendly App Example does not require any permission.</string>
+    <string name="help_permission_answer">Pain Diary App does not require any permission.</string>
 
     <!--### ABOUT ###-->
     <string name="about">About</string>
