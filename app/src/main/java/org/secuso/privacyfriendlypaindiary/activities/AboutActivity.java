@@ -14,15 +14,15 @@
 
 package org.secuso.privacyfriendlypaindiary.activities;
 
-        import android.os.Bundle;
-        import android.support.v7.app.ActionBar;
-        import android.support.v7.app.AppCompatActivity;
-        import android.text.method.LinkMovementMethod;
-        import android.view.View;
-        import android.widget.TextView;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
+import android.view.View;
+import android.widget.TextView;
 
-        import org.secuso.privacyfriendlypaindiary.BuildConfig;
-        import org.secuso.privacyfriendlypaindiary.R;
+import org.secuso.privacyfriendlypaindiary.BuildConfig;
+import org.secuso.privacyfriendlypaindiary.R;
 
 /**
  * Created by yonjuni on 15.06.16.
@@ -56,4 +56,3 @@ public class AboutActivity extends AppCompatActivity {
     //    return R.id.nav_about;
     //}
 }
-

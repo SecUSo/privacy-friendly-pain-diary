@@ -17,8 +17,10 @@
 
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,15 +28,22 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import org.secuso.privacyfriendlypaindiary.R;
 
@@ -66,83 +75,195 @@ public class PainDiaryActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-    setContentView(R.layout.activity_next_and_back);
+        setContentView(R.layout.activity_next_and_back);
 
-    viewPager =(ViewPager) findViewById(R.id.view_pager);
+        viewPager =(ViewPager) findViewById(R.id.view_pager);
 
-    dotsLayout =(LinearLayout) findViewById(R.id.layoutDots);
+        dotsLayout =(LinearLayout) findViewById(R.id.layoutDots);
 
-    btnBack =(Button) findViewById(R.id.btn_back);
+        btnBack =(Button) findViewById(R.id.btn_back);
 
-    btnBack.setVisibility(View.GONE);
+        btnBack.setVisibility(View.GONE);
 
-    btnNext =(Button) findViewById(R.id.btn_next);
+        btnNext =(Button) findViewById(R.id.btn_next);
 
-    btnDone =(Button) findViewById(R.id.btn_done);
+        btnDone =(Button) findViewById(R.id.btn_done);
 
-    // layouts of all welcome sliders
-    // add few more layouts if you want
-    layouts =new int[]
+        if(btnDone==null){
+            Toast.makeText(getApplicationContext(), "null",
+                    Toast.LENGTH_LONG).show();
+        }
+        // layouts of all welcome sliders
+        // add few more layouts if you want
+        layouts =new int[]
 
-    {
-            R.layout.activity_how_do_you_feel,
-            R.layout.activity_how_strong_is_your_pain,
-            R.layout.activity_where_is_the_pain,
-            R.layout.activity_describe_your_pain_more_closely,
-            R.layout.activity_when_do_you_have_pain,
-            R.layout.activity_do_you_hava_any_remarks,
-            R.layout.activity_what_medications_do_you_take
-    }
+        {
+                R.layout.activity_how_do_you_feel,
+                R.layout.activity_how_strong_is_your_pain,
+                R.layout.activity_where_is_the_pain,
+                R.layout.activity_describe_your_pain_more_closely,
+                R.layout.activity_when_do_you_have_pain,
+                R.layout.activity_do_you_hava_any_remarks,
+                R.layout.activity_what_medications_do_you_take
+        }
 
-    ;
+        ;
 
-    // adding bottom dots
-    addBottomDots(0);
+        // adding bottom dots
+        addBottomDots(0);
 
-    // making notification bar transparent
-    changeStatusBarColor();
+        // making notification bar transparent
+        changeStatusBarColor();
 
-    myViewPagerAdapter =new
+        myViewPagerAdapter =new MyViewPagerAdapter();
 
-    MyViewPagerAdapter();
-    viewPager.setAdapter(myViewPagerAdapter);
-    viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        viewPager.setAdapter(myViewPagerAdapter);
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-    btnNext.setOnClickListener(new View.OnClickListener()
-    {
-        @Override
-        public void onClick (View v){
-        // checking for last page
-        // if last page home screen will be launched
-        int current = getItem(+1);
-        viewPager.setCurrentItem(current);
-
-    }
-    });
-
-    btnBack.setOnClickListener(new View.OnClickListener()
-    {
-        @Override
-        public void onClick (View v){
+        btnNext.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v){
             // checking for last page
             // if last page home screen will be launched
-            int current = getItem(-1);
+            int current = getItem(+1);
             viewPager.setCurrentItem(current);
 
         }
-    });
+        });
 
-    btnDone.setOnClickListener(new View.OnClickListener()
-    {
-        @Override
-        public void onClick (View v){
-            // checking for last page
-            // if last page home screen will be launched
-            launchHomeScreen();
-        }
-    });
+        btnBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v){
+                // checking for last page
+                // if last page home screen will be launched
+                int current = getItem(-1);
+                viewPager.setCurrentItem(current);
 
-}
+            }
+        });
+
+        btnDone.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick (View v){
+                // checking for last page
+                // if last page home screen will be launched
+                launchHomeScreen();
+            }
+        });
+
+    }
+
+
+
+    public void changeColorOfBodyParts(View v){
+
+        ImageView kopf =  (ImageView)findViewById(R.id.Kopf);
+        kopf.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    float x = event.getX();
+                    float y = event.getY();
+
+                    ImageView bodyPart = getKlickedBodyPart(x,y);
+
+                    if(bodyPart!=null){
+                        if(bodyPart.getImageTintList()==null){
+                            paintBodyPart(1,bodyPart);
+                        }else{
+                            paintBodyPart(0,bodyPart);
+                        }
+                    }
+
+                }
+                return false;
+            }
+
+            public ImageView getKlickedBodyPart(float x,float y){
+                ImageView bodyPart=null;
+                if(x>545 && y>596 && x<614 && y<688 ) {
+                    bodyPart = (ImageView) findViewById(R.id.BauchRechts);
+                }
+                if(x>458 && y>596 && x<521 && y<688 ) {
+                    bodyPart = (ImageView) findViewById(R.id.BauchLinks);
+                }
+                if(x>435 && y>703 && x<518 && y<799 ) {
+                    bodyPart = (ImageView) findViewById(R.id.LeisteLinks);
+                }
+                if(x>548 && y>706 && x<637 && y<799 ) {
+                    bodyPart = (ImageView) findViewById(R.id.LeisteRechts);
+                }
+                if(x>438 && y>825 && x<530 && y<957 ) {
+                    bodyPart = (ImageView) findViewById(R.id.OberschenkelLinks);
+                }
+                if(x>545 && y>825 && x<635 && y<957 ) {
+                    bodyPart = (ImageView) findViewById(R.id.OberschenkelRechts);
+                }
+                if(x>438 && y>969 && x<518 && y<1020 ) {
+                    bodyPart = (ImageView) findViewById(R.id.KnieLinks);
+                }
+                if(x>551 && y>969 && x<635 && y<1020 ) {
+                    bodyPart = (ImageView) findViewById(R.id.KnieRechts);
+                }
+                if(x>438 && y>1037 && x<518 && y<1220 ) {
+                    bodyPart = (ImageView) findViewById(R.id.UnterschenkelLinks);
+                }
+                if(x>551 && y>1030 && x<626 && y<1225 ) {
+                    bodyPart = (ImageView) findViewById(R.id.UnterschenkelRechts);
+                }
+                if(x>440 && y>1237 && x<527 && y<1290 ) {
+                    bodyPart = (ImageView) findViewById(R.id.FussLinks);
+                }
+                if(x>542 && y>1237 && x<635 && y<1290 ) {
+                    bodyPart = (ImageView) findViewById(R.id.FussRechts);
+                }
+                if(x>458 && y>453 && x<527 && y<584 ) {
+                    bodyPart = (ImageView) findViewById(R.id.BrustLinks);
+                }
+                if(x>545 && y>456 && x<608 && y<584 ) {
+                    bodyPart = (ImageView) findViewById(R.id.BrustRechts);
+                }
+                if(x>485 && y>411 && x<578 && y<438 ) {
+                    bodyPart = (ImageView) findViewById(R.id.Hals);
+                }
+                if(x>470 && y>271 && x<596 && y<405 ) {
+                    bodyPart = (ImageView) findViewById(R.id.Kopf);
+                }
+                if(x>380 && y>490 && x<435 && y<617 ) {
+                    bodyPart = (ImageView) findViewById(R.id.OberarmLinks);
+                }
+                if(x>360 && y>630 && x<420 && y<750 ) {
+                    bodyPart = (ImageView) findViewById(R.id.UnterarmLinks);
+                }
+                if(x>345 && y>772 && x<420 && y<860 ) {
+                    bodyPart = (ImageView) findViewById(R.id.HandLinks);
+                }
+                if(x>623 && y>490 && x<695 && y<605 ) {
+                    bodyPart = (ImageView) findViewById(R.id.OberarmRechts);
+                }
+                if(x>640 && y>620 && x<700 && y<750 ) {
+                    bodyPart = (ImageView) findViewById(R.id.UnterarmRechts);
+                }
+                if(x>659 && y>763 && x<710 && y<860 ) {
+                    bodyPart = (ImageView) findViewById(R.id.HandRechts);
+                }
+
+                return bodyPart;
+            }
+
+            public void paintBodyPart(int stufe, ImageView bodyPart){
+                if(stufe==1){
+                    bodyPart.setImageTintList(ColorStateList.valueOf(Color.YELLOW));
+                }else if(stufe==0){
+                    bodyPart.setImageTintList (null);
+                }
+            }
+
+        });
+    }
 
     public void changeRadioButtonColor(View view){
         RadioButton[] arrayOfRadioButtons = new RadioButton[]{
@@ -158,7 +279,6 @@ public class PainDiaryActivity extends AppCompatActivity {
                 arrayOfRadioButtons[i].setBackgroundColor(Color.GREEN);
             }else{
                 arrayOfRadioButtons[i].setBackgroundColor(Color.WHITE);
-
             }
         }
 
@@ -201,21 +321,22 @@ public class PainDiaryActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
             if (position == 0) {
-                // last page. make button text to GOT IT
-                btnNext.setVisibility(View.VISIBLE);
 
+                btnNext.setVisibility(View.VISIBLE);
                 btnBack.setVisibility(View.GONE);
+
             } else  if(position == layouts.length-1){
-                // still pages are left
+
                 btnNext.setVisibility(View.GONE);
                 btnDone.setVisibility(View.VISIBLE);
 
             }else{
+
                 btnNext.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.GONE);
                 btnBack.setVisibility(View.VISIBLE);
+
             }
         }
 
@@ -241,7 +362,9 @@ public class PainDiaryActivity extends AppCompatActivity {
         }
     }
 
-/**
+
+
+    /**
  * View pager adapter
  */
 public class MyViewPagerAdapter extends PagerAdapter {

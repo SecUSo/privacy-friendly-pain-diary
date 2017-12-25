@@ -35,6 +35,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+
+import org.secuso.privacyfriendlypaindiary.activities.AboutActivity;
+
+
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.tutorial.TutorialActivity;
 

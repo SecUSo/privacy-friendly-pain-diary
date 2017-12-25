@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.btn_add_entry:
-                Intent intent = new Intent(MainActivity.this, DiaryEntryActivity.class);
+                Intent intent = new Intent(MainActivity.this, PainDiaryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
