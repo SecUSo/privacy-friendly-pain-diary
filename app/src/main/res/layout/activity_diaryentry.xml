@@ -14,71 +14,71 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".activities.DiaryEntryActivity">
+        tools:context=".activities.DiaryEntryActivity_old">
 
         <include layout="@layout/toolbar_diaryentry"/>
 
-        <include layout="@layout/activity_diaryentry_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/diaryentry_content"-->
-            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-            <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--<include layout="@layactivity_diaryentry_content_oldtent"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-            <!--tools:context=".activities.DiaryEntryActivity"-->
-            <!--android:orientation="vertical"-->
-            <!--style="@style/AlertDialog.AppCompat">-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
+
+        <RelativeLayout
+            android:id="@+id/diaryentry_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".activitDiaryEntryActivity_oldvity"
+            android:orientation="vertical"
+            style="@style/AlertDialog.AppCompat">
 
 
-            <!--<android.support.v4.view.ViewPager-->
-                <!--android:id="@+id/view_pager"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent" />-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/layout_dots"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dots_height"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_marginBottom="@dimen/dots_margin_bottom"-->
-                <!--android:gravity="center"-->
-                <!--android:orientation="horizontal">-->
-            <!--</LinearLayout>-->
+            <LinearLayout
+                android:id="@+id/layout_dots"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dots_height"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dots_margin_bottom"
+                android:gravity="center"
+                android:orientation="horizontal">
+            </LinearLayout>
 
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0.5dp"-->
-                <!--android:alpha=".25"-->
-                <!--android:layout_above="@id/layout_dots"-->
-                <!--android:background="@android:color/darker_gray" />-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:alpha=".25"
+                android:layout_above="@id/layout_dots"
+                android:background="@android:color/darker_gray" />
 
-            <!--<Button-->
-                <!--android:id="@+id/btn_next"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:background="@null"-->
-                <!--android:text="@string/next"-->
-                <!--android:textColor="@android:color/black" />-->
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:text="@string/next"
+                android:textColor="@android:color/black" />
 
-            <!--<Button-->
-                <!--android:id="@+id/btn_cancel"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:background="@null"-->
-                <!--android:text="@string/cancel"-->
-                <!--android:textColor="@android:color/black" />-->
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:text="@string/back"
+                android:textColor="@android:color/black" />
 
-        <!--</RelativeLayout>-->
+        </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

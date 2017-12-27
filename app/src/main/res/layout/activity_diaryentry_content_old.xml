@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.DiaryEntryActivity">
+        tools:context=".activities.DiaryEntryActivity_old">
 
         <LinearLayout
             android:id="@+id/date_wrapper"

@@ -15,10 +15,12 @@
 
     <!-- ### GENERAL ### -->
     <string name="okay">Okay</string>
+    <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 
     <!-- ### MAIN ### -->
 
@@ -96,6 +98,7 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
 
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">New Diary Entry</string>
+    <string name="warning_leaving">The information you have entered will be lost. Do you want to continue?</string>
     <string name="heading_condition">How do you feel?</string>
     <string name="heading_painlevel">How strong is your pain?</string>
     <string name="heading_bodyregion">Where is the pain located?</string>

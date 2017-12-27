@@ -14,10 +14,12 @@
 
     <!-- ### GENERAL ### -->
     <string name="okay">Okay</string>
+    <string name="back">Zurück</string>
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
+    <string name="confirm">Bestätigen</string>
 
     <!-- ### MAIN ### -->
 
@@ -84,6 +86,7 @@
 
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Neuer Eintrag</string>
+    <string name="warning_leaving">Die Eingaben, die Sie gemacht haben gehen verloren. Wollen Sie fortfahren?</string>
     <string name="heading_condition">Wie geht es Ihnen?</string>
     <string name="heading_painlevel">Wie stark sind Ihre Schmerzen?</string>
     <string name="heading_bodyregion">Wo sind Ihre Schmerzen?</string>
