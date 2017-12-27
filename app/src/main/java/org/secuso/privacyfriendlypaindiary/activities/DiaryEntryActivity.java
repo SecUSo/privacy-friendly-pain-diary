@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -37,6 +40,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEnt
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -142,6 +146,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(current);
                 } else {
                     save();
+                    launchHomeScreen();
                 }
             }
         });
@@ -150,17 +155,25 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int current = getItem(-1);
-                if(current >= 0) {
+                if (current >= 0) {
                     viewPager.setCurrentItem(current);
                 } else {
-                   onBackPressed();
+                    onBackPressed();
                 }
             }
         });
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = Calendar.getInstance().getTime();
-        dateAsString = dateFormat.format(date);
+        dateAsString = getIntent().getStringExtra("DATE_OF_ENTRY");
+        if (dateAsString == null) {
+            dateAsString = dateFormat.format(Calendar.getInstance().getTime());
+        }
+        Date date;
+        try {
+            date = dateFormat.parse(dateAsString);
+        } catch (ParseException e) {
+            date = Calendar.getInstance().getTime();
+        }
         diaryEntry = new DiaryEntry(date);
 
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -174,11 +187,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-        View firstSlide = (View) viewPager.findViewWithTag(0);
-        ((TextView) firstSlide.findViewById(R.id.date)).setText(dateAsString);
-
-        //TODO
-//        ((EditText) findViewById(R.id.date)).setText(dateFormat.format(date));
+        View slide = viewPager.findViewWithTag(0);
+        ((TextView) slide.findViewById(R.id.date)).setText(dateAsString);
 
         initConditions();
         if (condition != null) {
@@ -187,19 +197,19 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void initConditions() {
-        View firstSlide = (View) viewPager.findViewWithTag(0);
+        View firstSlide = viewPager.findViewWithTag(0);
         conditions = new RadioButton[]{
-                (RadioButton) firstSlide.findViewById(R.id.condition_very_bad),
-                (RadioButton) firstSlide.findViewById(R.id.condition_bad),
-                (RadioButton) firstSlide.findViewById(R.id.condition_okay),
-                (RadioButton) firstSlide.findViewById(R.id.condition_good),
-                (RadioButton) firstSlide.findViewById(R.id.condition_very_good)};
+                firstSlide.findViewById(R.id.condition_very_bad),
+                firstSlide.findViewById(R.id.condition_bad),
+                firstSlide.findViewById(R.id.condition_okay),
+                firstSlide.findViewById(R.id.condition_good),
+                firstSlide.findViewById(R.id.condition_very_good)};
     }
 
     private void setDataOnSlide2() {
-        View slide = (View) viewPager.findViewWithTag(1);
+        View slide = viewPager.findViewWithTag(1);
 
-        SeekBar seekBar = (SeekBar) slide.findViewById(R.id.painlevel_seekbar);
+        SeekBar seekBar = slide.findViewById(R.id.painlevel_seekbar);
         seekBar.setProgress(painLevel);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -218,13 +228,25 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide3() {
-        View slide = (View) viewPager.findViewWithTag(2);
+        View slide = viewPager.findViewWithTag(2);
+        ImageView head = (ImageView) findViewById(R.id.head);
 
-        //body region
+        head.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    float x = event.getX();
+                    float y = event.getY();
+                    Log.d(TAG, "x: " + x + ", y:" + y);
+                    selectBodyPartWithCoordinatesXY(x, y);
+                }
+                return false;
+            }
+        });
     }
 
     private void setDataOnSlide4() {
-        View slide = (View) viewPager.findViewWithTag(3);
+        View slide = viewPager.findViewWithTag(3);
 
         if (painQualities.contains(PainQuality.STABBING)) {
             ((CheckBox) slide.findViewById(R.id.pain_stabbing)).setChecked(true);
@@ -238,7 +260,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide5() {
-        View slide = (View) viewPager.findViewWithTag(4);
+        View slide = viewPager.findViewWithTag(4);
 
         if (timesOfPain.contains(Time.ALL_DAY)) {
             ((CheckBox) slide.findViewById(R.id.time_all_day)).setChecked(true);
@@ -255,12 +277,31 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide6() {
-        View slide = (View) viewPager.findViewWithTag(5);
-        //notes
+        View slide = viewPager.findViewWithTag(5);
+        final EditText notesEditText = slide.findViewById(R.id.notes_text);
+
+        notesEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                notes = notesEditText.getText().toString();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+        });
+        notesEditText.setText(notes);
     }
 
     private void setDataOnSlide7() {
-        View slide = (View) viewPager.findViewWithTag(6);
+        View slide = viewPager.findViewWithTag(6);
         //medication
     }
 
@@ -355,111 +396,86 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    public void onBodyPartClicked(View v) {
+    private void selectBodyPartWithCoordinatesXY(float x, float y) {
+        ImageView bodyPart = null;
+        if (x > 545 && y > 596 && x < 614 && y < 688) {
+            bodyPart = (ImageView) findViewById(R.id.abdomen_right);
+            bodyRegion = BodyRegion.ABDOMEN_RIGHT;
+        } else if (x > 458 && y > 596 && x < 521 && y < 688) {
+            bodyPart = (ImageView) findViewById(R.id.abdomen_left);
+            bodyRegion = BodyRegion.ABDOMEN_LEFT;
+        } else if (x > 435 && y > 703 && x < 518 && y < 799) {
+            bodyPart = (ImageView) findViewById(R.id.groin_left);
+            bodyRegion = BodyRegion.GROIN_LEFT;
+        } else if (x > 548 && y > 706 && x < 637 && y < 799) {
+            bodyPart = (ImageView) findViewById(R.id.groin_right);
+            bodyRegion = BodyRegion.GROIN_RIGHT;
+        } else if (x > 438 && y > 825 && x < 530 && y < 957) {
+            bodyPart = (ImageView) findViewById(R.id.thigh_left);
+            bodyRegion = BodyRegion.THIGH_LEFT;
+        } else if (x > 545 && y > 825 && x < 635 && y < 957) {
+            bodyPart = (ImageView) findViewById(R.id.thigh_right);
+            bodyRegion = BodyRegion.THIGH_RIGHT;
+        } else if (x > 438 && y > 969 && x < 518 && y < 1020) {
+            bodyPart = (ImageView) findViewById(R.id.knee_left);
+            bodyRegion = BodyRegion.KNEE_LEFT;
+        } else if (x > 551 && y > 969 && x < 635 && y < 1020) {
+            bodyPart = (ImageView) findViewById(R.id.knee_right);
+            bodyRegion = BodyRegion.KNEE_RIGHT;
+        } else if (x > 438 && y > 1037 && x < 518 && y < 1220) {
+            bodyPart = (ImageView) findViewById(R.id.lower_leg_left);
+            bodyRegion = BodyRegion.LOWER_LEG_LEFT;
+        } else if (x > 551 && y > 1030 && x < 626 && y < 1225) {
+            bodyPart = (ImageView) findViewById(R.id.lower_leg_right);
+            bodyRegion = BodyRegion.LOWER_LEG_RIGHT;
+        } else if (x > 440 && y > 1237 && x < 527 && y < 1290) {
+            bodyPart = (ImageView) findViewById(R.id.foot_left);
+            bodyRegion = BodyRegion.FOOT_LEFT;
+        } else if (x > 542 && y > 1237 && x < 635 && y < 1290) {
+            bodyPart = (ImageView) findViewById(R.id.foot_right);
+            bodyRegion = BodyRegion.FOOT_RIGHT;
+        } else if (x > 458 && y > 453 && x < 527 && y < 584) {
+            bodyPart = (ImageView) findViewById(R.id.chest_left);
+            bodyRegion = BodyRegion.CHEST_LEFT;
+        } else if (x > 545 && y > 456 && x < 608 && y < 584) {
+            bodyPart = (ImageView) findViewById(R.id.chest_right);
+            bodyRegion = BodyRegion.CHEST_RIGHT;
+        } else if (x > 485 && y > 411 && x < 578 && y < 438) {
+            bodyPart = (ImageView) findViewById(R.id.neck);
+            bodyRegion = BodyRegion.NECK;
+        } else if (x > 470 && y > 271 && x < 596 && y < 405) {
+            bodyPart = (ImageView) findViewById(R.id.head);
+            bodyRegion = BodyRegion.HEAD;
+        } else if (x > 380 && y > 490 && x < 435 && y < 617) {
+            bodyPart = (ImageView) findViewById(R.id.upper_arm_left);
+            bodyRegion = BodyRegion.UPPER_ARM_LEFT;
+        } else if (x > 623 && y > 490 && x < 695 && y < 605) {
+            bodyPart = (ImageView) findViewById(R.id.upper_arm_right);
+            bodyRegion = BodyRegion.UPPER_ARM_RIGHT;
+        } else if (x > 360 && y > 630 && x < 420 && y < 750) {
+            bodyPart = (ImageView) findViewById(R.id.lower_arm_left);
+            bodyRegion = BodyRegion.LOWER_ARM_LEFT;
+        } else if (x > 640 && y > 620 && x < 700 && y < 750) {
+            bodyPart = (ImageView) findViewById(R.id.lower_arm_right);
+            bodyRegion = BodyRegion.LOWER_ARM_RIGHT;
+        } else if (x > 345 && y > 772 && x < 420 && y < 860) {
+            bodyPart = (ImageView) findViewById(R.id.hand_left);
+            bodyRegion = BodyRegion.HAND_LEFT;
+        } else if (x > 659 && y > 763 && x < 710 && y < 860) {
+            bodyPart = (ImageView) findViewById(R.id.hand_right);
+            bodyRegion = BodyRegion.HAND_RIGHT;
+        }
+        if(bodyPart != null) {
+            colorBodyPart(bodyPart);
+        }
+    }
 
-        ImageView head = (ImageView) findViewById(R.id.head);
-        head.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    float x = event.getX();
-                    float y = event.getY();
-
-                    ImageView bodyPart = getBodyPartByCoordinates(x, y);
-
-                    if (bodyPart != null) {
-                        if (bodyPart.getImageTintList() == null) {
-                            paintBodyPart(true, bodyPart);
-                        } else {
-                            paintBodyPart(false, bodyPart);
-                        }
-                    }
-
-                }
-                return false;
-            }
-
-            public ImageView getBodyPartByCoordinates(float x, float y) {
-                ImageView bodyPart = null;
-                if (x > 545 && y > 596 && x < 614 && y < 688) {
-                    bodyPart = (ImageView) findViewById(R.id.abdomen_right);
-                }
-                if (x > 458 && y > 596 && x < 521 && y < 688) {
-                    bodyPart = (ImageView) findViewById(R.id.abdomen_left);
-                }
-                if (x > 435 && y > 703 && x < 518 && y < 799) {
-                    bodyPart = (ImageView) findViewById(R.id.groin_left);
-                }
-                if (x > 548 && y > 706 && x < 637 && y < 799) {
-                    bodyPart = (ImageView) findViewById(R.id.groin_right);
-                }
-                if (x > 438 && y > 825 && x < 530 && y < 957) {
-                    bodyPart = (ImageView) findViewById(R.id.thigh_left);
-                }
-                if (x > 545 && y > 825 && x < 635 && y < 957) {
-                    bodyPart = (ImageView) findViewById(R.id.thigh_right);
-                }
-                if (x > 438 && y > 969 && x < 518 && y < 1020) {
-                    bodyPart = (ImageView) findViewById(R.id.knee_left);
-                }
-                if (x > 551 && y > 969 && x < 635 && y < 1020) {
-                    bodyPart = (ImageView) findViewById(R.id.knee_right);
-                }
-                if (x > 438 && y > 1037 && x < 518 && y < 1220) {
-                    bodyPart = (ImageView) findViewById(R.id.lower_leg_left);
-                }
-                if (x > 551 && y > 1030 && x < 626 && y < 1225) {
-                    bodyPart = (ImageView) findViewById(R.id.lower_leg_right);
-                }
-                if (x > 440 && y > 1237 && x < 527 && y < 1290) {
-                    bodyPart = (ImageView) findViewById(R.id.foot_left);
-                }
-                if (x > 542 && y > 1237 && x < 635 && y < 1290) {
-                    bodyPart = (ImageView) findViewById(R.id.foot_right);
-                }
-                if (x > 458 && y > 453 && x < 527 && y < 584) {
-                    bodyPart = (ImageView) findViewById(R.id.chest_left);
-                }
-                if (x > 545 && y > 456 && x < 608 && y < 584) {
-                    bodyPart = (ImageView) findViewById(R.id.chest_right);
-                }
-                if (x > 485 && y > 411 && x < 578 && y < 438) {
-                    bodyPart = (ImageView) findViewById(R.id.neck);
-                }
-                if (x > 470 && y > 271 && x < 596 && y < 405) {
-                    bodyPart = (ImageView) findViewById(R.id.head);
-                }
-                if (x > 380 && y > 490 && x < 435 && y < 617) {
-                    bodyPart = (ImageView) findViewById(R.id.upper_arm_left);
-                }
-                if (x > 360 && y > 630 && x < 420 && y < 750) {
-                    bodyPart = (ImageView) findViewById(R.id.lower_arm_left);
-                }
-                if (x > 345 && y > 772 && x < 420 && y < 860) {
-                    bodyPart = (ImageView) findViewById(R.id.hand_left);
-                }
-                if (x > 623 && y > 490 && x < 695 && y < 605) {
-                    bodyPart = (ImageView) findViewById(R.id.upper_arm_right);
-                }
-                if (x > 640 && y > 620 && x < 700 && y < 750) {
-                    bodyPart = (ImageView) findViewById(R.id.lower_arm_right);
-                }
-                if (x > 659 && y > 763 && x < 710 && y < 860) {
-                    bodyPart = (ImageView) findViewById(R.id.hand_right);
-                }
-
-                return bodyPart;
-            }
-
-            public void paintBodyPart(boolean selected, ImageView bodyPart) {
-                if (selected) {
-                    bodyPart.setImageTintList(ColorStateList.valueOf(COLOR_YELLOW));
-                } else {
-                    bodyPart.setImageTintList(null);
-                }
-            }
-
-        });
+    private void colorBodyPart(ImageView bodyPart) {
+        if (bodyPart.getImageTintList() == null) {
+            bodyPart.setImageTintList(ColorStateList.valueOf(COLOR_YELLOW));
+        } else {
+            bodyPart.setImageTintList(null);
+        }
     }
 
     public void save() {
@@ -489,7 +505,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 Log.d(TAG, "Diary entry saved.");
-//                save();
+                save();
                 launchHomeScreen();
                 return true;
             default:

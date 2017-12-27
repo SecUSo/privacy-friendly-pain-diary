@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/diaryentry_slide2"
+    android:id="@+id/diaryentry_slide3"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -36,77 +36,66 @@
                 android:id="@+id/chest_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_brust_links" />
 
             <ImageView
                 android:id="@+id/chest_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_brust_rechts" />
 
             <ImageView
                 android:id="@+id/abdomen_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_bauch_links" />
 
             <ImageView
                 android:id="@+id/abdomen_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_bauch_rechts" />
 
             <ImageView
                 android:id="@+id/foot_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_fuss_links" />
 
             <ImageView
                 android:id="@+id/foot_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_fuss_rechts" />
 
             <ImageView
                 android:id="@+id/neck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_hals" />
 
             <ImageView
                 android:id="@+id/hand_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_hand_links" />
 
             <ImageView
                 android:id="@+id/hand_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_hand_rechts" />
 
             <ImageView
                 android:id="@+id/knee_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_knie_links" />
 
             <ImageView
                 android:id="@+id/knee_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_knie_rechts" />
 
 
@@ -115,77 +104,66 @@
                 android:id="@+id/groin_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_leiste_links" />
 
             <ImageView
                 android:id="@+id/groin_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_leiste_rechts" />
 
             <ImageView
                 android:id="@+id/upper_arm_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_oberarm_links" />
 
             <ImageView
                 android:id="@+id/upper_arm_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_oberarm_rechts" />
 
             <ImageView
                 android:id="@+id/thigh_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_oberschenkel_links" />
 
             <ImageView
                 android:id="@+id/thigh_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_oberschenkel_rechts" />
 
             <ImageView
                 android:id="@+id/lower_arm_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_unterarm_links" />
 
             <ImageView
                 android:id="@+id/lower_arm_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_unterarm_rechts" />
 
             <ImageView
                 android:id="@+id/lower_leg_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_unterschenkel_links" />
 
             <ImageView
                 android:id="@+id/lower_leg_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_unterschenkel_rechts" />
 
             <ImageView
                 android:id="@+id/head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onBodyPartClicked"
                 app:srcCompat="@drawable/schmerztagebuch_person_kopf" />
         </RelativeLayout>
 

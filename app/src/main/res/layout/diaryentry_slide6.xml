@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/diaryentry_slide3"
+    android:id="@+id/diaryentry_slide6"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,7 +29,7 @@
             android:textSize="@dimen/diaryentry_heading"/>
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/notes_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -38,7 +38,7 @@
             android:minLines="2"
             android:gravity="top|left"
             android:maxLines="10"
-            android:scrollbars="vertical"/>
+            android:scrollbars="horizontal" />
 
     </LinearLayout>
 

@@ -443,7 +443,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
+        if(painDescription.getBodyRegion() != null) {
+            values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
+        }
         values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
         values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         return db.insert(PainDescription.TABLE_NAME, null, values);
@@ -453,8 +455,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        if(painDescription.getBodyRegion() != null) {
+            values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
+        }        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
         values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});

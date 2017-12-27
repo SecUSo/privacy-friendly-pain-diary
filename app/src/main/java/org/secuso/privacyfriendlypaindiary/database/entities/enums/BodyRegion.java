@@ -8,8 +8,7 @@ import java.util.Map;
  * @version 20171117
  */
 public enum BodyRegion {
-    //TODO: insert body regions, including everywhere + undefined
-    HEAD(0), TORSO(1), LEFT_ARM(2), RIGHT_ARM(3), LEFT_LEG(4), RIGHT_LEG(5);
+    ABDOMEN_RIGHT(0), ABDOMEN_LEFT(1), GROIN_LEFT(2), GROIN_RIGHT(3), THIGH_LEFT(4), THIGH_RIGHT(5), KNEE_LEFT(6), KNEE_RIGHT(7), LOWER_LEG_LEFT(8), LOWER_LEG_RIGHT(9), FOOT_LEFT(10), FOOT_RIGHT(11), CHEST_LEFT(12), CHEST_RIGHT(13), NECK(14), HEAD(15), UPPER_ARM_LEFT(16), UPPER_ARM_RIGHT(17), LOWER_ARM_LEFT(18), LOWER_ARM_RIGHT(19), HAND_LEFT(20), HAND_RIGHT(21);
 
     private int value;
     private static Map<Integer, BodyRegion> map = new HashMap<>();

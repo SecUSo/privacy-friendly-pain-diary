@@ -20,10 +20,13 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.secuso.privacyfriendlypaindiary.R;
@@ -31,6 +34,7 @@ import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,11 +42,14 @@ import java.util.Set;
 
 /**
  * @author Christopher Beckmann, Karola Marky, Susanne Felsen
- * @version 20171205
+ * @version 20171227
  */
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private MaterialCalendarView calendar;
     private EventDecorator decorator;
@@ -53,30 +60,46 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         calendar = (MaterialCalendarView) findViewById(R.id.calendar_view);
-        calendar.setSelectedDate(CalendarDay.today());
-        decorator = new EventDecorator(Color.parseColor("#8aa5ce"));
+//        calendar.setSelectedDate(CalendarDay.today());
+        decorator = new EventDecorator(COLOR_MIDDLEBLUE);
         calendar.addDecorator(decorator);
-        getDiaryEntryDates(calendar.getSelectedDate().getMonth(), calendar.getSelectedDate().getYear());
         calendar.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 getDiaryEntryDates(date.getMonth(), date.getYear());
             }
         });
-//        calendar.setOnDateChangedListener(new OnDateSelectedListener() {
-//
-//            @Override
-//            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-//
-//            }
-//        });
+        calendar.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                //checks whether there is already an entry on this date, creates one if there is not
+                if(!decorator.shouldDecorate(date)) {
+                    createDiaryEntry(date.getDate());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        calendar.state().edit()
+                .setMaximumDate(CalendarDay.today())
+                .commit();
+        getDiaryEntryDates(CalendarDay.today().getMonth(), CalendarDay.today().getYear());
+
+    }
+
+    private void initCalendar() {
+
     }
 
     private void getDiaryEntryDates(int month, int year) {
         DBServiceInterface service = DBService.getInstance(this);
 
         Calendar c = Calendar.getInstance();
-        if(month > 0) {
+        if (month > 0) {
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, month - 1);
         } else {
@@ -85,7 +108,7 @@ public class MainActivity extends BaseActivity {
         }
         c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH) - 6);
         Date startDate = c.getTime();
-        if(month < 11) {
+        if (month < 11) {
             c.set(Calendar.MONTH, month + 1);
         } else {
             c.set(Calendar.YEAR, year + 1);
@@ -96,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
         Set<Date> dates = service.getDiaryEntryDatesByTimeSpan(startDate, endDate);
         Set<CalendarDay> calendarDates = new HashSet<>();
-        for(Date date : dates) {
+        for (Date date : dates) {
             calendarDates.add(CalendarDay.from(date));
         }
         decorator.setDates(calendarDates);
@@ -105,6 +128,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * This method connects the Activity to the menu item
+     *
      * @return ID of the menu item it belongs to
      */
     @Override
@@ -112,15 +136,10 @@ public class MainActivity extends BaseActivity {
         return R.id.nav_main;
     }
 
-    public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.btn_add_entry:
-                Intent intent = new Intent(MainActivity.this, DiaryEntryActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
+    public void createDiaryEntry(Date date) {
+        Intent intent = new Intent(MainActivity.this, DiaryEntryActivity.class);
+        intent.putExtra("DATE_OF_ENTRY", dateFormat.format(date));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

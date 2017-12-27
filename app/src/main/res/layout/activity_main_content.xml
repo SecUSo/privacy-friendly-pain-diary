@@ -20,54 +20,22 @@
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="@color/colorAccent"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:alpha=".25"
-        android:layout_above="@id/btn_add_entry"
-        android:background="@android:color/darker_gray" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.5dp"-->
+        <!--android:alpha=".25"-->
+        <!--android:layout_above="@id/btn_add_entry"-->
+        <!--android:background="@android:color/darker_gray" />-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btn_add_entry"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_add"
-        android:scaleType="center"
-        android:onClick="onClick" />
-
-    <!--<Button-->
+    <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/btn_add_entry"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
         <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:background="@drawable/button_normal"-->
-        <!--android:paddingEnd="@dimen/activity_horizontal_margin"-->
-        <!--android:paddingStart="@dimen/activity_horizontal_margin"-->
-        <!--android:text="@string/main_button_add"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textStyle="bold"-->
-        <!--android:onClick="onClick" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btn_remove_entry"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:background="@drawable/button_normal"-->
-        <!--android:paddingEnd="@dimen/activity_horizontal_margin"-->
-        <!--android:paddingStart="@dimen/activity_horizontal_margin"-->
-        <!--android:text="@string/main_button_remove"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textStyle="bold"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:src="@drawable/ic_add"-->
+        <!--android:scaleType="center"-->
         <!--android:onClick="onClick" />-->
 
 </RelativeLayout>

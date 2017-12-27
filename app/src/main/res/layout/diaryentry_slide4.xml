@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/diaryentry_slide4"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/diaryentry_slide3"
-    style="@style/AlertDialog.AppCompat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.DiaryEntryActivity">
+    tools:context=".activities.DiaryEntryActivity"
+    android:orientation="vertical"
+    style="@style/AlertDialog.AppCompat">
 
     <LinearLayout
         android:id="@+id/paindescription_wrapper"
