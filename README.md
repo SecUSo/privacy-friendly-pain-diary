@@ -1,10 +1,10 @@
-﻿# Privacy Friendly App Example
+﻿# Privacy Friendly Pain Diary
 
-This application contains the basic design of a Privacy Friendly App without any other functionality. It includes a Navigation Drawer, examples for buttons, a help page and the about page. It further shows an example of the main menu for a Privacy Friendly Game App. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
+This application contains a pain diary. Users can make diary entries recording their condition, pain level, location, quality and time, as well as additional notes and medication. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
 
 ## Motivation
 
-This application has been developed to be used as a basis for a Privacy Friendly App. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on https://secuso.org/pfa
+This privacy friendly application has been developed to be used as a pain diary. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on https://secuso.org/pfa
 
 ## Download and more Information
 
@@ -17,8 +17,8 @@ Target SDK: 26
 
 ## License
 
-Privacy Friendly App Example is licensed under the GPLv3.
-Copyright (C) 2016-2017  Karola Marky
+Privacy Friendly Pain Diary is licensed under the GPLv3.
+Copyright (C) 2017-2018 Karola Marky, Susanne Felsen, Rybien Sinjari
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ Markus Hau<br />
 Github-Users: <br />
 Yonjuni (Karola Marky)<br />
 Kamuno
+sfelsen (Susanne Felsen)
+RybienSin (Rybien Sinjari)
 
 
 
