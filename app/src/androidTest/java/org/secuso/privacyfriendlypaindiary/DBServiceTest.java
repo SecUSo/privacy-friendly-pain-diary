@@ -213,24 +213,24 @@ public class DBServiceTest {
         } catch (ParseException e) {
             fail("Error parsing date.");
         }
-        DiaryEntryInterface entry1 = new DiaryEntry(date1, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        DiaryEntryInterface entry1 = new DiaryEntry(date1, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry1);
         List<DiaryEntryInterface> entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(1, entries.size());
 
-        DiaryEntryInterface entry2 = new DiaryEntry(date2, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        DiaryEntryInterface entry2 = new DiaryEntry(date2, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry2);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(2, entries.size());
 
-        DiaryEntryInterface entry3 = new DiaryEntry(date3, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        DiaryEntryInterface entry3 = new DiaryEntry(date3, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry3);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(2, entries.size());
         entries = service.getDiaryEntriesByMonth(12, 2017);
         assertEquals(1, entries.size());
 
-        DiaryEntryInterface entry4 = new DiaryEntry(date4, Condition.GOOD, new PainDescription(2, BodyRegion.LEFT_ARM), null, null);
+        DiaryEntryInterface entry4 = new DiaryEntry(date4, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry4);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(3, entries.size());

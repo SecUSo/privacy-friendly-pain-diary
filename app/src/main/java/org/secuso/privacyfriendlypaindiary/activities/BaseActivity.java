@@ -163,7 +163,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 break;
             case R.id.nav_user_details:
                 intent = new Intent(this, UserDetailsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 createBackStack(intent);
                 break;
             case R.id.nav_tutorial:

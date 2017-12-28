@@ -130,6 +130,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         if (dateOfBirth != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
             values.put(User.COLUMN_DATE_OF_BIRTH, dateFormat.format(dateOfBirth));
+        } else {
+            values.put(User.COLUMN_DATE_OF_BIRTH, (String) null);
         }
         return values;
     }

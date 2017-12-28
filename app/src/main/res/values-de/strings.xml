@@ -18,8 +18,11 @@
     <string name="next">Weiter</string>
     <string name="skip">Überspringen</string>
     <string name="save">Speichern</string>
+    <string name="save_error">Speichern nicht möglich.</string>
     <string name="cancel">Abbrechen</string>
     <string name="confirm">Bestätigen</string>
+    <string name="changes_saved">Änderungen gespeichert.</string>
+    <string name="changes_discarded">Änderungen verworfen.</string>
 
     <!-- ### MAIN ### -->
 
@@ -66,7 +69,7 @@
     <string name="slide3_text">Der Quellcode dieser App ist auf GitHub. Weitere Infos gibt es im Privacy Friendly App Guide.</string>
 
     <!-- ### USER DETAILS ### -->
-    <string name="user_details">Benutzerinformationen</string>
+    <string name="user_details">Benutzerdaten</string>
     <string name="first_name">Vorname</string>
     <string name="last_name">Nachname</string>
     <string name="date_of_birth">Geburtsdatum</string>

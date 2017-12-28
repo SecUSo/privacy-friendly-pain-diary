@@ -1,10 +1,18 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
@@ -37,6 +45,9 @@ public class UserDetailsActivity extends BaseActivity {
     private Date dateOfBirth;
     private Gender gender;
 
+    private boolean maleSelected = false;
+    private boolean femaleSelected = false;
+
     private TextInputLayout firstNameWrapper;
     private TextInputLayout lastNameWrapper;
     private TextInputLayout dateWrapper;
@@ -52,7 +63,7 @@ public class UserDetailsActivity extends BaseActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             boolean valid = true;
-            if (!s.toString().equals(current)) {
+            if (!s.toString().equals("") && !s.toString().equals(current)) {
                 String clean = s.toString().replaceAll("[^\\d.]", ""); //all non-digits are replaced
                 clean = clean.replaceAll("\\.", ""); //all periods are replaced
                 String cleanC = current.replaceAll("[^\\d.]", "");
@@ -111,15 +122,16 @@ public class UserDetailsActivity extends BaseActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            String date = dateWrapper.getEditText().getText().toString();
+            Editable date = dateWrapper.getEditText().getText();
             if (date != null) {
-                if(date.equals("DD.MM.YYYY")) {
+                if (date.toString().isEmpty() || date.toString().equals("DD.MM.YYYY")) {
+                    dateOfBirth = null;
                     dateWrapper.setError(null);
                     dateWrapper.setErrorEnabled(false);
                 } else {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                     try {
-                        dateOfBirth = dateFormat.parse(date);
+                        dateOfBirth = dateFormat.parse(date.toString());
                     } catch (ParseException e) {
                         dateWrapper.setErrorEnabled(true);
                         dateWrapper.setError(getString(R.string.date_invalid));
@@ -138,7 +150,6 @@ public class UserDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userdetails);
-        overridePendingTransition(0, 0);
 
         DBServiceInterface service = DBService.getInstance(this);
         List<UserInterface> users = service.getAllUsers();
@@ -211,6 +222,11 @@ public class UserDetailsActivity extends BaseActivity {
             }
         });
 
+        TextView genderLabel = (TextView) findViewById(R.id.gender_label);
+        EditText editText = firstNameWrapper.getEditText();
+//        genderLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, editText.getTextSize())
+        genderLabel.setTextColor(editText.getHintTextColors().getDefaultColor());
+        genderLabel.setPadding(editText.getPaddingLeft(), 0, editText.getPaddingRight(), 0);
         initFields();
     }
 
@@ -219,10 +235,23 @@ public class UserDetailsActivity extends BaseActivity {
         lastName = user.getLastName();
         dateOfBirth = user.getDateOfBirth();
         gender = user.getGender();
+        if (gender == Gender.MALE) {
+            ((RadioButton) findViewById(R.id.gender_male)).setChecked(true);
+            ((RadioButton) findViewById(R.id.gender_female)).setChecked(false);
+            maleSelected = true;
+        } else if (gender == Gender.FEMALE) {
+            ((RadioButton) findViewById(R.id.gender_male)).setChecked(false);
+            ((RadioButton) findViewById(R.id.gender_female)).setChecked(true);
+            femaleSelected = true;
+        } else {
+            ((RadioGroup) findViewById(R.id.gender)).clearCheck();
+        }
 
         if (dateOfBirth != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //TODO
             dateWrapper.getEditText().setText(dateFormat.format(dateOfBirth));
+        } else {
+            dateWrapper.getEditText().setText(null);
         }
         firstNameWrapper.getEditText().setText(firstName);
         lastNameWrapper.getEditText().setText(lastName);
@@ -233,29 +262,54 @@ public class UserDetailsActivity extends BaseActivity {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setDateOfBirth(dateOfBirth);
+            user.setGender(gender);
             DBServiceInterface service = DBService.getInstance(this);
             long userID;
-            if(user.getObjectID() == PersistentObject.INVALID_OBJECT_ID) {
-                 userID = service.storeUser(user);
+            if (user.getObjectID() == PersistentObject.INVALID_OBJECT_ID) {
+                userID = service.storeUser(user);
             } else {
                 service.updateUser(user);
                 userID = user.getObjectID();
             }
             user = service.getUserByID(userID);
             initFields();
-            //TODO: display success message
+            Toast.makeText(getApplicationContext(), getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
         } else {
-            cancel();
-            //TODO: display message
+            Toast.makeText(getApplicationContext(), getString(R.string.save_error), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void cancel() {
         initFields();
+        Toast.makeText(getApplicationContext(), getString(R.string.changes_discarded), Toast.LENGTH_SHORT).show();
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.gender_male:
+                RadioButton buttonMale = (RadioButton) view;
+                if (maleSelected) {
+                    buttonMale.setChecked(false);
+                    gender = null;
+                    maleSelected = false;
+                } else {
+                    gender = Gender.MALE;
+                    maleSelected = true;
+                    femaleSelected = false;
+                }
+                break;
+            case R.id.gender_female:
+                RadioButton buttonFemale = (RadioButton) view;
+                if (femaleSelected) {
+                    buttonFemale.setChecked(false);
+                    gender = null;
+                    femaleSelected = false;
+                } else {
+                    gender = Gender.FEMALE;
+                    maleSelected = false;
+                    femaleSelected = true;
+                }
+                break;
             case R.id.btn_save:
                 saveChanges();
                 break;
