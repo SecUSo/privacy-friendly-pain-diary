@@ -45,27 +45,26 @@ public class HelpDataDump {
 
         List<String> general = new ArrayList<String>();
         general.add(context.getResources().getString(R.string.help_whatis_answer));
-
         expandableListDetail.put(context.getResources().getString(R.string.help_whatis), general);
 
-        List<String> features = new ArrayList<String>();
-        features.add(context.getResources().getString(R.string.help_add_new_diary_answer));
+        List<String> addEntry = new ArrayList<String>();
+        addEntry.add(context.getResources().getString(R.string.help_add_entry_answer));
+        expandableListDetail.put(context.getResources().getString(R.string.help_add_entry), addEntry);
 
-        expandableListDetail.put(context.getResources().getString(R.string.help_add_new_diary), features);
+        List<String> information = new ArrayList<String>();
+        information.add(context.getResources().getString(R.string.help_entry_information_answer));
+        expandableListDetail.put(context.getResources().getString(R.string.help_entry_information), information);
 
-        List<String> dirayContent = new ArrayList<String>();
-        dirayContent.add(context.getResources().getString(R.string.help_content_of_diary_answer));
-
-        expandableListDetail.put(context.getResources().getString(R.string.help_content_of_diary), dirayContent);
+        List<String> personalInfo = new ArrayList<String>();
+        personalInfo.add(context.getResources().getString(R.string.help_userdetails_answer));
+        expandableListDetail.put(context.getResources().getString(R.string.help_userdetails), personalInfo);
 
         List<String> privacy = new ArrayList<String>();
         privacy.add(context.getResources().getString(R.string.help_privacy_answer));
-
         expandableListDetail.put(context.getResources().getString(R.string.help_privacy), privacy);
 
         List<String> permission = new ArrayList<String>();
         permission.add(context.getResources().getString(R.string.help_permission_answer));
-
         expandableListDetail.put(context.getResources().getString(R.string.help_permission), permission);
 
 

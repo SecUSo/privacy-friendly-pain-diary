@@ -88,7 +88,11 @@ public class TutorialActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_next);
 
         // layouts of all welcome sliders
-        layouts = new int[] {R.layout.tutorial_slide1, R.layout.tutorial_slide2, R.layout.tutorial_slide3,};
+        layouts = new int[] {
+                R.layout.tutorial_slide1,
+                R.layout.tutorial_slide2,
+                R.layout.tutorial_slide3,
+                R.layout.tutorial_slide4,};
 
         // adding bottom dots
         addBottomDots(0);

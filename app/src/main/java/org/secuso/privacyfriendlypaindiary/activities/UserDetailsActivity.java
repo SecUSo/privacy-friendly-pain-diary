@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * Text Watcher adapted from <a href="https://stackoverflow.com/questions/16889502/how-to-mask-an-edittext-to-show-the-dd-mm-yyyy-date-format"/a>.
  *
  * @author Susanne Felsen
- * @version 20171129
+ * @version 20171228
  */
 public class UserDetailsActivity extends BaseActivity {
 
