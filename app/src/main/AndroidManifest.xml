@@ -31,7 +31,8 @@
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity"
             android:label="@string/user_details"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName="org.secuso.privacyfriendlypaindiary.activities.MainActivity">
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />

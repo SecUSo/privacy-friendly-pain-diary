@@ -25,6 +25,7 @@
     <string name="changes_discarded">Änderungen verworfen.</string>
 
     <!-- ### MAIN ### -->
+    <string name="welcome_question">Wie geht es Ihnen heute?</string>
 
     <!--### HELP ###-->
     <string name="help">Help</string>

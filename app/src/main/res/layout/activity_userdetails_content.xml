@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingStart="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.UserDetailsActivity">
 
@@ -15,6 +13,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
@@ -94,28 +94,31 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_below="@+id/userdetails_wrapper"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/button_middleblue"
-        android:text="@string/cancel"
-        android:textColor="@android:color/white"
-        android:onClick="onClick" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha=".5"
+        android:layout_above="@id/btn_save"
+        android:background="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_below="@+id/userdetails_wrapper"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/button_normal"
+        android:background="@null"
         android:text="@string/save"
-        android:textColor="@android:color/white"
+        android:onClick="onClick" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@null"
+        android:text="@string/cancel"
         android:onClick="onClick" />
 
 </RelativeLayout>

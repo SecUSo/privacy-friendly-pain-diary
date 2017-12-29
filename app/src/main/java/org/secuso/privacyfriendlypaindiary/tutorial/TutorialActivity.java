@@ -117,18 +117,18 @@ public class TutorialActivity extends AppCompatActivity {
     {
         @Override
         public void onClick (View v){
-            // checking for last page; if last page home screen will be launched
+            // checking for last page; if last page user detail screen will be launched
             int current = getItem(+1);
             if (current < layouts.length) {
                 // move to next screen
                 viewPager.setCurrentItem(current);
             } else {
-                //TODO: always show enter user details at the end of tutorial??
-                if(prefManager.isFirstTimeLaunch()) {
-                    launchEnterUserDetails();
-                } else {
-                    launchHomeScreen();
-                }
+                launchUserDetails();
+//                if(prefManager.isFirstTimeLaunch()) {
+//                    launchUserDetails();
+//                } else {
+//                    launchHomeScreen();
+//                }
             }
         }
         });
@@ -157,9 +157,10 @@ public class TutorialActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-    private void launchEnterUserDetails() {
+    private void launchUserDetails() {
         prefManager.setFirstTimeLaunch(false);
         Intent intent = new Intent(TutorialActivity.this, UserDetailsActivity.class);
+        intent.putExtra("TUTORIAL", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
@@ -180,9 +181,9 @@ public class TutorialActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
+            // changing the next button text 'NEXT' / 'OKAY'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
+                // last page. make button text to OKAY
                 btnNext.setText(getString(R.string.okay));
                 btnSkip.setVisibility(View.GONE);
             } else {

@@ -11,11 +11,21 @@
     android:orientation="vertical"
     style="@style/AlertDialog.AppCompat">
 
+    <TextView
+        android:id="@+id/welcome_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_centerHorizontal="true"
+        android:text="@string/welcome_question"
+        android:textSize="@dimen/main_heading" />
+
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/welcome_question"
         android:layout_margin="@dimen/fab_margin"
         app:mcv_showOtherDates="all"
         app:mcv_selectionColor="@color/colorAccent"/>

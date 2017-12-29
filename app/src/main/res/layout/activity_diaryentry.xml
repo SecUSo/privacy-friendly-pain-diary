@@ -14,14 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".activities.DiaryEntryActivity_old">
+        tools:context=".activities.DiaryEntryActivity">
 
         <include layout="@layout/toolbar_diaryentry"/>
-
-        <!--<include layout="@layactivity_diaryentry_content_oldtent"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
 
         <RelativeLayout
             android:id="@+id/diaryentry_content"
@@ -31,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".activitDiaryEntryActivity_oldvity"
+            tools:context=".activities.DiaryEntryActivity"
             android:orientation="vertical"
             style="@style/AlertDialog.AppCompat">
 

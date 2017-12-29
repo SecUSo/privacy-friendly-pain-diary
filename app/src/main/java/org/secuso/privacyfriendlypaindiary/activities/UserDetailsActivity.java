@@ -1,13 +1,16 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,7 +38,7 @@ import java.util.regex.Pattern;
  * @author Susanne Felsen
  * @version 20171228
  */
-public class UserDetailsActivity extends BaseActivity {
+public class UserDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = UserDetailsActivity.class.getSimpleName();
 
@@ -45,6 +48,7 @@ public class UserDetailsActivity extends BaseActivity {
     private Date dateOfBirth;
     private Gender gender;
 
+    private boolean tutorial = false;
     private boolean maleSelected = false;
     private boolean femaleSelected = false;
 
@@ -150,6 +154,16 @@ public class UserDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userdetails);
+
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        tutorial = getIntent().getBooleanExtra("TUTORIAL", false);
+        if(tutorial) {
+            ((Button) findViewById(R.id.btn_cancel)).setText(getString(R.string.skip));
+        }
 
         DBServiceInterface service = DBService.getInstance(this);
         List<UserInterface> users = service.getAllUsers();
@@ -274,6 +288,7 @@ public class UserDetailsActivity extends BaseActivity {
             user = service.getUserByID(userID);
             initFields();
             Toast.makeText(getApplicationContext(), getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
+            launchHomeScreen();
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.save_error), Toast.LENGTH_SHORT).show();
         }
@@ -281,7 +296,11 @@ public class UserDetailsActivity extends BaseActivity {
 
     private void cancel() {
         initFields();
-        Toast.makeText(getApplicationContext(), getString(R.string.changes_discarded), Toast.LENGTH_SHORT).show();
+        if(!tutorial) {
+            Toast.makeText(getApplicationContext(), getString(R.string.changes_discarded), Toast.LENGTH_SHORT).show();
+        } else {
+            launchHomeScreen();
+        }
     }
 
     public void onClick(View view) {
@@ -314,17 +333,40 @@ public class UserDetailsActivity extends BaseActivity {
                 saveChanges();
                 break;
             case R.id.btn_cancel:
-                cancel();
+//                cancel();
+                launchHomeScreen();
                 break;
             default:
                 break;
         }
     }
 
-    @Override
-    protected int getNavigationDrawerID() {
-        return R.id.nav_user_details;
+    private void launchHomeScreen() {
+        Intent intent = new Intent(UserDetailsActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                if(tutorial) {
+                    launchHomeScreen();
+                } else {
+                    super.onBackPressed();
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+//    @Override
+//    protected int getNavigationDrawerID() {
+//        return R.id.nav_user_details;
+//    }
 
 }
 
