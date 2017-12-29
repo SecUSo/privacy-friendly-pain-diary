@@ -22,7 +22,6 @@ public class User extends AbstractPersistentObject implements UserInterface {
             COLUMN_FIRST_NAME + " TEXT, " +
             COLUMN_LAST_NAME + " TEXT, " +
             COLUMN_GENDER + " INTEGER, " +
-//            COLUMN_GENDER + " INTEGER REFERENCES GENDER(Type), " +
             COLUMN_DATE_OF_BIRTH + " TEXT);";
 
     private String firstName;

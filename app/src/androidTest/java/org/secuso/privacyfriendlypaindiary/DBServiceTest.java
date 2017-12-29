@@ -135,8 +135,8 @@ public class DBServiceTest {
 
         //get
         entry = service.getDiaryEntryByID(entryID);
-        List<DiaryEntryInterface> entries = service.getDiaryEntriesByDate(date);
-        assertEquals("Number of entries was incorrect.", 1, entries.size());
+        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
+        assertNotNull("Diary Entry was not saved.", diaryEntry);
 
         assertEquals("Date was incorrect.", date, entry.getDate());
         assertEquals("Condition was incorrect.", condition, entry.getCondition());
@@ -194,8 +194,8 @@ public class DBServiceTest {
         service.deleteDiaryEntryAndAssociatedObjects(entry);
         entry = service.getDiaryEntryByID(entryID);
         assertNull(entry);
-        entries = service.getDiaryEntriesByDate(date);
-        assertTrue(entries.isEmpty());
+        entry = service.getDiaryEntryByDate(date);
+        assertNull(entry);
     }
 
     @Test

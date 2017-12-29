@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * @author Susanne Felsen
- * @version 20171201
+ * @version 20171229
  */
 public interface DBServiceInterface {
 
@@ -49,7 +49,7 @@ public interface DBServiceInterface {
 
     public DiaryEntryInterface getDiaryEntryByID(long id);
 
-    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date);
+    public DiaryEntryInterface getDiaryEntryByDate(Date date);
 
     /**
      * Returns a list of all diary entries for the given month.

@@ -71,7 +71,8 @@
                 android:layout_alignParentLeft="true"
                 android:background="@null"
                 android:text="@string/back"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

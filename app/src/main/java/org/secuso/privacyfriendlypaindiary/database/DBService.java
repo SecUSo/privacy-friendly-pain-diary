@@ -35,7 +35,7 @@ import java.util.Set;
 
 /**
  * @author Susanne Felsen
- * @version 20171201
+ * @version 20171229
  */
 public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
@@ -125,7 +125,11 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         values.put(User.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(User.COLUMN_LAST_NAME, user.getLastName());
         Gender gender = user.getGender();
-        if(gender != null) values.put(User.COLUMN_GENDER, gender.getValue());
+        if(gender != null) {
+            values.put(User.COLUMN_GENDER, gender.getValue());
+        } else {
+            values.put(User.COLUMN_GENDER, (Integer) null);
+        }
         Date dateOfBirth = user.getDateOfBirth();
         if (dateOfBirth != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
@@ -229,7 +233,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
             values.put(DiaryEntry.COLUMN_DATE, dateFormat.format(date));
         }
-        values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        if(diaryEntry.getCondition() != null) {
+            values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        }
         values.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
         long diaryEntryID = db.insert(DiaryEntry.TABLE_NAME, null, values);
 
@@ -253,7 +259,11 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
             values.put(DiaryEntry.COLUMN_DATE, dateFormat.format(date));
         }
-        values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        if(diaryEntry.getCondition() != null) {
+            values.put(DiaryEntry.COLUMN_CONDITION, diaryEntry.getCondition().getValue());
+        } else {
+            values.put(DiaryEntry.COLUMN_CONDITION, (Integer) null);
+        }
         values.put(DiaryEntry.COLUMN_NOTES, diaryEntry.getNotes());
         db.update(DiaryEntry.TABLE_NAME, values, DiaryEntry.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(diaryEntry.getObjectID())});
@@ -303,14 +313,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return diaryEntry;
     }
 
-    /**
-     * Fetches the list of diary entries for the given date from the database.
-     *
-     * @param date
-     * @return list of diary entries for the given date --> list should only contain one element (one entry per day)
-     */
-    public List<DiaryEntryInterface> getDiaryEntriesByDate(Date date) {
-        List<DiaryEntryInterface> diaryEntries = new ArrayList<>();
+    public DiaryEntryInterface getDiaryEntryByDate(Date date) {
         SQLiteDatabase db = this.getReadableDatabase();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
 
@@ -321,12 +324,11 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 diaryEntry = instantiateDiaryEntryFromCursor(cursor);
-                diaryEntries.add(diaryEntry);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        return diaryEntries;
+        return diaryEntry;
     }
 
     @Override
@@ -424,9 +426,14 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
         int indexNotes = cursor.getColumnIndex(DiaryEntry.COLUMN_NOTES);
         if (!cursor.isNull(indexNotes)) {
-            diaryEntry.setNotes(cursor.getString(indexNotes));
+            if(!cursor.getString(indexNotes).isEmpty()) {
+                diaryEntry.setNotes(cursor.getString(indexNotes));
+            }
         }
-        diaryEntry.setCondition(Condition.valueOf(cursor.getInt(cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION))));
+        int indexCondition = cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION);
+        if(!cursor.isNull(indexCondition)) {
+            diaryEntry.setCondition(Condition.valueOf(cursor.getInt(indexCondition)));
+        }
 
         long painDescriptionID = cursor.getLong(cursor.getColumnIndex(PainDescription.TABLE_NAME + "_id"));
         PainDescriptionInterface painDescription = getPainDescriptionByID(painDescriptionID);
@@ -459,7 +466,10 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
         if(painDescription.getBodyRegion() != null) {
             values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        }        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        } else{
+            values.put(PainDescription.COLUMN_BODY_REGION, (Integer) null);
+        }
+        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
         values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});
@@ -538,12 +548,16 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     private PainDescriptionInterface instantiatePainDescriptionFromCursor(Cursor cursor) {
         long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
         int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
-        BodyRegion bodyRegion = BodyRegion.valueOf(cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION)));
+
+        int indexBodyRegion = cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION);
+        BodyRegion bodyRegion = null;
+        if (!cursor.isNull(indexBodyRegion)) {
+            bodyRegion = BodyRegion.valueOf(cursor.getInt(indexBodyRegion));
+        }
         String painQualitiesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_QUALITY));
         String timesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_TIME_OF_PAIN));
         EnumSet<PainQuality> painQualities = convertStringToPainQualityEnumSet(painQualitiesAsString);
         EnumSet<Time> timesOfPain = convertStringToTimeEnumSet(timesAsString);
-        Log.d(TAG, painQualitiesAsString + "  " + timesAsString);
         PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
         painDescription.setObjectID(objectID);
         return painDescription;

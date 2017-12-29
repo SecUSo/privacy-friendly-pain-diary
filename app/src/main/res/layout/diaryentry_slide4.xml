@@ -12,12 +12,14 @@
     style="@style/AlertDialog.AppCompat">
 
     <LinearLayout
-        android:id="@+id/paindescription_wrapper"
+        android:id="@+id/painquality_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin">
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/diaryentry_marginTop"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/paindescription"

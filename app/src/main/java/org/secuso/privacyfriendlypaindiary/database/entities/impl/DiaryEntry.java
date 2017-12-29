@@ -25,7 +25,7 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_DATE + " TEXT UNIQUE NOT NULL, " +
             PainDescription.TABLE_NAME + "_id INTEGER REFERENCES " + PainDescription.TABLE_NAME + "(" + COLUMN_ID + "), " +
-            COLUMN_CONDITION + " INTEGER NOT NULL, " +
+            COLUMN_CONDITION + " INTEGER, " +
             COLUMN_NOTES + " TEXT);";
 
     private Date date;

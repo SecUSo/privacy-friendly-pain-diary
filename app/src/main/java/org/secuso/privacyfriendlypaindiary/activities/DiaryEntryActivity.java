@@ -45,17 +45,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 
 /**
  * @author Susanne Felsen
- * @version 20171227
+ * @version 20171229
  */
-
 public class DiaryEntryActivity extends AppCompatActivity {
 
     private static final String TAG = DiaryEntryActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
     private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
+
+    private boolean edit = false;
 
     private Button btnBack;
     private Button btnNext;
@@ -108,8 +110,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 addBottomDots(position);
                 if (position == 0) {
+                    btnBack.setVisibility(View.GONE);
                     setDataOnSlide1();
                 } else if (position == 1) {
+                    btnBack.setVisibility(View.VISIBLE);
                     setDataOnSlide2();
                 } else if (position == 2) {
                     setDataOnSlide3();
@@ -157,8 +161,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 int current = getItem(-1);
                 if (current >= 0) {
                     viewPager.setCurrentItem(current);
-                } else {
-                    onBackPressed();
                 }
             }
         });
@@ -174,7 +176,16 @@ public class DiaryEntryActivity extends AppCompatActivity {
         } catch (ParseException e) {
             date = Calendar.getInstance().getTime();
         }
-        diaryEntry = new DiaryEntry(date);
+        edit = getIntent().getBooleanExtra("EDIT", false);
+        if(!edit) {
+            diaryEntry = new DiaryEntry(date);
+        } else {
+            setTitle(getString(R.string.edit_diary_entry));
+            DBServiceInterface service = DBService.getInstance(this);
+            diaryEntry = service.getDiaryEntryByDate(date);
+            initFields();
+        }
+        if(diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
 
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -184,6 +195,21 @@ public class DiaryEntryActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initFields() {
+        if(diaryEntry != null) {
+            condition = diaryEntry.getCondition();
+            notes = diaryEntry.getNotes();
+            //TODO: medication
+            PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
+            if(painDescription != null) {
+                painLevel = painDescription.getPainLevel();
+                bodyRegion = painDescription.getBodyRegion();
+                painQualities = painDescription.getPainQualities();
+                timesOfPain = painDescription.getTimesOfPain();
+            }
+        }
     }
 
     private void setDataOnSlide1() {
@@ -339,8 +365,15 @@ public class DiaryEntryActivity extends AppCompatActivity {
         if (conditions == null) initConditions();
         for (int i = 0; i < conditions.length; i++) {
             if (conditions[i].isChecked()) {
-                conditions[i].setBackgroundColor(COLOR_MIDDLEBLUE);
-                condition = Condition.valueOf(i);
+                //condition will be deselected if it is already selected
+                if(condition == Condition.valueOf(i)) {
+                    conditions[i].setBackgroundColor(Color.TRANSPARENT);
+                    conditions[i].setChecked(false);
+                    condition = null;
+                } else {
+                    conditions[i].setBackgroundColor(COLOR_MIDDLEBLUE);
+                    condition = Condition.valueOf(i);
+                }
             } else {
                 conditions[i].setBackgroundColor(Color.TRANSPARENT);
             }
@@ -486,8 +519,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
         diaryEntry.setPainDescription(painDescription);
 
         DBServiceInterface service = DBService.getInstance(this);
-        long entryID = service.storeDiaryEntryAndAssociatedObjects(diaryEntry);
-
+        if(!edit) {
+            long entryID = service.storeDiaryEntryAndAssociatedObjects(diaryEntry);
+        } else {
+            service.updateDiaryEntryAndAssociatedObjects(diaryEntry);
+        }
     }
 
     @Override

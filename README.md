@@ -1,6 +1,6 @@
 ﻿# Privacy Friendly Pain Diary
 
-This application contains a pain diary. Users can make diary entries recording their condition, pain level, location, quality and time, as well as additional notes and medication. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt. 
+Privacy Friendly Pain Diary is an app that allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as additional notes and the medication you take. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt.
 
 ## Motivation
 
@@ -33,7 +33,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016).
+The icons used in the navigation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016).
 
 ## Contributors
 
