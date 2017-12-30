@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -38,6 +39,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.PainDescription;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 
 import java.text.ParseException;
@@ -48,6 +50,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
+ *
+ * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
+ *
  * @author Susanne Felsen
  * @version 20171229
  */
@@ -254,17 +259,27 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide3() {
-        View slide = viewPager.findViewWithTag(2);
-        ImageView head = (ImageView) findViewById(R.id.head);
+        final View slide = viewPager.findViewWithTag(2);
+        ImageView person = (ImageView) findViewById(R.id.person);
 
-        head.setOnTouchListener(new View.OnTouchListener() {
+        person.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     float x = event.getX();
                     float y = event.getY();
                     Log.d(TAG, "x: " + x + ", y:" + y);
-                    selectBodyPartWithCoordinatesXY(x, y);
+                    int touchColor = getHotspotColor(R.id.person_coloured, Math.round(x), Math.round(y));
+                    BodyRegion bodyPart = getBodyRegion(touchColor);
+                    bodyRegion = bodyPart;
+                    if(bodyPart != null) {
+                        int resourceID = Helper.getResourceIDForBodyRegion(bodyPart);
+                        if(resourceID != 0) {
+                            ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
+                            slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                        }
+                    }
+
                 }
                 return false;
             }
@@ -429,78 +444,74 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void selectBodyPartWithCoordinatesXY(float x, float y) {
-        ImageView bodyPart = null;
-        if (x > 545 && y > 596 && x < 614 && y < 688) {
-            bodyPart = (ImageView) findViewById(R.id.abdomen_right);
-            bodyRegion = BodyRegion.ABDOMEN_RIGHT;
-        } else if (x > 458 && y > 596 && x < 521 && y < 688) {
-            bodyPart = (ImageView) findViewById(R.id.abdomen_left);
-            bodyRegion = BodyRegion.ABDOMEN_LEFT;
-        } else if (x > 435 && y > 703 && x < 518 && y < 799) {
-            bodyPart = (ImageView) findViewById(R.id.groin_left);
-            bodyRegion = BodyRegion.GROIN_LEFT;
-        } else if (x > 548 && y > 706 && x < 637 && y < 799) {
-            bodyPart = (ImageView) findViewById(R.id.groin_right);
-            bodyRegion = BodyRegion.GROIN_RIGHT;
-        } else if (x > 438 && y > 825 && x < 530 && y < 957) {
-            bodyPart = (ImageView) findViewById(R.id.thigh_left);
-            bodyRegion = BodyRegion.THIGH_LEFT;
-        } else if (x > 545 && y > 825 && x < 635 && y < 957) {
-            bodyPart = (ImageView) findViewById(R.id.thigh_right);
-            bodyRegion = BodyRegion.THIGH_RIGHT;
-        } else if (x > 438 && y > 969 && x < 518 && y < 1020) {
-            bodyPart = (ImageView) findViewById(R.id.knee_left);
-            bodyRegion = BodyRegion.KNEE_LEFT;
-        } else if (x > 551 && y > 969 && x < 635 && y < 1020) {
-            bodyPart = (ImageView) findViewById(R.id.knee_right);
-            bodyRegion = BodyRegion.KNEE_RIGHT;
-        } else if (x > 438 && y > 1037 && x < 518 && y < 1220) {
-            bodyPart = (ImageView) findViewById(R.id.lower_leg_left);
-            bodyRegion = BodyRegion.LOWER_LEG_LEFT;
-        } else if (x > 551 && y > 1030 && x < 626 && y < 1225) {
-            bodyPart = (ImageView) findViewById(R.id.lower_leg_right);
-            bodyRegion = BodyRegion.LOWER_LEG_RIGHT;
-        } else if (x > 440 && y > 1237 && x < 527 && y < 1290) {
-            bodyPart = (ImageView) findViewById(R.id.foot_left);
-            bodyRegion = BodyRegion.FOOT_LEFT;
-        } else if (x > 542 && y > 1237 && x < 635 && y < 1290) {
-            bodyPart = (ImageView) findViewById(R.id.foot_right);
-            bodyRegion = BodyRegion.FOOT_RIGHT;
-        } else if (x > 458 && y > 453 && x < 527 && y < 584) {
-            bodyPart = (ImageView) findViewById(R.id.chest_left);
-            bodyRegion = BodyRegion.CHEST_LEFT;
-        } else if (x > 545 && y > 456 && x < 608 && y < 584) {
-            bodyPart = (ImageView) findViewById(R.id.chest_right);
-            bodyRegion = BodyRegion.CHEST_RIGHT;
-        } else if (x > 485 && y > 411 && x < 578 && y < 438) {
-            bodyPart = (ImageView) findViewById(R.id.neck);
-            bodyRegion = BodyRegion.NECK;
-        } else if (x > 470 && y > 271 && x < 596 && y < 405) {
-            bodyPart = (ImageView) findViewById(R.id.head);
-            bodyRegion = BodyRegion.HEAD;
-        } else if (x > 380 && y > 490 && x < 435 && y < 617) {
-            bodyPart = (ImageView) findViewById(R.id.upper_arm_left);
-            bodyRegion = BodyRegion.UPPER_ARM_LEFT;
-        } else if (x > 623 && y > 490 && x < 695 && y < 605) {
-            bodyPart = (ImageView) findViewById(R.id.upper_arm_right);
-            bodyRegion = BodyRegion.UPPER_ARM_RIGHT;
-        } else if (x > 360 && y > 630 && x < 420 && y < 750) {
-            bodyPart = (ImageView) findViewById(R.id.lower_arm_left);
-            bodyRegion = BodyRegion.LOWER_ARM_LEFT;
-        } else if (x > 640 && y > 620 && x < 700 && y < 750) {
-            bodyPart = (ImageView) findViewById(R.id.lower_arm_right);
-            bodyRegion = BodyRegion.LOWER_ARM_RIGHT;
-        } else if (x > 345 && y > 772 && x < 420 && y < 860) {
-            bodyPart = (ImageView) findViewById(R.id.hand_left);
-            bodyRegion = BodyRegion.HAND_LEFT;
-        } else if (x > 659 && y > 763 && x < 710 && y < 860) {
-            bodyPart = (ImageView) findViewById(R.id.hand_right);
-            bodyRegion = BodyRegion.HAND_RIGHT;
+    public int getHotspotColor (int hotspotId, int x, int y) {
+        ImageView img = (ImageView) findViewById (hotspotId);
+        img.setDrawingCacheEnabled(true);
+        Bitmap hotspots = Bitmap.createBitmap(img.getDrawingCache());
+        img.setDrawingCacheEnabled(false);
+        return hotspots.getPixel(x, y);
+    }
+
+    public boolean closeMatch (int color1, int color2, int tolerance) {
+        if ((int) Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
+            return false;
+        if ((int) Math.abs (Color.green (color1) - Color.green (color2)) > tolerance )
+            return false;
+        if ((int) Math.abs (Color.blue (color1) - Color.blue (color2)) > tolerance )
+            return false;
+        return true;
+    }
+
+
+    private BodyRegion getBodyRegion(int touchColor) {
+        int tolerance = 25;
+        BodyRegion bodyPart = null;
+        if (closeMatch (Color.parseColor("#ff00ff"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.ABDOMEN_RIGHT;
+        } else if (closeMatch (Color.parseColor("#0000ff"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.ABDOMEN_LEFT;
+        } else if (closeMatch (Color.parseColor("#ffff00"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.GROIN_LEFT;
+        } else if (closeMatch (Color.parseColor("#00ff00"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.GROIN_RIGHT;
+        } else if (closeMatch (Color.parseColor("#ff7e00"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.THIGH_LEFT;
+        } else if (closeMatch (Color.parseColor("#a774d2"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.THIGH_RIGHT;
+        } else if (closeMatch (Color.parseColor("#147914"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.KNEE_LEFT;
+        } else if (closeMatch (Color.parseColor("#775205"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.KNEE_RIGHT;
+        } else if (closeMatch (Color.parseColor("#ff007e"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.LOWER_LEG_LEFT;
+        } else if (closeMatch (Color.parseColor("#00ffff"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.LOWER_LEG_RIGHT;
+        } else if (closeMatch (Color.parseColor("#7ec8ff"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.FOOT_LEFT;
+        } else if (closeMatch (Color.parseColor("#173081"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.FOOT_RIGHT;
+        } else if (closeMatch (Color.parseColor("#007ba9"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.CHEST_LEFT;
+        } else if (closeMatch (Color.parseColor("#00ffb4"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.CHEST_RIGHT;
+        } else if (closeMatch (Color.parseColor("#042c3a"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.NECK;
+        } else if (closeMatch (Color.parseColor("#ff0000"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.HEAD;
+        } else if (closeMatch (Color.parseColor("#81173d"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.UPPER_ARM_LEFT;
+        } else if (closeMatch (Color.parseColor("#bc3b13"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.UPPER_ARM_RIGHT;
+        } else if (closeMatch (Color.parseColor("#7e007e"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.LOWER_ARM_LEFT;
+        } else if (closeMatch (Color.parseColor("#7e7e00"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.LOWER_ARM_RIGHT;
+        } else if (closeMatch (Color.parseColor("#7e7e7e"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.HAND_LEFT;
+        } else if (closeMatch (Color.parseColor("#7e7eff"), touchColor, tolerance)) {
+            bodyPart = BodyRegion.HAND_RIGHT;
         }
-        if(bodyPart != null) {
-            colorBodyPart(bodyPart);
-        }
+        return bodyPart;
     }
 
     private void colorBodyPart(ImageView bodyPart) {
