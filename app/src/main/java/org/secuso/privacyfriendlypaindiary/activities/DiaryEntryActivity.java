@@ -62,6 +62,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
     private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
     private boolean edit = false;
 
     private Button btnBack;
@@ -261,22 +263,32 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private void setDataOnSlide3() {
         final View slide = viewPager.findViewWithTag(2);
         ImageView person = (ImageView) findViewById(R.id.person);
-
+        if(bodyRegion != null) {
+            int resourceID = Helper.getResourceIDForBodyRegion(bodyRegion);
+            if (resourceID != 0) {
+                ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
+                slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+            }
+        }
         person.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     float x = event.getX();
                     float y = event.getY();
-                    Log.d(TAG, "x: " + x + ", y:" + y);
                     int touchColor = getHotspotColor(R.id.person_coloured, Math.round(x), Math.round(y));
                     BodyRegion bodyPart = getBodyRegion(touchColor);
-                    bodyRegion = bodyPart;
                     if(bodyPart != null) {
-                        int resourceID = Helper.getResourceIDForBodyRegion(bodyPart);
-                        if(resourceID != 0) {
-                            ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
-                            slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                        if(bodyRegion != bodyPart) {
+                            bodyRegion = bodyPart;
+                            int resourceID = Helper.getResourceIDForBodyRegion(bodyPart);
+                            if (resourceID != 0) {
+                                ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
+                                slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                            }
+                        } else { //already selected >> deselect
+                            bodyRegion = null;
+                            ((ImageView) slide.findViewById(R.id.bodyregion_value)).setVisibility(View.GONE);
                         }
                     }
 
@@ -371,6 +383,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         Intent intent = new Intent(DiaryEntryActivity.this, MainActivity.class);
+        intent.putExtra("DATE_TO_DISPLAY", dateAsString);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
@@ -462,7 +475,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
         return true;
     }
 
-
     private BodyRegion getBodyRegion(int touchColor) {
         int tolerance = 25;
         BodyRegion bodyPart = null;
@@ -526,9 +538,16 @@ public class DiaryEntryActivity extends AppCompatActivity {
         diaryEntry.setCondition(condition);
         diaryEntry.setNotes(notes);
 
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
-        diaryEntry.setPainDescription(painDescription);
-
+        if(edit && diaryEntry.getPainDescription() != null) {
+            PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
+            painDescription.setPainLevel(painLevel);
+            painDescription.setBodyRegion(bodyRegion);
+            painDescription.setPainQualities(painQualities);
+            painDescription.setTimesOfPain(timesOfPain);
+        } else {
+            PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
+            diaryEntry.setPainDescription(painDescription);
+        }
         DBServiceInterface service = DBService.getInstance(this);
         if(!edit) {
             long entryID = service.storeDiaryEntryAndAssociatedObjects(diaryEntry);

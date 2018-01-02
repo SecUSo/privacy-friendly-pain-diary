@@ -250,10 +250,15 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     public void updateDiaryEntryAndAssociatedObjects(DiaryEntryInterface diaryEntry) {
         SQLiteDatabase db = this.getWritableDatabase();
         PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
-        updatePainDescription(painDescription);
-
+        long painDescriptionID;
+        if(painDescription.isPersistent()) {
+            updatePainDescription(painDescription);
+            painDescriptionID = painDescription.getObjectID();
+        } else {
+            painDescriptionID = storePainDescription(painDescription);
+        }
         ContentValues values = new ContentValues();
-        values.put(PainDescription.TABLE_NAME + "_id", painDescription.getObjectID()); //foreign key
+        values.put(PainDescription.TABLE_NAME + "_id", painDescriptionID); //foreign key
         Date date = diaryEntry.getDate();
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);

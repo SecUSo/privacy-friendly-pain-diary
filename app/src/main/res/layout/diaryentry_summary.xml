@@ -68,7 +68,7 @@
                     android:id="@+id/condition_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_sentiment_very_happy" />
+                    app:srcCompat="@drawable/ic_sentiment_very_satisfied" />
 
             </LinearLayout>
 
@@ -139,7 +139,7 @@
                     android:layout_width="90dp"
                     android:layout_height="220dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/schmerztagebuch_person" />
+                    app:srcCompat="@drawable/paindiary_person_fullbody" />
 
                 <ImageView
                     android:id="@+id/bodyregion"
@@ -147,7 +147,7 @@
                     android:layout_height="220dp"
                     android:scaleType="centerCrop"
                     android:tint="@color/yellow"
-                    app:srcCompat="@drawable/schmerztagebuch_person"
+                    app:srcCompat="@drawable/paindiary_person_fullbody"
                     android:visibility="gone" />
 
 

@@ -71,25 +71,25 @@
                     android:id="@+id/condition_bad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/ic_sentiment_dissatisfied_black"
+                    android:button="@drawable/ic_sentiment_dissatisfied"
                     android:onClick="selectCondition"/>
                 <RadioButton
                     android:id="@+id/condition_okay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/ic_sentiment_neutral_black"
+                    android:button="@drawable/ic_sentiment_neutral"
                     android:onClick="selectCondition"/>
                 <RadioButton
                     android:id="@+id/condition_good"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/ic_sentiment_satisfied_black"
+                    android:button="@drawable/ic_sentiment_satisfied"
                     android:onClick="selectCondition"/>
                 <RadioButton
                     android:id="@+id/condition_very_good"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/ic_sentiment_very_happy"
+                    android:button="@drawable/ic_sentiment_very_satisfied"
                     android:onClick="selectCondition"/>
             </RadioGroup>
 
@@ -232,7 +232,7 @@
                 android:id="@+id/stickFigure"
                 android:layout_width="150dp"
                 android:layout_height="260dp"
-                app:srcCompat="@drawable/stickfigure" />
+                app:srcCompat="@drawable/paindiary_person_fullbody" />
 
         </LinearLayout>
 

@@ -18,8 +18,8 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,6 +46,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDesc
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,8 +73,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String dateAsString = getIntent().getStringExtra("DATE_TO_DISPLAY");
+        if (dateAsString == null) {
+            dateAsString = dateFormat.format(Calendar.getInstance().getTime());
+        }
+        Date date;
+        try {
+            date = dateFormat.parse(dateAsString);
+        } catch (ParseException e) {
+            date = Calendar.getInstance().getTime();
+        }
+
         calendar = (MaterialCalendarView) findViewById(R.id.calendar_view);
-//        calendar.setSelectedDate(CalendarDay.today());
         decorator = new EventDecorator(COLOR_MIDDLEBLUE);
         calendar.addDecorator(decorator);
         calendar.setOnMonthChangedListener(new OnMonthChangedListener() {
@@ -89,21 +100,21 @@ public class MainActivity extends BaseActivity {
                 if(!decorator.shouldDecorate(date)) {
                     createDiaryEntry(date.getDate());
                 } else {
-//                    editDiaryEntry(date.getDate());
                     viewDiaryEntry(date.getDate());
                 }
             }
         });
+        calendar.setCurrentDate(date);
+        calendar.setSelectedDate(date);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         calendar.state().edit()
                 .setMaximumDate(CalendarDay.today())
                 .commit();
-        getDiaryEntryDates(CalendarDay.today().getMonth(), CalendarDay.today().getYear());
+        getDiaryEntryDates(calendar.getCurrentDate().getMonth(), calendar.getCurrentDate().getYear());
 
     }
 
@@ -121,6 +132,7 @@ public class MainActivity extends BaseActivity {
         c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH) - 6);
         Date startDate = c.getTime();
         if (month < 11) {
+            c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, month + 1);
         } else {
             c.set(Calendar.YEAR, year + 1);
@@ -128,7 +140,6 @@ public class MainActivity extends BaseActivity {
         }
         c.set(Calendar.DAY_OF_MONTH, 7);
         Date endDate = c.getTime();
-
         Set<Date> dates = service.getDiaryEntryDatesByTimeSpan(startDate, endDate);
         Set<CalendarDay> calendarDates = new HashSet<>();
         for (Date date : dates) {
@@ -155,12 +166,28 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void viewDiaryEntry(Date date) {
+    private void viewDiaryEntry(final Date date) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setView(initDiaryEntrySummary(date));
         alertDialog.setPositiveButton("OK", null);
-        AlertDialog alert = alertDialog.create();
-        alert.show();
+        alertDialog.setNegativeButton(getString(R.string.edit),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        editDiaryEntry(date);
+                    }
+                });
+        alertDialog.setNeutralButton(getString(R.string.delete),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteDiaryEntry(date);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date);
+                        getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+                        calendar.invalidate();
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.create().show();
     }
 
     private View initDiaryEntrySummary(Date date) {
@@ -207,15 +234,15 @@ public class MainActivity extends BaseActivity {
             case VERY_BAD:
                 return R.drawable.ic_sentiment_very_dissatisfied;
             case BAD:
-                return R.drawable.ic_sentiment_dissatisfied_black;
+                return R.drawable.ic_sentiment_dissatisfied;
             case OKAY:
-                return R.drawable.ic_sentiment_neutral_black;
+                return R.drawable.ic_sentiment_neutral;
             case GOOD:
-                return R.drawable.ic_sentiment_satisfied_black;
+                return R.drawable.ic_sentiment_satisfied;
             case VERY_GOOD:
-                return R.drawable.ic_sentiment_very_satisfied_black;
+                return R.drawable.ic_sentiment_very_satisfied;
             default:
-                return R.drawable.ic_sentiment_neutral_black;
+                return R.drawable.ic_sentiment_neutral;
         }
     }
 
@@ -251,6 +278,12 @@ public class MainActivity extends BaseActivity {
         intent.putExtra("EDIT", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void deleteDiaryEntry(Date date) {
+        DBServiceInterface service = DBService.getInstance(this);
+        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
+        service.deleteDiaryEntryAndAssociatedObjects(diaryEntry);
     }
 
 }

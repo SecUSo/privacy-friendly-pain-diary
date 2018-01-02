@@ -23,6 +23,8 @@
     <string name="confirm">Bestätigen</string>
     <string name="changes_saved">Änderungen gespeichert.</string>
     <string name="changes_discarded">Änderungen verworfen.</string>
+    <string name="edit">Editieren</string>
+    <string name="delete">Löschen</string>
 
     <!-- ### MAIN ### -->
     <string name="welcome_question">Wie geht es Ihnen heute?</string>
@@ -118,18 +120,5 @@
     <string name="notes">Anmerkungen:</string>
     <string name="none">keine</string>
     <string name="medication">Eingenommene Medikamente:</string>
-
-
-
-
-    <string name="HowDoYouFeel">How do you feel?</string>
-    <string name="diary_next">Next</string>
-    <string name="diary_backd">Back</string>
-    <string name="howStrongIsYourPain">How strong is your pain?</string>
-    <string name="title_activity_Diary">activityDiary</string>
-    <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
-    <string name="whenDoYouHavePain">When do you have pain</string>
-    <string name="doYouHavaAnyRemarks">Do you hava any remarks or comments?</string>
-    <string name="WhatMedicationsDoYouTake">What medications do you take?</string>
 
 </resources>

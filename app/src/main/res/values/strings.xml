@@ -24,6 +24,8 @@
     <string name="confirm">Confirm</string>
     <string name="changes_saved">Changes saved.</string>
     <string name="changes_discarded">Changes discarded.</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <!-- ### MAIN ### -->
     <string name="welcome_question">How do you feel today?</string>
@@ -110,7 +112,7 @@
     <string name="time_afternoon">in the afternoon</string>
     <string name="time_evening">in the evening</string>
     <string name="heading_notes">Do you have any additional comments?</string>
-    <string name="heading_medication">Which medication do you take?</string>
+    <string name="heading_medication">What medication do you take?</string>
 
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Condition:</string>
@@ -122,18 +124,5 @@
     <string name="notes">Comments:</string>
     <string name="none">none</string>
     <string name="medication">Medication taken:</string>
-
-
-
-
-    <string name="HowDoYouFeel">How do you feel?</string>
-    <string name="diary_next">Next</string>
-    <string name="diary_backd">Back</string>
-    <string name="title_activity_Diary">activityDiary</string>
-    <string name="describeYourPainMoreClosely">Describe your pain more closely</string>
-    <string name="time_course">Describe the time course</string>
-    <string name="whenDoYouHavePain">When do you have pain</string>
-    <string name="doYouHavaAnyRemarks">Do you hava any remarks or comments?</string>
-    <string name="WhatMedicationsDoYouTake">What medications do you take?</string>
 
 </resources>

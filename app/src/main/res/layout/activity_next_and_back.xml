@@ -47,7 +47,7 @@
         android:layout_alignParentLeft="true"
 
         android:background="@null"
-        android:drawableTop="@drawable/ic_black"
+        android:drawableTop="@drawable/ic_back"
         android:textColor="@android:color/black" />
 
     <Button
