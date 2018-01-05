@@ -241,7 +241,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/medication"
+                android:text="@string/medication_taken"
                 android:textSize="@dimen/diaryentry_summary" />
 
             <TextView

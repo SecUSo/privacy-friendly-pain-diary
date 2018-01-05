@@ -112,7 +112,10 @@
     <string name="time_afternoon">in the afternoon</string>
     <string name="time_evening">in the evening</string>
     <string name="heading_notes">Do you have any additional comments?</string>
-    <string name="heading_medication">What medication do you take?</string>
+    <string name="heading_medication">What medication are you taking?</string>
+    <string name="medication">Medication</string>
+    <string name="medication_name">Name</string>
+    <string name="dose">Dose</string>
 
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Condition:</string>
@@ -123,6 +126,6 @@
     <string name="timeofpain">Time of the pain:</string>
     <string name="notes">Comments:</string>
     <string name="none">none</string>
-    <string name="medication">Medication taken:</string>
+    <string name="medication_taken">Medication taken:</string>
 
 </resources>

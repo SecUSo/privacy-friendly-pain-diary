@@ -77,7 +77,7 @@ public class Drug extends AbstractPersistentObject implements DrugInterface {
 
         Drug drug = (Drug) o;
 
-        if (currentlyTaken != drug.currentlyTaken) return false;
+//        if (currentlyTaken != drug.currentlyTaken) return false;
         if (name != null ? !name.equals(drug.name) : drug.name != null) return false;
         return dose != null ? dose.equals(drug.dose) : drug.dose == null;
     }

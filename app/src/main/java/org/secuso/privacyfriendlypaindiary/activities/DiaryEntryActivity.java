@@ -3,7 +3,6 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,14 +13,18 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -36,14 +39,20 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.DrugIntake;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.PainDescription;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.AutocompleteAdapter;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -54,15 +63,12 @@ import java.util.List;
  * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
  *
  * @author Susanne Felsen
- * @version 20171229
+ * @version 20180105
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
     private static final String TAG = DiaryEntryActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
-    private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private boolean edit = false;
 
@@ -83,7 +89,9 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private BodyRegion bodyRegion;
     private EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
     private EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
-
+    private List<DrugInterface> drugs = new ArrayList<>();
+//    private ArrayList<String> drugNames = new ArrayList<>();
+    private ArrayList<DrugIntakeInterface> drugIntakes = new ArrayList<>();
     private DiaryEntryInterface diaryEntry;
 
     @Override
@@ -184,11 +192,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
             date = Calendar.getInstance().getTime();
         }
         edit = getIntent().getBooleanExtra("EDIT", false);
+        DBServiceInterface service = DBService.getInstance(this);
         if(!edit) {
             diaryEntry = new DiaryEntry(date);
         } else {
             setTitle(getString(R.string.edit_diary_entry));
-            DBServiceInterface service = DBService.getInstance(this);
             diaryEntry = service.getDiaryEntryByDate(date);
             initFields();
         }
@@ -202,13 +210,18 @@ public class DiaryEntryActivity extends AppCompatActivity {
             }
         });
 
+        drugs = service.getAllDrugs();
+        for(DrugInterface drug : drugs) {
+            Log.d(TAG, drug.getName() + " " + drug.getDose() + " " + drug.getObjectID());
+        }
+
     }
 
     private void initFields() {
         if(diaryEntry != null) {
             condition = diaryEntry.getCondition();
             notes = diaryEntry.getNotes();
-            //TODO: medication
+            drugIntakes.addAll(diaryEntry.getDrugIntakes());
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             if(painDescription != null) {
                 painLevel = painDescription.getPainLevel();
@@ -220,8 +233,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-        View slide = viewPager.findViewWithTag(0);
-        ((TextView) slide.findViewById(R.id.date)).setText(dateAsString);
+//        View slide = viewPager.findViewWithTag(0);
+        ((TextView) findViewById(R.id.date)).setText(dateAsString);
 
         initConditions();
         if (condition != null) {
@@ -230,19 +243,19 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void initConditions() {
-        View firstSlide = viewPager.findViewWithTag(0);
+//        View slide = viewPager.findViewWithTag(0);
         conditions = new RadioButton[]{
-                firstSlide.findViewById(R.id.condition_very_bad),
-                firstSlide.findViewById(R.id.condition_bad),
-                firstSlide.findViewById(R.id.condition_okay),
-                firstSlide.findViewById(R.id.condition_good),
-                firstSlide.findViewById(R.id.condition_very_good)};
+                (RadioButton) findViewById(R.id.condition_very_bad),
+                (RadioButton) findViewById(R.id.condition_bad),
+                (RadioButton) findViewById(R.id.condition_okay),
+                (RadioButton) findViewById(R.id.condition_good),
+                (RadioButton) findViewById(R.id.condition_very_good)};
     }
 
     private void setDataOnSlide2() {
-        View slide = viewPager.findViewWithTag(1);
+//        View slide = viewPager.findViewWithTag(1);
 
-        SeekBar seekBar = slide.findViewById(R.id.painlevel_seekbar);
+        SeekBar seekBar = (SeekBar) findViewById(R.id.painlevel_seekbar);
         seekBar.setProgress(painLevel);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -261,13 +274,13 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide3() {
-        final View slide = viewPager.findViewWithTag(2);
+//        final View slide = viewPager.findViewWithTag(2);
         ImageView person = (ImageView) findViewById(R.id.person);
         if(bodyRegion != null) {
             int resourceID = Helper.getResourceIDForBodyRegion(bodyRegion);
             if (resourceID != 0) {
-                ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
-                slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                ((ImageView) findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
+                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
         }
         person.setOnTouchListener(new View.OnTouchListener() {
@@ -283,12 +296,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
                             bodyRegion = bodyPart;
                             int resourceID = Helper.getResourceIDForBodyRegion(bodyPart);
                             if (resourceID != 0) {
-                                ((ImageView) slide.findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
-                                slide.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                                ((ImageView) findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
+                                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
                             }
                         } else { //already selected >> deselect
                             bodyRegion = null;
-                            ((ImageView) slide.findViewById(R.id.bodyregion_value)).setVisibility(View.GONE);
+                            ((ImageView) findViewById(R.id.bodyregion_value)).setVisibility(View.GONE);
                         }
                     }
 
@@ -299,42 +312,41 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide4() {
-        View slide = viewPager.findViewWithTag(3);
+//        View slide = viewPager.findViewWithTag(3);
 
         if (painQualities.contains(PainQuality.STABBING)) {
-            ((CheckBox) slide.findViewById(R.id.pain_stabbing)).setChecked(true);
+            ((CheckBox) findViewById(R.id.pain_stabbing)).setChecked(true);
         }
         if (painQualities.contains(PainQuality.DULL)) {
-            ((CheckBox) slide.findViewById(R.id.pain_dull)).setChecked(true);
+            ((CheckBox) findViewById(R.id.pain_dull)).setChecked(true);
         }
         if (painQualities.contains(PainQuality.SHOOTING)) {
-            ((CheckBox) slide.findViewById(R.id.pain_shooting)).setChecked(true);
+            ((CheckBox) findViewById(R.id.pain_shooting)).setChecked(true);
         }
     }
 
     private void setDataOnSlide5() {
-        View slide = viewPager.findViewWithTag(4);
+//        View slide = viewPager.findViewWithTag(4);
 
         if (timesOfPain.contains(Time.ALL_DAY)) {
-            ((CheckBox) slide.findViewById(R.id.time_all_day)).setChecked(true);
+            ((CheckBox) findViewById(R.id.time_all_day)).setChecked(true);
         }
         if (timesOfPain.contains(Time.MORNING)) {
-            ((CheckBox) slide.findViewById(R.id.time_morning)).setChecked(true);
+            ((CheckBox) findViewById(R.id.time_morning)).setChecked(true);
         }
         if (timesOfPain.contains(Time.AFTERNOON)) {
-            ((CheckBox) slide.findViewById(R.id.time_afternoon)).setChecked(true);
+            ((CheckBox) findViewById(R.id.time_afternoon)).setChecked(true);
         }
         if (timesOfPain.contains(Time.EVENING)) {
-            ((CheckBox) slide.findViewById(R.id.time_evening)).setChecked(true);
+            ((CheckBox) findViewById(R.id.time_evening)).setChecked(true);
         }
     }
 
     private void setDataOnSlide6() {
-        View slide = viewPager.findViewWithTag(5);
-        final EditText notesEditText = slide.findViewById(R.id.notes_text);
+//        View slide = viewPager.findViewWithTag(5);
+        final EditText notesEditText = (EditText) findViewById(R.id.notes_text);
 
         notesEditText.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence text, int start, int count, int after) {
 
@@ -354,8 +366,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide7() {
-        View slide = viewPager.findViewWithTag(6);
-        //medication
+//        View slide = viewPager.findViewWithTag(6);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.medication_container);
+        layout.removeAllViews();
+        for(DrugIntakeInterface drugIntake : drugIntakes) {
+            layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
+        }
     }
 
     private void addBottomDots(int currentPage) {
@@ -526,17 +542,199 @@ public class DiaryEntryActivity extends AppCompatActivity {
         return bodyPart;
     }
 
-    private void colorBodyPart(ImageView bodyPart) {
-        if (bodyPart.getImageTintList() == null) {
-            bodyPart.setImageTintList(ColorStateList.valueOf(COLOR_YELLOW));
-        } else {
-            bodyPart.setImageTintList(null);
-        }
+    public void addMedication(View view) {
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.medication_container);
+        DrugIntakeInterface drugIntake = new DrugIntake(new Drug(null, null), 0, 0, 0, 0);
+        layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
+        drugIntakes.add(drugIntake);
+    }
+
+    private View initMedicationView(final LinearLayout parent, final DrugIntakeInterface drugIntake) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View newView = inflater.inflate(R.layout.component_medication, null);
+        ImageButton remove = newView.findViewById(R.id.remove);
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parent.removeView(newView);
+                drugIntakes.remove(drugIntake);
+                if(edit && drugIntake.isPersistent()) {
+                    diaryEntry.removeDrugIntake(diaryEntry.getDrugIntakeByID(drugIntake.getObjectID()));
+                }
+            }
+        });
+        final EditText doseEditText = newView.findViewById(R.id.dose);
+        doseEditText.setText(drugIntake.getDrug().getDose());
+        doseEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String dose = doseEditText.getText().toString().trim();
+                if(dose.isEmpty()) {
+                    dose = null;
+                }
+                drugIntake.getDrug().setDose(dose);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
+        final AutoCompleteTextView nameEditText = newView.findViewById(R.id.medication_name);
+        nameEditText.setText(drugIntake.getDrug().getName());
+        //android.R.layout.simple_dropdown_item_1line
+        final AutocompleteAdapter adapter = new AutocompleteAdapter(this, android.R.layout.simple_list_item_1, drugs);
+        nameEditText.setAdapter(adapter);
+        nameEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.setItemClicked(true);
+                nameEditText.setText(nameEditText.getText());
+            }
+        });
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String name = nameEditText.getText().toString().trim();
+                if(name.isEmpty()) {
+                    name = null;
+                }
+                drugIntake.getDrug().setName(name);
+
+                if(adapter.isItemClicked()) {
+                    String dose = adapter.getDose();
+                    if (dose != null) {
+                        doseEditText.setText(dose);
+                        doseEditText.refreshDrawableState();
+                    }
+                }
+                adapter.setItemClicked(false);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
+        final EditText quantityMorningEditText = newView.findViewById(R.id.quantity_morning);
+        quantityMorningEditText.setText(String.valueOf(drugIntake.getQuantityMorning()));
+        quantityMorningEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String quantity = quantityMorningEditText.getText().toString().trim();
+                if(!quantity.isEmpty()) {
+                    try {
+                        int i = Integer.parseInt(quantity);
+                        drugIntake.setQuantityMorning(i);
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
+        final EditText quantityNoonEditText = newView.findViewById(R.id.quantity_noon);
+        quantityNoonEditText.setText(String.valueOf(drugIntake.getQuantityNoon()));
+        quantityNoonEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String quantity = quantityNoonEditText.getText().toString().trim();
+                if(!quantity.isEmpty()) {
+                    try {
+                        int i = Integer.parseInt(quantity);
+                        drugIntake.setQuantityNoon(i);
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
+        final EditText quantityEveningEditText = newView.findViewById(R.id.quantity_evening);
+        quantityEveningEditText.setText(String.valueOf(drugIntake.getQuantityEvening()));
+        quantityEveningEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String quantity = quantityEveningEditText.getText().toString().trim();
+                if(!quantity.isEmpty()) {
+                    try {
+                        int i = Integer.parseInt(quantity);
+                        drugIntake.setQuantityEvening(i);
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
+        final EditText quantityNightEditText = newView.findViewById(R.id.quantity_night);
+        quantityNightEditText.setText(String.valueOf(drugIntake.getQuantityNight()));
+        quantityNightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String quantity = quantityNightEditText.getText().toString().trim();
+                if(!quantity.isEmpty()) {
+                    try {
+                        int i = Integer.parseInt(quantity);
+                        drugIntake.setQuantityNight(i);
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+        return newView;
     }
 
     public void save() {
         diaryEntry.setCondition(condition);
         diaryEntry.setNotes(notes);
+
+        for(DrugIntakeInterface drugIntake : drugIntakes) {
+            if(!drugIntake.isPersistent() && drugIntake.getDrug().getName() != null) {
+                diaryEntry.addDrugIntake(drugIntake);
+            }
+        }
 
         if(edit && diaryEntry.getPainDescription() != null) {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
