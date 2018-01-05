@@ -281,7 +281,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
                 storeDrugIntakeAndAssociatedDrug(intake);
             } else {
                 newIntakeIDs.add(intake.getObjectID());
-                updateDrugIntake(intake);
+                updateDrugIntakeAndAssociatedDrug(intake);
             }
         }
         //all drug intake objects that are no longer associated with the diary entry object are deleted
@@ -578,10 +578,12 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         SQLiteDatabase db = this.getWritableDatabase();
         DrugInterface drug = intake.getDrug();
         long drugID;
-        if (!drug.isPersistent()) {
+        //checks whether a drug object with the same name and dose already exists in the database
+        DrugInterface persistentDrug = getDrugByNameAndDose(drug.getName(), drug.getDose());
+        if(persistentDrug != null) {
+            drugID = persistentDrug.getObjectID();
+        } else { //stores the drug if it does not exist yet
             drugID = storeDrug(drug);
-        } else {
-            drugID = drug.getObjectID();
         }
         ContentValues values = getDrugIntakeContentValues(intake);
         values.put(Drug.TABLE_NAME + "_id", drugID);
@@ -590,16 +592,37 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     /**
-     * Updates the given drug intake. Associated drug can not be updated (call {@link DBService#deleteDrugIntake(DrugIntakeInterface)}
-     * and {@link DBService#storeDrugIntakeAndAssociatedDrug(DrugIntakeInterface)} instead.)
+     * Updates the given drug intake and the associated drug.
      *
      * @param intake drug intake to update; must be persistent (see {@link DrugIntakeInterface#isPersistent()})
      */
-    private void updateDrugIntake(DrugIntakeInterface intake) {
+    private void updateDrugIntakeAndAssociatedDrug(DrugIntakeInterface intake) {
         SQLiteDatabase db = this.getWritableDatabase();
+        DrugInterface drug = intake.getDrug();
         ContentValues values = getDrugIntakeContentValues(intake);
-        db.update(DrugIntake.TABLE_NAME, values, User.COLUMN_ID + " = ?",
+
+        DrugIntakeInterface oldIntake = getDrugIntakeByID(intake.getObjectID());
+        DrugInterface oldDrug = oldIntake.getDrug();
+
+        boolean drugUpdated = false;
+        if(drug != oldDrug) { //associated drug has been updated
+            drugUpdated = true;
+            long drugID;
+
+            //checks whether a drug object with the same name and dose already exists in the database
+            DrugInterface persistentDrug = getDrugByNameAndDose(drug.getName(), drug.getDose());
+            if(persistentDrug != null) {
+                drugID = persistentDrug.getObjectID();
+            } else { //stores the drug if it does not exist yet
+                drugID = storeDrug(drug);
+            }
+            values.put(Drug.TABLE_NAME + "_id", drugID);
+        }
+        db.update(DrugIntake.TABLE_NAME, values, DrugIntake.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(intake.getObjectID())});
+        if(drugUpdated) {
+            deleteDrug(oldDrug); //drug is deleted if not referenced anymore
+        }
     }
 
     /**
@@ -618,7 +641,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     }
 
     /**
-     * Deletes the given drug intake object. The associated drug is not deleted from the database.
+     * Deletes the given drug intake object. The associated drug is deleted from the database if there are no more references to it.
      *
      * @param intake drug intake to delete
      */
@@ -627,7 +650,25 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         DrugInterface drug = intake.getDrug();
         db.delete(DrugIntake.TABLE_NAME, DrugIntake.COLUMN_ID + " = ?",
                 new String[]{Long.toString(intake.getObjectID())});
+        if(drug != null && drug.isPersistent()) {
+            deleteDrug(drug);
+        }
     }
+
+    private DrugIntakeInterface getDrugIntakeByID(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(DrugIntake.TABLE_NAME, null, DrugIntake.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        DrugIntakeInterface drugIntake = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            drugIntake = instantiateDrugIntakeFromCursor(cursor);
+        }
+        cursor.close();
+
+        return drugIntake;
+    }
+
 
     public Set<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID) {
         Set<DrugIntakeInterface> intakes = new HashSet<>();
@@ -706,6 +747,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
             count = cursor.getInt(0);
         }
         if (count == 0) {
+            Log.d(TAG, "Drug deleted.");
             database.delete(Drug.TABLE_NAME, Drug.COLUMN_ID + " = ?",
                     new String[]{Long.toString(drug.getObjectID())});
         }
@@ -715,13 +757,35 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
     public DrugInterface getDrugByID(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Drug.TABLE_NAME, null, Drug.COLUMN_ID + "=?",
+        Cursor cursor = db.query(Drug.TABLE_NAME, null, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         DrugInterface drug = null;
         if (cursor != null && cursor.moveToFirst()) {
             drug = instantiateDrugFromCursor(cursor);
         }
         cursor.close();
+
+        return drug;
+    }
+
+    @Override
+    public DrugInterface getDrugByNameAndDose(String name, String dose) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor;
+        if(dose == null) {
+            cursor = db.query(Drug.TABLE_NAME, null, Drug.COLUMN_NAME + " = ? AND " + Drug.COLUMN_DOSE + " IS NULL",
+                    new String[]{name}, null, null, null, null);
+        } else {
+            cursor = db.query(Drug.TABLE_NAME, null, Drug.COLUMN_NAME + " = ? AND " + Drug.COLUMN_DOSE + " = ?",
+                    new String[]{name, dose}, null, null, null, null);
+        }
+
+        DrugInterface drug = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            drug = instantiateDrugFromCursor(cursor);
+            cursor.close();
+        }
 
         return drug;
     }

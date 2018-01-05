@@ -108,7 +108,11 @@
     <string name="time_afternoon">nachmittags</string>
     <string name="time_evening">abends</string>
     <string name="heading_notes">Haben Sie noch Anmerkungen?</string>
-    <string name="heading_medication">Welche Medikamente nehmen Sie?</string>
+    <string name="heading_medication">Welche Medikamente nehmen Sie ein?</string>
+    <string name="subheading_medication">Drücken Sie auf das grüne Plus, um neue Medikamente hinzuzufügen. Geben Sie die Menge (z. B. Anzahl an Tabletten) ein, die Sie morgens, mittags, abends und nachts nehmen.</string>
+    <string name="medication">Medikament</string>
+    <string name="medication_name">Bezeichnung</string>
+    <string name="dose">Dosierung</string>
 
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Gemütszustand:</string>
@@ -119,6 +123,6 @@
     <string name="timeofpain">Zeitpunkt der Schmerzen:</string>
     <string name="notes">Anmerkungen:</string>
     <string name="none">keine</string>
-    <string name="medication">Eingenommene Medikamente:</string>
+    <string name="medication_taken">Eingenommene Medikamente:</string>
 
 </resources>

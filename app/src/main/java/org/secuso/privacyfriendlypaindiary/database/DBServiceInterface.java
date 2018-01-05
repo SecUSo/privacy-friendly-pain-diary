@@ -98,6 +98,8 @@ public interface DBServiceInterface {
 
     public DrugInterface getDrugByID(long id);
 
+    public DrugInterface getDrugByNameAndDose(String name, String dose);
+
     public List<DrugInterface> getAllDrugs();
 
     public List<DrugInterface> getAllCurrentlyTakenDrugs();

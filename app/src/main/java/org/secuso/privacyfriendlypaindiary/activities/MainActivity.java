@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,6 +41,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
@@ -224,7 +224,15 @@ public class MainActivity extends BaseActivity {
                 ((TextView) view.findViewById(R.id.timeofpain_value)).setText(timesOfPain);
             }
         }
-        //TODO: medication
+        String medication = "";
+        for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
+            medication = medication + drugIntake.getDrug().getName() + " (" + drugIntake.getDrug().getDose() + ") " +
+                drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
+                System.getProperty("line.separator");
+        }
+        if(!medication.isEmpty()) {
+            ((TextView) view.findViewById(R.id.medication_value)).setText(medication);
+        }
 
         return view;
     }

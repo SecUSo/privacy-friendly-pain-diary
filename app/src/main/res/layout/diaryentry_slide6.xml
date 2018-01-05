@@ -29,18 +29,21 @@
             android:text="@string/heading_notes"
             android:textSize="@dimen/diaryentry_heading"/>
 
-        <EditText
-            android:id="@+id/notes_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:minLines="2"
-            android:gravity="top|left"
-            android:maxLines="10"
-            android:scrollbars="horizontal" />
+            <EditText
+                android:id="@+id/notes_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="8dp"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="20"
+                android:minLines="8"
+                android:gravity="top|left"
+                android:scrollbars="vertical"
+                android:textSize="16dp"
+                android:maxLength="256"
+                android:background="@drawable/custom_border"/>
 
     </LinearLayout>
 
