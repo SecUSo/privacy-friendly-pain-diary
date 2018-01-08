@@ -58,9 +58,9 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_header_general">Allgemein</string>
-    <string name="pref_example_switch">Beispiel Switch</string>
-    <string name="pref_example_switch_summary">Beispiel Switch Summary</string>
-    <string name="pref_example_summary">Beispiel Summary</string>
+    <string name="pref_reset">App zurücksetzen</string>
+    <string name="pref_reset_summary">Lösche alle Tagebuch-Einträge und gespeicherte Benutzerdaten</string>
+    <string name="pref_reset_warning">Alle Tagebuch-Einträge und gespeicherte Benutzerdaten werden unwiderruflich gelöscht.\nSind Sie sicher?</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
