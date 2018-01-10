@@ -39,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * @author Susanne Felsen
- * @version 20171129
+ * @version 20180110
  * @see <a href="http://www.singhajit.com/testing-android-database/"></a>
  */
 @RunWith(AndroidJUnit4.class)
@@ -112,10 +112,10 @@ public class DBServiceTest {
         entry.setNotes(notes);
 
         int painLevel = 0;
-        BodyRegion bodyRegion = BodyRegion.HEAD;
+        EnumSet<BodyRegion> bodyRegions = EnumSet.of(BodyRegion.HEAD);
         EnumSet<PainQuality> painQualities = EnumSet.of(PainQuality.SHOOTING);
         EnumSet<Time> timesOfPain = EnumSet.of(Time.MORNING, Time.EVENING);
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegions, painQualities, timesOfPain);
         entry.setPainDescription(painDescription);
 
         String drugName = "Ibuprofen";
@@ -144,7 +144,7 @@ public class DBServiceTest {
 
         painDescription = entry.getPainDescription();
         assertEquals("Pain Level was incorrect.", painLevel, painDescription.getPainLevel());
-        assertEquals("Body Region was incorrect.", bodyRegion, painDescription.getBodyRegion());
+        assertEquals("Body Region was incorrect.", bodyRegions, painDescription.getBodyRegions());
         assertEquals("Pain Qualities were incorrect.", painQualities, painDescription.getPainQualities());
         assertEquals("Times of Pain were incorrect.", timesOfPain, painDescription.getTimesOfPain());
 
@@ -187,8 +187,7 @@ public class DBServiceTest {
         drug2 = drugIntake.getDrug();
         assertEquals("Drug Name was incorrect.", drugName, drug2.getName());
         assertEquals("Drug Dose was incorrect.", dose2, drug2.getDose());
-        drug1 = service.getDrugByID(drug1.getObjectID());
-        assertNotNull(drug1);
+
 
         //delete
         service.deleteDiaryEntryAndAssociatedObjects(entry);
@@ -196,6 +195,8 @@ public class DBServiceTest {
         assertNull(entry);
         entry = service.getDiaryEntryByDate(date);
         assertNull(entry);
+        drug1 = service.getDrugByID(drug1.getObjectID());
+        assertNull(drug1);
     }
 
     @Test
@@ -213,24 +214,24 @@ public class DBServiceTest {
         } catch (ParseException e) {
             fail("Error parsing date.");
         }
-        DiaryEntryInterface entry1 = new DiaryEntry(date1, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
+        DiaryEntryInterface entry1 = new DiaryEntry(date1, Condition.GOOD, new PainDescription(2, EnumSet.of(BodyRegion.HEAD)), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry1);
         List<DiaryEntryInterface> entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(1, entries.size());
 
-        DiaryEntryInterface entry2 = new DiaryEntry(date2, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
+        DiaryEntryInterface entry2 = new DiaryEntry(date2, Condition.GOOD, new PainDescription(2, EnumSet.of(BodyRegion.HEAD)), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry2);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(2, entries.size());
 
-        DiaryEntryInterface entry3 = new DiaryEntry(date3, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
+        DiaryEntryInterface entry3 = new DiaryEntry(date3, Condition.GOOD, new PainDescription(2, EnumSet.of(BodyRegion.HEAD)), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry3);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(2, entries.size());
         entries = service.getDiaryEntriesByMonth(12, 2017);
         assertEquals(1, entries.size());
 
-        DiaryEntryInterface entry4 = new DiaryEntry(date4, Condition.GOOD, new PainDescription(2, BodyRegion.HEAD), null, null);
+        DiaryEntryInterface entry4 = new DiaryEntry(date4, Condition.GOOD, new PainDescription(2, EnumSet.of(BodyRegion.HEAD)), null, null);
         service.storeDiaryEntryAndAssociatedObjects(entry4);
         entries = service.getDiaryEntriesByMonth(11, 2017);
         assertEquals(3, entries.size());

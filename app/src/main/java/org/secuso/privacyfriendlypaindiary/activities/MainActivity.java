@@ -20,9 +20,12 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +59,7 @@ import java.util.Set;
 
 /**
  * @author Christopher Beckmann, Karola Marky, Susanne Felsen
- * @version 20171227
+ * @version 20180110
  */
 public class MainActivity extends BaseActivity {
 
@@ -84,7 +87,7 @@ public class MainActivity extends BaseActivity {
             date = Calendar.getInstance().getTime();
         }
 
-        calendar = (MaterialCalendarView) findViewById(R.id.calendar_view);
+        calendar = findViewById(R.id.calendar_view);
         decorator = new EventDecorator(COLOR_MIDDLEBLUE);
         calendar.addDecorator(decorator);
         calendar.setOnMonthChangedListener(new OnMonthChangedListener() {
@@ -179,12 +182,26 @@ public class MainActivity extends BaseActivity {
         alertDialog.setNeutralButton(getString(R.string.delete),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteDiaryEntry(date);
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(date);
-                        getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
-                        calendar.invalidate();
-                        dialog.cancel();
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setMessage(getString(R.string.warning_deleting))
+                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteDiaryEntry(date);
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.setTime(date);
+                                        getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+                                        calendar.invalidate();
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        viewDiaryEntry(date);
+                                    }
+                                })
+                                .show();
                     }
                 });
         alertDialog.create().show();
@@ -207,13 +224,11 @@ public class MainActivity extends BaseActivity {
         }
         if(painDescription != null) {
             ((TextView) view.findViewById(R.id.painlevel_value)).setText(Integer.toString(painDescription.getPainLevel()));
-            BodyRegion bodyRegion = painDescription.getBodyRegion();
-            if(bodyRegion != null) {
-                int resourceID = Helper.getResourceIDForBodyRegion(bodyRegion);
-                if(resourceID != 0) {
-                    ((ImageView) view.findViewById(R.id.bodyregion)).setImageResource(resourceID);
-                    view.findViewById(R.id.bodyregion).setVisibility(View.VISIBLE);
-                }
+            EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
+            if(!bodyRegions.isEmpty()) {
+                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+                view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
             String painQualities = convertPainQualityEnumSetToString(painDescription.getPainQualities());
             if(painQualities != null) {
@@ -235,6 +250,19 @@ public class MainActivity extends BaseActivity {
         }
 
         return view;
+    }
+
+    private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
+        Bitmap[] images = new Bitmap[bodyRegions.size()];
+        int i = 0;
+        for(BodyRegion region : bodyRegions) {
+            int resourceID = Helper.getResourceIDForBodyRegion(region);
+            if (resourceID != 0) {
+                images[i] = BitmapFactory.decodeResource(getResources(), resourceID);
+                i++;
+            }
+        }
+        return images;
     }
 
     private int getResourceIDForCondition(Condition condition) {

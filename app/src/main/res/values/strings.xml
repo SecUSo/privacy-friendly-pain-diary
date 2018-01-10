@@ -128,5 +128,11 @@
     <string name="notes">Comments:</string>
     <string name="none">none</string>
     <string name="medication_taken">Medication taken:</string>
+    <string name="warning_deleting">Are you sure you want to delete this diary entry?</string>
+
+    <!-- ### REMINDER ### -->
+    <string name="reminders_channel_title">Reminders</string>
+    <string name="notification_title">Reminder</string>
+    <string name="notification_text">Remember to document your pain.</string>
 
 </resources>

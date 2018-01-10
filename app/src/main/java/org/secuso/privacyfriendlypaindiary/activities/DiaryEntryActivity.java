@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -63,13 +65,17 @@ import java.util.List;
  * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
  *
  * @author Susanne Felsen
- * @version 20180105
+ * @version 20180110
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
     private static final String TAG = DiaryEntryActivity.class.getSimpleName();
-    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
+    private static final int COLOR_MIDDLEGREY = Color.parseColor("#a8a8a8");
+    private static final int COLOR_LIGHTBLUE = Color.parseColor("#0274b2");
+//    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
+    private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
 
+    private boolean changesMade = false;
     private boolean edit = false;
 
     private Button btnBack;
@@ -86,11 +92,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private Condition condition;
     private String notes;
     private int painLevel = 0;
-    private BodyRegion bodyRegion;
+    private EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
     private EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
     private EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
     private List<DrugInterface> drugs = new ArrayList<>();
-//    private ArrayList<String> drugNames = new ArrayList<>();
     private ArrayList<DrugIntakeInterface> drugIntakes = new ArrayList<>();
     private DiaryEntryInterface diaryEntry;
 
@@ -99,14 +104,14 @@ public class DiaryEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diaryentry);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layout_dots);
-        btnBack = (Button) findViewById(R.id.btn_back);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layout_dots);
+        btnBack = findViewById(R.id.btn_back);
+        btnNext = findViewById(R.id.btn_next);
 
         layouts = new int[]{R.layout.diaryentry_slide1,
                 R.layout.diaryentry_slide2,
@@ -221,7 +226,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             if(painDescription != null) {
                 painLevel = painDescription.getPainLevel();
-                bodyRegion = painDescription.getBodyRegion();
+                bodyRegions = painDescription.getBodyRegions();
                 painQualities = painDescription.getPainQualities();
                 timesOfPain = painDescription.getTimesOfPain();
             }
@@ -229,34 +234,31 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-//        View slide = viewPager.findViewWithTag(0);
         ((TextView) findViewById(R.id.date)).setText(dateAsString);
 
         initConditions();
         if (condition != null) {
-            conditions[condition.getValue()].setBackgroundColor(COLOR_MIDDLEBLUE);
+            conditions[condition.getValue()].setBackgroundColor(COLOR_YELLOW);
         }
     }
 
     private void initConditions() {
-//        View slide = viewPager.findViewWithTag(0);
         conditions = new RadioButton[]{
-                (RadioButton) findViewById(R.id.condition_very_bad),
-                (RadioButton) findViewById(R.id.condition_bad),
-                (RadioButton) findViewById(R.id.condition_okay),
-                (RadioButton) findViewById(R.id.condition_good),
-                (RadioButton) findViewById(R.id.condition_very_good)};
+                findViewById(R.id.condition_very_bad),
+                findViewById(R.id.condition_bad),
+                findViewById(R.id.condition_okay),
+                findViewById(R.id.condition_good),
+                findViewById(R.id.condition_very_good)};
     }
 
     private void setDataOnSlide2() {
-//        View slide = viewPager.findViewWithTag(1);
-
-        SeekBar seekBar = (SeekBar) findViewById(R.id.painlevel_seekbar);
+        SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
         seekBar.setProgress(painLevel);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) painLevel = progress;
+                changesMade = true;
             }
 
             @Override
@@ -269,15 +271,13 @@ public class DiaryEntryActivity extends AppCompatActivity {
         });
     }
 
+    //TODO: have a look at https://developer.android.com/training/gestures/detector.html
     private void setDataOnSlide3() {
-//        final View slide = viewPager.findViewWithTag(2);
-        ImageView person = (ImageView) findViewById(R.id.person);
-        if(bodyRegion != null) {
-            int resourceID = Helper.getResourceIDForBodyRegion(bodyRegion);
-            if (resourceID != 0) {
-                ((ImageView) findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
-                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
-            }
+        ImageView person = findViewById(R.id.person);
+        if(!bodyRegions.isEmpty()) {
+            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+            ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+            findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
         }
         person.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -288,16 +288,24 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     int touchColor = getHotspotColor(R.id.person_coloured, Math.round(x), Math.round(y));
                     BodyRegion bodyPart = getBodyRegion(touchColor);
                     if(bodyPart != null) {
-                        if(bodyRegion != bodyPart) {
-                            bodyRegion = bodyPart;
-                            int resourceID = Helper.getResourceIDForBodyRegion(bodyPart);
-                            if (resourceID != 0) {
-                                ((ImageView) findViewById(R.id.bodyregion_value)).setImageResource(resourceID);
-                                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
-                            }
+                        if(!bodyRegions.contains(bodyPart)) {
+                            bodyRegions.add(bodyPart);
+                            changesMade = true;
+
+                            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                            ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+                            findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
                         } else { //already selected >> deselect
-                            bodyRegion = null;
-                            ((ImageView) findViewById(R.id.bodyregion_value)).setVisibility(View.GONE);
+                            bodyRegions.remove(bodyPart);
+                            changesMade = true;
+
+                            if(!bodyRegions.isEmpty()) {
+                                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                                ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+                                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+                            } else {
+                                findViewById(R.id.bodyregion_value).setVisibility(View.GONE);
+                            }
                         }
                     }
 
@@ -307,9 +315,20 @@ public class DiaryEntryActivity extends AppCompatActivity {
         });
     }
 
-    private void setDataOnSlide4() {
-//        View slide = viewPager.findViewWithTag(3);
+    private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
+        Bitmap[] images = new Bitmap[bodyRegions.size()];
+        int i = 0;
+        for(BodyRegion region : bodyRegions) {
+            int resourceID = Helper.getResourceIDForBodyRegion(region);
+            if (resourceID != 0) {
+                images[i] = BitmapFactory.decodeResource(getResources(), resourceID);
+                i++;
+            }
+        }
+        return images;
+    }
 
+    private void setDataOnSlide4() {
         if (painQualities.contains(PainQuality.STABBING)) {
             ((CheckBox) findViewById(R.id.pain_stabbing)).setChecked(true);
         }
@@ -322,8 +341,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide5() {
-//        View slide = viewPager.findViewWithTag(4);
-
         if (timesOfPain.contains(Time.ALL_DAY)) {
             ((CheckBox) findViewById(R.id.time_all_day)).setChecked(true);
         }
@@ -339,9 +356,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide6() {
-//        View slide = viewPager.findViewWithTag(5);
-        final EditText notesEditText = (EditText) findViewById(R.id.notes_text);
-
+        final EditText notesEditText = findViewById(R.id.notes_text);
+        notesEditText.setText(notes);
         notesEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int count, int after) {
@@ -351,6 +367,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 notes = notesEditText.getText().toString();
+                changesMade = true;
             }
 
             @Override
@@ -358,12 +375,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
             }
         });
-        notesEditText.setText(notes);
     }
 
     private void setDataOnSlide7() {
-//        View slide = viewPager.findViewWithTag(6);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.medication_container);
+        LinearLayout layout = findViewById(R.id.medication_container);
         layout.removeAllViews();
         for(DrugIntakeInterface drugIntake : drugIntakes) {
             layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
@@ -373,20 +388,17 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 
-        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
-        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
-
         dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(colorsInactive[currentPage]);
+            dots[i].setTextColor(COLOR_MIDDLEGREY);
             dotsLayout.addView(dots[i]);
         }
 
         if (dots.length > 0)
-            dots[currentPage].setTextColor(colorsActive[currentPage]);
+            dots[currentPage].setTextColor(COLOR_LIGHTBLUE);
     }
 
     private int getItem(int i) {
@@ -402,6 +414,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public void selectCondition(View view) {
+        changesMade = true;
         if (conditions == null) initConditions();
         for (int i = 0; i < conditions.length; i++) {
             if (conditions[i].isChecked()) {
@@ -411,7 +424,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     conditions[i].setChecked(false);
                     condition = null;
                 } else {
-                    conditions[i].setBackgroundColor(COLOR_MIDDLEBLUE);
+                    conditions[i].setBackgroundColor(COLOR_YELLOW);
                     condition = Condition.valueOf(i);
                 }
             } else {
@@ -421,6 +434,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public void onPainQualityClicked(View view) {
+        changesMade = true;
         boolean checked = ((CheckBox) view).isChecked();
         PainQuality quality = null;
         switch (view.getId()) {
@@ -444,6 +458,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public void onTimeClicked(View view) {
+        changesMade = true;
         boolean checked = ((CheckBox) view).isChecked();
         Time time = null;
         switch (view.getId()) {
@@ -470,7 +485,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public int getHotspotColor (int hotspotId, int x, int y) {
-        ImageView img = (ImageView) findViewById (hotspotId);
+        ImageView img = findViewById (hotspotId);
         img.setDrawingCacheEnabled(true);
         Bitmap hotspots = Bitmap.createBitmap(img.getDrawingCache());
         img.setDrawingCacheEnabled(false);
@@ -478,11 +493,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public boolean closeMatch (int color1, int color2, int tolerance) {
-        if ((int) Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
+        if (Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
             return false;
-        if ((int) Math.abs (Color.green (color1) - Color.green (color2)) > tolerance )
+        if (Math.abs (Color.green (color1) - Color.green (color2)) > tolerance )
             return false;
-        if ((int) Math.abs (Color.blue (color1) - Color.blue (color2)) > tolerance )
+        if (Math.abs (Color.blue (color1) - Color.blue (color2)) > tolerance )
             return false;
         return true;
     }
@@ -539,7 +554,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     public void addMedication(View view) {
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.medication_container);
+        final LinearLayout layout = findViewById(R.id.medication_container);
         DrugIntakeInterface drugIntake = new DrugIntake(new Drug(null, null), 0, 0, 0, 0);
         layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
         drugIntakes.add(drugIntake);
@@ -573,6 +588,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     dose = null;
                 }
                 drugIntake.getDrug().setDose(dose);
+                changesMade = true;
             }
 
             @Override
@@ -604,6 +620,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     name = null;
                 }
                 drugIntake.getDrug().setName(name);
+                changesMade = true;
 
                 if(adapter.isItemClicked()) {
                     String dose = adapter.getDose();
@@ -634,6 +651,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityMorning(i);
+                        changesMade = true;
                     } catch (NumberFormatException e) {
 
                     }
@@ -659,6 +677,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityNoon(i);
+                        changesMade = true;
                     } catch (NumberFormatException e) {
 
                     }
@@ -684,6 +703,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityEvening(i);
+                        changesMade = true;
                     } catch (NumberFormatException e) {
 
                     }
@@ -709,6 +729,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityNight(i);
+                        changesMade = true;
                     } catch (NumberFormatException e) {
 
                     }
@@ -735,16 +756,16 @@ public class DiaryEntryActivity extends AppCompatActivity {
         if(edit && diaryEntry.getPainDescription() != null) {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             painDescription.setPainLevel(painLevel);
-            painDescription.setBodyRegion(bodyRegion);
+            painDescription.setBodyRegions(bodyRegions);
             painDescription.setPainQualities(painQualities);
             painDescription.setTimesOfPain(timesOfPain);
         } else {
-            PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
+            PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegions, painQualities, timesOfPain);
             diaryEntry.setPainDescription(painDescription);
         }
         DBServiceInterface service = DBService.getInstance(this);
         if(!edit) {
-            long entryID = service.storeDiaryEntryAndAssociatedObjects(diaryEntry);
+            service.storeDiaryEntryAndAssociatedObjects(diaryEntry);
         } else {
             service.updateDiaryEntryAndAssociatedObjects(diaryEntry);
         }
@@ -776,17 +797,22 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.warning_leaving))
-                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
+        if(changesMade) {
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.warning_leaving))
+                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
 
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
+                    })
+                    .setNegativeButton(getString(R.string.cancel), null)
+                    .show();
+
+        } else {
+            finish();
+        }
     }
 
 

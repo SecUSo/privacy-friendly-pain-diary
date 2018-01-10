@@ -27,21 +27,21 @@ public class PainDescription extends AbstractPersistentObject implements PainDes
             COLUMN_TIME_OF_PAIN + " STRING);";
 
     private int painLevel;
-    private BodyRegion bodyRegion;
+    private EnumSet<BodyRegion> bodyRegions;
 
     private EnumSet<PainQuality> painQualities ;
     private EnumSet<Time> timesOfPain;
 
-    public PainDescription(int painLevel, BodyRegion bodyRegion) {
+    public PainDescription(int painLevel, EnumSet<BodyRegion> bodyRegions) {
         this.painLevel = painLevel;
-        this.bodyRegion = bodyRegion;
+        this.bodyRegions = bodyRegions;
         this.painQualities = EnumSet.noneOf(PainQuality.class);
         this.timesOfPain = EnumSet.noneOf(Time.class);
     }
 
-    public PainDescription(int painLevel, BodyRegion bodyRegion, EnumSet<PainQuality> painQualities, EnumSet<Time> timesOfPain) {
+    public PainDescription(int painLevel, EnumSet<BodyRegion> bodyRegions, EnumSet<PainQuality> painQualities, EnumSet<Time> timesOfPain) {
         this.painLevel = painLevel;
-        this.bodyRegion = bodyRegion;
+        this.bodyRegions = bodyRegions;
         this.painQualities = painQualities;
         this.timesOfPain = timesOfPain;
     }
@@ -57,13 +57,13 @@ public class PainDescription extends AbstractPersistentObject implements PainDes
     }
 
     @Override
-    public BodyRegion getBodyRegion() {
-        return bodyRegion;
+    public EnumSet<BodyRegion> getBodyRegions() {
+        return bodyRegions;
     }
 
     @Override
-    public void setBodyRegion(BodyRegion bodyRegion) {
-        this.bodyRegion = bodyRegion;
+    public void setBodyRegions(EnumSet<BodyRegion> bodyRegions) {
+        this.bodyRegions = bodyRegions;
     }
 
     @Override

@@ -124,5 +124,11 @@
     <string name="notes">Anmerkungen:</string>
     <string name="none">keine</string>
     <string name="medication_taken">Eingenommene Medikamente:</string>
+    <string name="warning_deleting">Sind Sie sicher, dass Sie den Tagebuch-Eintrag löschen wollen?</string>
+
+    <!-- ### REMINDER ### -->
+    <string name="reminders_channel_title">Erinnerungen</string>
+    <string name="notification_title">Erinnerung</string>
+    <string name="notification_text">Dokumentieren Sie Ihre Schmerzen.</string>
 
 </resources>

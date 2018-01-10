@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '26.0.3'
 
     defaultConfig {
         applicationId "org.secuso.privacyfriendlypaindiary"
@@ -27,7 +27,7 @@ dependencies {
     androidTestImplementation ('com.android.support.test:runner:0.3') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.+'
     implementation 'com.android.support:support-v4:26.+'
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'

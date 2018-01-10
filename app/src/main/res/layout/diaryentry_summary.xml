@@ -142,7 +142,7 @@
                     app:srcCompat="@drawable/paindiary_person_fullbody" />
 
                 <ImageView
-                    android:id="@+id/bodyregion"
+                    android:id="@+id/bodyregion_value"
                     android:layout_width="90dp"
                     android:layout_height="220dp"
                     android:scaleType="centerCrop"

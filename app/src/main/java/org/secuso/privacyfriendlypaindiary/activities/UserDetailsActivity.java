@@ -173,10 +173,10 @@ public class UserDetailsActivity extends AppCompatActivity {
             //TODO: alternative: save user ID and getUserByID
             user = users.get(0); //users should only contain one element
         }
-        dateWrapper = (TextInputLayout) findViewById(R.id.date_of_birth_wrapper);
+        dateWrapper = findViewById(R.id.date_of_birth_wrapper);
         dateWrapper.getEditText().addTextChangedListener(dateWatcher);
 
-        firstNameWrapper = (TextInputLayout) findViewById(R.id.first_name_wrapper);
+        firstNameWrapper = findViewById(R.id.first_name_wrapper);
         firstNameWrapper.getEditText().addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -206,7 +206,7 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
-        lastNameWrapper = (TextInputLayout) findViewById(R.id.last_name_wrapper);
+        lastNameWrapper = findViewById(R.id.last_name_wrapper);
         lastNameWrapper.getEditText().addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -236,7 +236,7 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
-        TextView genderLabel = (TextView) findViewById(R.id.gender_label);
+        TextView genderLabel = findViewById(R.id.gender_label);
         EditText editText = firstNameWrapper.getEditText();
 //        genderLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, editText.getTextSize())
         genderLabel.setTextColor(editText.getHintTextColors().getDefaultColor());
@@ -351,7 +351,6 @@ public class UserDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 if(tutorial) {
                     launchHomeScreen();
@@ -362,11 +361,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    protected int getNavigationDrawerID() {
-//        return R.id.nav_user_details;
-//    }
 
 }
 

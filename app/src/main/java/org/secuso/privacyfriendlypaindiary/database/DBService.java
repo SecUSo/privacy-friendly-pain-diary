@@ -457,9 +457,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        if(painDescription.getBodyRegion() != null) {
-            values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        }
+        values.put(PainDescription.COLUMN_BODY_REGION, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
         values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
         values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         return db.insert(PainDescription.TABLE_NAME, null, values);
@@ -469,15 +467,40 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        if(painDescription.getBodyRegion() != null) {
-            values.put(PainDescription.COLUMN_BODY_REGION, painDescription.getBodyRegion().getValue());
-        } else{
-            values.put(PainDescription.COLUMN_BODY_REGION, (Integer) null);
-        }
+        values.put(PainDescription.COLUMN_BODY_REGION, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
         values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
         values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});
+    }
+
+    private String convertBodyRegionEnumSetToString(EnumSet<BodyRegion> bodyRegions) {
+        String bodyRegionsAsString = "";
+        for(BodyRegion region : bodyRegions) {
+            bodyRegionsAsString += region.getValue() + ",";
+        }
+        if(!bodyRegionsAsString.isEmpty()) {
+            bodyRegionsAsString = bodyRegionsAsString.substring(0, bodyRegionsAsString.length() - 1);
+        } else {
+            bodyRegionsAsString = null;
+        }
+        return bodyRegionsAsString;
+    }
+
+    private EnumSet<BodyRegion> convertStringToBodyRegionEnumSet(String bodyRegionsAsString) {
+        EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
+        if(bodyRegionsAsString != null && !bodyRegionsAsString.isEmpty()) {
+            String[] regions = bodyRegionsAsString.split(",");
+            for (String bodyRegion : regions) {
+                try {
+                    BodyRegion r = BodyRegion.valueOf(Integer.parseInt(bodyRegion));
+                    bodyRegions.add(r);
+                } catch (IllegalArgumentException e) {
+                    Log.d(TAG, "Error parsing body region.");
+                }
+            }
+        }
+        return bodyRegions;
     }
 
     private String convertPainQualityEnumSetToString(EnumSet<PainQuality> painQualities) {
@@ -554,16 +577,13 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
         int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
 
-        int indexBodyRegion = cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION);
-        BodyRegion bodyRegion = null;
-        if (!cursor.isNull(indexBodyRegion)) {
-            bodyRegion = BodyRegion.valueOf(cursor.getInt(indexBodyRegion));
-        }
+        String bodyRegionsAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION));
         String painQualitiesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_QUALITY));
         String timesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_TIME_OF_PAIN));
+        EnumSet<BodyRegion> bodyRegions = convertStringToBodyRegionEnumSet(bodyRegionsAsString);
         EnumSet<PainQuality> painQualities = convertStringToPainQualityEnumSet(painQualitiesAsString);
         EnumSet<Time> timesOfPain = convertStringToTimeEnumSet(timesAsString);
-        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegion, painQualities, timesOfPain);
+        PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegions, painQualities, timesOfPain);
         painDescription.setObjectID(objectID);
         return painDescription;
     }

@@ -1,7 +1,13 @@
 package org.secuso.privacyfriendlypaindiary.helpers;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
+
+import java.util.EnumSet;
 
 /**
  * @author Susanne Felsen
@@ -59,4 +65,14 @@ public class Helper {
                 return 0;
         }
     }
+    
+    public static Bitmap overlay(Bitmap[] images) {
+        Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());
+        Canvas canvas = new Canvas(overlay);
+        for(int i = 0; i < images.length; i++) {
+            canvas.drawBitmap(images[i], 0, 0, null);
+        }
+        return overlay;
+    }
+
 }

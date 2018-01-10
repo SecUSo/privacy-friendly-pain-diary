@@ -31,9 +31,4 @@ public enum BodyRegion {
         return value;
     }
 
-//  @Override
-//  public String toString() {
-//      TODO: return localized String
-//  }
-
 }
