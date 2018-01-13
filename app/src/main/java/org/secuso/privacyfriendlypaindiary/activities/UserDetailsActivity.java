@@ -249,16 +249,19 @@ public class UserDetailsActivity extends AppCompatActivity {
         lastName = user.getLastName();
         dateOfBirth = user.getDateOfBirth();
         gender = user.getGender();
+        RadioGroup genderGroup = findViewById(R.id.gender);
         if (gender == Gender.MALE) {
-            ((RadioButton) findViewById(R.id.gender_male)).setChecked(true);
-            ((RadioButton) findViewById(R.id.gender_female)).setChecked(false);
+            genderGroup.check(R.id.gender_male);
             maleSelected = true;
+            femaleSelected = false;
         } else if (gender == Gender.FEMALE) {
-            ((RadioButton) findViewById(R.id.gender_male)).setChecked(false);
-            ((RadioButton) findViewById(R.id.gender_female)).setChecked(true);
+            genderGroup.check(R.id.gender_female);
+            maleSelected = false;
             femaleSelected = true;
         } else {
-            ((RadioGroup) findViewById(R.id.gender)).clearCheck();
+            genderGroup.clearCheck();
+            maleSelected = false;
+            femaleSelected = false;
         }
 
         if (dateOfBirth != null) {
@@ -306,9 +309,8 @@ public class UserDetailsActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.gender_male:
-                RadioButton buttonMale = (RadioButton) view;
                 if (maleSelected) {
-                    buttonMale.setChecked(false);
+                    ((RadioGroup) findViewById(R.id.gender)).clearCheck();
                     gender = null;
                     maleSelected = false;
                 } else {
@@ -318,9 +320,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.gender_female:
-                RadioButton buttonFemale = (RadioButton) view;
                 if (femaleSelected) {
-                    buttonFemale.setChecked(false);
+                    ((RadioGroup) findViewById(R.id.gender)).clearCheck();
                     gender = null;
                     femaleSelected = false;
                 } else {

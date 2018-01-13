@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -421,7 +422,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 //condition will be deselected if it is already selected
                 if(condition == Condition.valueOf(i)) {
                     conditions[i].setBackgroundColor(Color.TRANSPARENT);
-                    conditions[i].setChecked(false);
+                    ((RadioGroup) findViewById(R.id.condition_group)).clearCheck();
                     condition = null;
                 } else {
                     conditions[i].setBackgroundColor(COLOR_YELLOW);

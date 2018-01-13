@@ -50,6 +50,7 @@
             android:textSize="@dimen/diaryentry_heading"/>
 
         <RadioGroup
+            android:id="@+id/condition_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
