@@ -75,6 +75,10 @@
     <string name="slide4_heading">Github und Guide</string>
     <string name="slide4_text">Der Quellcode dieser App ist auf GitHub. Weitere Infos gibt es auf der Hilfe-Seite und im Privacy Friendly App Guide.</string>
 
+    <!-- ### Export PDF### -->
+    <string name="export_pdf">Export PDF</string>
+    <string name="save_pdf">Speichern</string>
+
     <!-- ### USER DETAILS ### -->
     <string name="user_details">Benutzerdaten</string>
     <string name="first_name">Vorname</string>

@@ -12,6 +12,10 @@
             android:icon="@drawable/ic_user"
             android:title="@string/user_details" />
         <item
+            android:id="@+id/nav_export_pdf"
+            android:icon="@drawable/ic_export_pdf"
+            android:title="@string/export_pdf" />
+        <item
             android:id="@+id/nav_tutorial"
             android:icon="@drawable/ic_menu_tutorial"
             android:title="@string/action_tutorial" />

@@ -249,6 +249,9 @@ public class MainActivity extends BaseActivity {
             ((TextView) view.findViewById(R.id.medication_value)).setText(medication);
         }
 
+        //add view to Helper View list
+        Helper.addViewExportPdf(view);
+
         return view;
     }
 

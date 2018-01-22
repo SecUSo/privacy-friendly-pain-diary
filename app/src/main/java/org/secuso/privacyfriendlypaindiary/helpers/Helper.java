@@ -3,10 +3,12 @@ package org.secuso.privacyfriendlypaindiary.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.view.View;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -14,6 +16,12 @@ import java.util.EnumSet;
  * @version 20171230
  */
 public class Helper {
+
+    //ExportPDFActivity
+    public static ArrayList<View> pdfViewList = new ArrayList<View>();
+    public static void addViewExportPdf(View v){
+        pdfViewList.add(v);
+    }
 
     public static int getResourceIDForBodyRegion(BodyRegion bodyRegion) {
         switch(bodyRegion) {
@@ -65,6 +73,8 @@ public class Helper {
                 return 0;
         }
     }
+
+
     
     public static Bitmap overlay(Bitmap[] images) {
         Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());

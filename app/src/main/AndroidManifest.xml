@@ -40,6 +40,15 @@
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
         </activity>
         <activity
+            android:name="org.secuso.privacyfriendlypaindiary.activities.ExportPDFActivity"
+            android:label="@string/export_pdf"
+            android:parentActivityName="org.secuso.privacyfriendlypaindiary.activities.MainActivity">
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
+        </activity>
+        <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -62,6 +71,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
         </activity>
+
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -88,5 +98,7 @@
 
         </service>
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
 </manifest>

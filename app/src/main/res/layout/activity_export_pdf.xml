@@ -15,7 +15,7 @@
         android:fitsSystemWindows="true"
         tools:context=".activities.ExportPDFActivity">
 
-        <include layout="@layout/activity_userdetails_content" />
+        <include layout="@layout/activity_export_pdf_content" />
 
     </android.support.design.widget.CoordinatorLayout>
 

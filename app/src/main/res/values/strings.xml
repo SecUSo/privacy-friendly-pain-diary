@@ -79,6 +79,10 @@
     <string name="slide4_heading">Github and Guide</string>
     <string name="slide4_text">The sourcecode of this app is available at GitHub. For further explanations have a look at the help page or the Privacy Friendly App Guide.</string>
 
+    <!-- ### Export PDF### -->
+    <string name="export_pdf">Export PDF</string>
+    <string name="save_pdf">Save Pdf</string>
+
     <!-- ### USER DETAILS ### -->
     <string name="user_details">User Details </string>
     <string name="first_name">First Name</string>

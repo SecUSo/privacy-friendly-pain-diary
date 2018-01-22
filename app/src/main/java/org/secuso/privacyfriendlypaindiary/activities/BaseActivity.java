@@ -36,9 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-import org.secuso.privacyfriendlypaindiary.activities.AboutActivity;
-
-
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.tutorial.TutorialActivity;
 
@@ -163,6 +160,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 break;
             case R.id.nav_user_details:
                 intent = new Intent(this, UserDetailsActivity.class);
+                createBackStack(intent);
+                break;
+
+            case R.id.nav_export_pdf:
+                intent = new Intent(this, ExportPDFActivity.class);
                 createBackStack(intent);
                 break;
             case R.id.nav_tutorial:
