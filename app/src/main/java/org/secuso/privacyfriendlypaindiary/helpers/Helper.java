@@ -75,7 +75,7 @@ public class Helper {
     }
 
 
-    
+
     public static Bitmap overlay(Bitmap[] images) {
         Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());
         Canvas canvas = new Canvas(overlay);

@@ -5,15 +5,20 @@
         android:title="@string/pref_header_general">
         <Preference android:key="pref_reset"
             android:title="@string/pref_reset"
-            android:summary="@string/pref_reset_summary"/>
+            android:summary="@string/pref_reset_summary" />
     </PreferenceCategory>
 
-    <!--<SwitchPreference-->
-        <!--android:id="@+id/pref_example_switch"-->
-        <!--android:key="pref_example_switch"-->
-        <!--android:title="@string/pref_example_switch"-->
-        <!--android:summary="@string/pref_example_switch_summary"-->
-        <!--android:defaultValue="false"/>-->
+    <PreferenceCategory
+        android:title="@string/pref_header_notifications">
+        <SwitchPreference android:key="pref_reminder"
+            android:title="@string/pref_reminder"
+            android:defaultValue="false" />
+        <org.secuso.privacyfriendlypaindiary.helpers.TimePreference
+            android:key="pref_reminder_time"
+            android:title="@string/pref_reminder_time"
+            android:defaultValue="64800000" />
+    </PreferenceCategory>
+
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->

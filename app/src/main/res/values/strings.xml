@@ -26,6 +26,7 @@
     <string name="changes_discarded">Changes discarded.</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="set">Set</string>
 
     <!-- ### MAIN ### -->
     <string name="welcome_question">How do you feel today?</string>
@@ -65,6 +66,9 @@
     <string name="pref_reset">Reset app</string>
     <string name="pref_reset_summary">Delete all diary entries and user details</string>
     <string name="pref_reset_warning">All diary entries and user details will be deleted irrevocably.\nAre you sure?</string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_reminder">Daily Reminder</string>
+    <string name="pref_reminder_time">Reminder Time</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
@@ -137,6 +141,6 @@
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Reminders</string>
     <string name="notification_title">Reminder</string>
-    <string name="notification_text">Remember to document your pain.</string>
+    <string name="notification_text">Don\'t forget to make your daily pain diary!</string>
 
 </resources>

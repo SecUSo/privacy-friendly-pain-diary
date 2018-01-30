@@ -1,3 +1,20 @@
+/*
+    Privacy Friendly Pain Diary is licensed under the GPLv3.
+    Copyright (C) 2018  Susanne Felsen, Rybien Sinjari
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 package org.secuso.privacyfriendlypaindiary.activities;
 
 
@@ -7,20 +24,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService;
 
 /**
  * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/settings.html"/> and <a href="https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su/4325239#4325239"/>
  *
  * @author Susanne Felsen
- * @version 20180108
+ * @version 20180130
  */
 public class SettingsActivity extends BaseActivity {
 
-    public static final String KEY_PREF_RESET = "pref_reset";
+    private static final String KEY_PREF_RESET = "pref_reset";
+    private static final String KEY_PREF_REMINDER = "pref_reminder";
+    private static final String KEY_PREF_REMINDER_TIME = "pref_reminder_time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +61,11 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            initPreferences();
+        }
+
+        private void initPreferences() {
             addPreferencesFromResource(R.xml.pref_general);
 //            PreferenceManager.setDefaultValues(Preferences.this, R.xml.pref_general, false);
 //            initSummary(getPreferenceScreen());
@@ -98,15 +124,41 @@ public class SettingsActivity extends BaseActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
 //            updatePrefSummary(findPreference(key));
-//            if (key.equals(KEY_PREF_RESET)) {
-//                ...
-//            }
+            if(key.equals(KEY_PREF_RESET)) {
+
+            }
+            if (key.equals(KEY_PREF_REMINDER)) {
+                boolean enabled = sharedPreferences.getBoolean(KEY_PREF_REMINDER, false);
+                if(enabled) {
+                    NotificationJobService.scheduleJob(getActivity().getApplicationContext());
+                } else {
+                    NotificationJobService.cancelJob(getActivity().getApplicationContext());
+                }
+            } else if (key.equals(KEY_PREF_REMINDER_TIME)) {
+                boolean enabled = sharedPreferences.getBoolean(KEY_PREF_REMINDER, false);
+                if(enabled) {
+                    NotificationJobService.cancelJob(getActivity().getApplicationContext());
+                    NotificationJobService.scheduleJob(getActivity().getApplicationContext());
+                }
+            }
         }
 
         private void resetApp() {
             DBServiceInterface service = DBService.getInstance(getActivity().getApplicationContext());
             service.reinitializeDatabase();
+
+            resetPreferences();
+        }
+
+        private void resetPreferences() {
+            PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).edit().clear().commit();
+            PreferenceManager.setDefaultValues(getActivity().getApplicationContext(), R.xml.pref_general, true);
+            NotificationJobService.cancelJob(getActivity().getApplicationContext());
+
+            getPreferenceScreen().removeAll();
+            initPreferences();
         }
 
     }
+
 }

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,13 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -485,12 +488,29 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    public int getHotspotColor (int hotspotId, int x, int y) {
-        ImageView img = findViewById (hotspotId);
+    private int getHotspotColor(int hotspotId, int x, int y) {
+        ImageView img = findViewById(hotspotId);
         img.setDrawingCacheEnabled(true);
-        Bitmap hotspots = Bitmap.createBitmap(img.getDrawingCache());
-        img.setDrawingCacheEnabled(false);
-        return hotspots.getPixel(x, y);
+        if(img.getDrawingCache() == null) {
+            img.setDrawingCacheEnabled(false);
+            Log.d(TAG, "DRAWING CACHE ERROR");
+            //TODO:
+            return 0;
+        } else {
+            Bitmap hotspots = Bitmap.createBitmap(img.getDrawingCache());
+            img.setDrawingCacheEnabled(false);
+            return hotspots.getPixel(x, y);
+        }
+    }
+
+    private Bitmap loadBitmapFromView() {
+        View v = findViewById(android.R.id.content);
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas c = new Canvas(b);
+        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+        v.draw(c);
+        return b;
     }
 
     public boolean closeMatch (int color1, int color2, int tolerance) {
