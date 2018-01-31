@@ -141,6 +141,7 @@
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Reminders</string>
     <string name="notification_title">Reminder</string>
-    <string name="notification_text">Don\'t forget to make your daily pain diary!</string>
+    <string name="notification_text">Don\'t forget to make your daily pain diary entry!</string>
+    <string name="snooze">Snooze</string>
 
 </resources>

@@ -138,5 +138,6 @@
     <string name="reminders_channel_title">Erinnerungen</string>
     <string name="notification_title">Erinnerung</string>
     <string name="notification_text">Vergessen Sie Ihren täglichen Schmerztagebuch-Eintrag nicht!</string>
+    <string name="snooze">Snooze</string>
 
 </resources>

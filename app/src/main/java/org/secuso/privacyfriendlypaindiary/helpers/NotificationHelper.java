@@ -1,11 +1,10 @@
 /*
-    Privacy Friendly Pain Diary is licensed under the GPLv3.
-    Copyright (C) 2018  Susanne Felsen, Rybien Sinjari
+    This file is part of Privacy Friendly Pain Diary.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    Privacy Friendly Pain Diary is free software: you can redistribute it
+    and/or modify it under the terms of the GNU General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,6 +23,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.provider.Settings;
 
@@ -39,6 +39,7 @@ import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
 public class NotificationHelper extends ContextWrapper {
 
     private static final String TAG = NotificationHelper.class.getSimpleName();
+    private static final int COLOR_LIGHTBLUE = Color.parseColor("#0274b2");
 
     private static final String CHANNEL_ID = "reminders";
 
@@ -62,7 +63,8 @@ public class NotificationHelper extends ContextWrapper {
         }
     }
 
-    public Notification.Builder getNotification(String title, String body) {
+    //<a href="https://materialdoc.com/patterns/notifications/"/>
+    public Notification.Builder getNotificationBuilder(String title, String body) {
         Notification.Builder notificationBuilder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationBuilder = new Notification.Builder(getApplicationContext(), CHANNEL_ID);
@@ -76,8 +78,10 @@ public class NotificationHelper extends ContextWrapper {
 
         return notificationBuilder
                 .setSmallIcon(R.drawable.ic_local_hospital)
+                .setColor(COLOR_LIGHTBLUE)
                 .setContentTitle(title)
                 .setContentText(body)
+                .setStyle(new Notification.BigTextStyle())
                 .setContentIntent(resultPendingIntent)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setAutoCancel(true);
