@@ -16,30 +16,29 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
-import android.app.FragmentTransaction;
-import android.graphics.Point;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.helpers.DateDialog;
-import org.secuso.privacyfriendlypaindiary.helpers.Helper;
+import org.secuso.privacyfriendlypaindiary.database.DBService;
+import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.PdfCreator;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ExportPDFActivity extends AppCompatActivity {
+
+    private static final String TAG = ExportPDFActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,8 @@ public class ExportPDFActivity extends AppCompatActivity {
                 //dialog.show(ft, "DatePicker");
                 break;
             case R.id.create:
-                createPdf();
+//                createPdf();
+                saveFile();
                 break;
             default:
                 break;
@@ -80,57 +80,46 @@ public class ExportPDFActivity extends AppCompatActivity {
 //        });
     }
 
-    private void createPdf(){
-        // create a new document
-        PdfDocument document = new PdfDocument();
-        Display display = getWindowManager().getDefaultDisplay();
+    private void saveFile() {
+        DBServiceInterface service = DBService.getInstance(this);
+        Calendar c = Calendar.getInstance();
+        Date endDate = c.getTime();
+        c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 1);
+        Date startDate = c.getTime();
+        List<DiaryEntryInterface> diaryEntries = service.getDiaryEntriesByTimeSpan(startDate, endDate);
+        saveFile(PdfCreator.createPdfDocument(this, diaryEntries));
+    }
 
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
+    private void saveFile(PdfDocument doc){
+//        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
 
-        // crate a page description
-        PdfDocument.PageInfo pageInfo =
-                new PdfDocument.PageInfo.Builder(width, height, 1).create();
+            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+            if (!directory.mkdirs()) {
+                Log.d(TAG, "Directory not created");
+            }
 
-        // start a page
-        PdfDocument.Page page = document.startPage(pageInfo);
+            File file = new File(directory, "test.pdf");
+            if (file.exists()) {
+                file.delete();
+            }
 
-        Canvas canvas = page.getCanvas();
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                doc.writeTo(out);
+                doc.close();
+                out.flush();
+                out.close();
+                Toast.makeText(this, "PDF created.", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(50);
-        canvas.drawText("Vorname: Max       Name: Mustermann",100, height/2, paint);
-
-        // finish the page
-        document.finishPage(page);
-
-        // create pain diary entry pages
-        for (View v : Helper.pdfViewList){
-            page = document.startPage(pageInfo);
-            // draw view on the page
-            View content = v;//this.findViewById(android.R.id.content);
-            content.draw(page.getCanvas());
-            // finish the page
-            document.finishPage(page);
-        }
-
-        // write the document content
-        String targetPdf = "/sdcard/PainDiary.pdf";
-        File filePath = new File(targetPdf);
-        try {
-            document.writeTo(new FileOutputStream(filePath));
-            Toast.makeText(this, "PainDiary.pfd created", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Something wrong: " + e.toString(),
-                    Toast.LENGTH_LONG).show();
-        }
-
-        // close the document
-        document.close();
+//            String path = file.getAbsolutePath();
+//            Log.d(TAG, "path: " + path);
+//        } else {
+//            Log.d(TAG, "Permission denied.");
+//        }
     }
 
 }
