@@ -79,10 +79,6 @@
     <string name="slide4_heading">Github und Guide</string>
     <string name="slide4_text">Der Quellcode dieser App ist auf GitHub. Weitere Infos gibt es auf der Hilfe-Seite und im Privacy Friendly App Guide.</string>
 
-    <!-- ### Export PDF### -->
-    <string name="export_pdf">Export PDF</string>
-    <string name="save_pdf">Speichern</string>
-
     <!-- ### USER DETAILS ### -->
     <string name="user_details">Benutzerdaten</string>
     <string name="first_name">Vorname</string>
@@ -139,5 +135,16 @@
     <string name="notification_title">Erinnerung</string>
     <string name="notification_text">Vergessen Sie Ihren täglichen Schmerztagebuch-Eintrag nicht!</string>
     <string name="snooze">Snooze</string>
+
+    <!-- ### PDF ### -->
+    <string name="export_pdf">PDF Export</string>
+    <string name="export">Exportieren</string>
+    <string name="heading_export">Bitte wählen Sie den Zeitraum, für den Ihre Schmerztagebuch-Einträge als PDF exportiert werden sollen.</string>
+    <string name="start_date">Start-Datum</string>
+    <string name="end_date">End-Datum</string>
+    <string name="patient_details">Patienten Details</string>
+    <string name="diary_entries">Schmerztagebuch-Einträge</string>
+    <string name="diary_entries_none">Keine Einträge gefunden.</string>
+
 
 </resources>

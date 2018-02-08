@@ -370,7 +370,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         SQLiteDatabase db = this.getReadableDatabase();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
 
-        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, "DATE(" + DiaryEntry.COLUMN_DATE + ") >= ? AND " + "DATE(" + DiaryEntry.COLUMN_DATE + ") <= ?",
+        Cursor cursor = db.query(DiaryEntry.TABLE_NAME, null, "DATE(" + DiaryEntry.COLUMN_DATE + ") >= ? AND " + "DATE(" + DiaryEntry.COLUMN_DATE + ") <= ? ORDER BY DATE(" + DiaryEntry.COLUMN_DATE + ") ASC",
                 new String[]{dateFormat.format(startDate), dateFormat.format(endDate)}, null, null, null, null);
 
         DiaryEntryInterface diaryEntry = null;

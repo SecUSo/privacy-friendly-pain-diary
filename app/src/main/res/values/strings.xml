@@ -83,10 +83,6 @@
     <string name="slide4_heading">Github and Guide</string>
     <string name="slide4_text">The sourcecode of this app is available at GitHub. For further explanations have a look at the help page or the Privacy Friendly App Guide.</string>
 
-    <!-- ### Export PDF### -->
-    <string name="export_pdf">Export PDF</string>
-    <string name="save_pdf">Save Pdf</string>
-
     <!-- ### USER DETAILS ### -->
     <string name="user_details">User Details </string>
     <string name="first_name">First Name</string>
@@ -143,5 +139,15 @@
     <string name="notification_title">Reminder</string>
     <string name="notification_text">Don\'t forget to make your daily pain diary entry!</string>
     <string name="snooze">Snooze</string>
+
+    <!-- ### PDF ### -->
+    <string name="export_pdf">Export PDF</string>
+    <string name="export">Export</string>
+    <string name="heading_export">Please select a range of dates for which your pain diary entries should be exported as PDF.</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="patient_details">Patient Details</string>
+    <string name="diary_entries">Pain Diary Entries</string>
+    <string name="diary_entries_none">No entries found.</string>
 
 </resources>

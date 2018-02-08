@@ -19,15 +19,9 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -37,13 +31,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 
@@ -51,7 +39,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,7 +51,7 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private MaterialCalendarView calendar;
     private EventDecorator decorator;
@@ -169,7 +156,9 @@ public class MainActivity extends BaseActivity {
 
     private void viewDiaryEntry(final Date date) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setView(initDiaryEntrySummary(date));
+        DBServiceInterface service = DBService.getInstance(this);
+        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
+        alertDialog.setView(Helper.getDiaryEntrySummary(this, diaryEntry));
         alertDialog.setPositiveButton("OK", null);
         alertDialog.setNegativeButton(getString(R.string.edit),
                 new DialogInterface.OnClickListener() {
@@ -203,110 +192,6 @@ public class MainActivity extends BaseActivity {
                     }
                 });
         alertDialog.create().show();
-    }
-
-    private View initDiaryEntrySummary(Date date) {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.diaryentry_summary, null);
-
-        DBServiceInterface service = DBService.getInstance(this);
-        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
-        PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
-
-        ((TextView) view.findViewById(R.id.date)).setText(dateFormat.format(date));
-        if(diaryEntry.getNotes() != null) {
-            ((TextView) view.findViewById(R.id.notes_value)).setText(diaryEntry.getNotes());
-        }
-        if(diaryEntry.getCondition() != null) {
-            ((ImageView) view.findViewById(R.id.condition_icon)).setImageResource(getResourceIDForCondition(diaryEntry.getCondition()));
-        }
-        if(painDescription != null) {
-            ((TextView) view.findViewById(R.id.painlevel_value)).setText(Integer.toString(painDescription.getPainLevel()));
-            EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
-            if(!bodyRegions.isEmpty()) {
-                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
-                view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
-            }
-            String painQualities = convertPainQualityEnumSetToString(painDescription.getPainQualities());
-            if(painQualities != null) {
-                ((TextView) view.findViewById(R.id.painquality_value)).setText(painQualities);
-            }
-            String timesOfPain = convertTimeEnumSetToString(painDescription.getTimesOfPain());
-            if(timesOfPain != null) {
-                ((TextView) view.findViewById(R.id.timeofpain_value)).setText(timesOfPain);
-            }
-        }
-        String medication = "";
-        for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
-            medication = medication + drugIntake.getDrug().getName() + " (" + drugIntake.getDrug().getDose() + ") " +
-                drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
-                System.getProperty("line.separator");
-        }
-        if(!medication.isEmpty()) {
-            ((TextView) view.findViewById(R.id.medication_value)).setText(medication);
-        }
-
-        //add view to Helper View list
-        Helper.addViewExportPdf(view);
-
-        return view;
-    }
-
-    private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
-        Bitmap[] images = new Bitmap[bodyRegions.size()];
-        int i = 0;
-        for(BodyRegion region : bodyRegions) {
-            int resourceID = Helper.getResourceIDForBodyRegion(region);
-            if (resourceID != 0) {
-                images[i] = BitmapFactory.decodeResource(getResources(), resourceID);
-                i++;
-            }
-        }
-        return images;
-    }
-
-    private int getResourceIDForCondition(Condition condition) {
-        switch(condition) {
-            case VERY_BAD:
-                return R.drawable.ic_sentiment_very_dissatisfied;
-            case BAD:
-                return R.drawable.ic_sentiment_dissatisfied;
-            case OKAY:
-                return R.drawable.ic_sentiment_neutral;
-            case GOOD:
-                return R.drawable.ic_sentiment_satisfied;
-            case VERY_GOOD:
-                return R.drawable.ic_sentiment_very_satisfied;
-            default:
-                return R.drawable.ic_sentiment_neutral;
-        }
-    }
-
-    private String convertPainQualityEnumSetToString(EnumSet<PainQuality> painQualities) {
-        String painQualitiesAsString = "";
-        for(PainQuality quality : painQualities) {
-            painQualitiesAsString += getString(quality.getResourceID()) + ", ";
-        }
-        if(!painQualitiesAsString.isEmpty()) {
-            painQualitiesAsString = painQualitiesAsString.substring(0, painQualitiesAsString.length() - 2);
-        } else {
-            painQualitiesAsString = null;
-        }
-        return painQualitiesAsString;
-    }
-
-    private String convertTimeEnumSetToString(EnumSet<Time> times) {
-        String timesAsString = "";
-        for(Time time : times) {
-            timesAsString += getString(time.getResourceID()) + ", ";
-        }
-        if(!timesAsString.isEmpty()) {
-            timesAsString = timesAsString.substring(0, timesAsString.length() - 2);
-        } else {
-            timesAsString = null;
-        }
-        return timesAsString;
     }
 
     private void editDiaryEntry(Date date) {

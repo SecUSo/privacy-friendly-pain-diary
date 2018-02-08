@@ -519,16 +519,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap loadBitmapFromView() {
-        View v = findViewById(android.R.id.content);
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas c = new Canvas(b);
-        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-        v.draw(c);
-        return b;
-    }
-
     public boolean closeMatch (int color1, int color2, int tolerance) {
         if (Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
             return false;
