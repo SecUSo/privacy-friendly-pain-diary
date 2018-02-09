@@ -17,12 +17,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fab_margin"
             android:text="@string/heading_export"
             android:textSize="@dimen/main_heading"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/share_caution"
+            android:textSize="@dimen/main_heading"
+            android:textColor="@color/red" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/start_date_wrapper"
@@ -85,5 +91,14 @@
         android:text="@string/export"
         android:onClick="onClick" />
 
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@null"
+        android:text="@string/share"
+        android:onClick="onClick" />
 
 </RelativeLayout>

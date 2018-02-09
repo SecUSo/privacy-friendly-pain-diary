@@ -16,11 +16,17 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +34,6 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.PdfCreator;
 
 import java.io.File;
@@ -45,6 +49,7 @@ public class ExportPDFActivity extends AppCompatActivity {
     private TextInputLayout startDateWrapper;
     private TextInputLayout endDateWrapper;
 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private Date startDate;
     private Date endDate;
 
@@ -67,20 +72,22 @@ public class ExportPDFActivity extends AppCompatActivity {
                 showDatePickerDialog(R.id.end_date, dateText);
                 break;
             case R.id.btn_export:
-//                createPdf();
-                saveFile();
+                File file = exportAsPDF();
+                if(file != null) {
+                    Toast.makeText(this, getString(R.string.export_success), Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.btn_share:
+                exportAndShare();
                 break;
             default:
                 break;
         }
     }
 
-    public void showDatePickerDialog(final int callerID, String dateText) {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
-        Date date = null;
-
-        if(dateText != null || !dateText.equals("")) {
+    private void showDatePickerDialog(final int callerID, String dateText) {
+        Date date;
+        if (dateText != null || !dateText.equals("")) {
             try {
                 date = dateFormat.parse(dateText);
             } catch (Exception exp) {
@@ -92,67 +99,96 @@ public class ExportPDFActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH); // calendar month 0-11
+        int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DATE);
 
         DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 Calendar cal = Calendar.getInstance();
+                cal.clear();
                 cal.set(year, month, day);
-                if(callerID == R.id.start_date) {
+                if (callerID == R.id.start_date) {
                     startDate = cal.getTime();
                     startDateWrapper.getEditText().setText(dateFormat.format(startDate));
+                    startDateWrapper.setError(null);
                 } else if (callerID == R.id.end_date) {
                     endDate = cal.getTime();
                     endDateWrapper.getEditText().setText(dateFormat.format(endDate));
+                    endDateWrapper.setError(null);
                 }
             }
         }, year, month, day);
         dialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-//        dialog.getDatePicker().setMinDate( ).getTime()); day of first entry?
+        if (callerID == R.id.start_date && endDate != null) {
+            dialog.getDatePicker().setMaxDate(endDate.getTime());
+        } else if(callerID == R.id.end_date && startDate != null) {
+            dialog.getDatePicker().setMinDate(startDate.getTime());
+        }
         dialog.show();
     }
 
-    private void saveFile() {
-        DBServiceInterface service = DBService.getInstance(this);
-        Calendar c = Calendar.getInstance();
-        Date endDate = c.getTime();
-        c.set(Calendar.MONTH, c.get(Calendar.MONTH) - 1);
-        Date startDate = c.getTime();
-        saveFile(new PdfCreator(this, startDate, endDate).createPdfDocument());
+    private File exportAsPDF() {
+        File file = null;
+        if (startDate == null) {
+            startDateWrapper.setError(getString(R.string.start_date_error));
+        } else if (endDate == null) {
+            endDateWrapper.setError(getString(R.string.end_date_error));
+        } else if (startDate.before(endDate)) {
+            file = exportAsPDF(new PdfCreator(this, startDate, endDate).createPdfDocument());
+        }
+        return file;
     }
 
-    private void saveFile(PdfDocument doc){
-//        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-
-            File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-            if (!directory.mkdirs()) {
-                Log.d(TAG, "Directory not created");
+    private File exportAsPDF(PdfDocument doc){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(ExportPDFActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                //          if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                //                  Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, getString(R.string.permission_write_error), Toast.LENGTH_LONG).show();
+                //          }
             }
+            //      else {
+            //          ActivityCompat.requestPermissions(ExportPDFActivity.this,
+            //                  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            //                  MY_PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+            //  }
+        }
+//        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
 
-            File file = new File(directory, "test.pdf");
-            if (file.exists()) {
-                file.delete();
-            }
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
 
-            try {
-                FileOutputStream out = new FileOutputStream(file);
-                doc.writeTo(out);
-                doc.close();
-                out.flush();
-                out.close();
-                Toast.makeText(this, "PDF created.", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyy");
+        String filename = s.format(startDate) + "-" + s.format(endDate);
+        File file = new File(directory, filename + ".pdf");
+        if (file.exists()) {
+            file.delete();
+        }
 
-//            String path = file.getAbsolutePath();
-//            Log.d(TAG, "path: " + path);
-//        } else {
-//            Log.d(TAG, "Permission denied.");
-//        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            doc.writeTo(out);
+            doc.close();
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.export_failure), Toast.LENGTH_LONG).show();
+        }
+
+        return file;
+    }
+
+    private void exportAndShare() {
+        File file = exportAsPDF();
+        if(file != null) {
+            Uri attachment = Uri.fromFile(file);
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, attachment);
+            sendIntent.setType("application/pdf");
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.share_caution)));
+        }
     }
 
 }

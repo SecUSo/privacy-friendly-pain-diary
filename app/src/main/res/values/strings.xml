@@ -143,11 +143,18 @@
     <!-- ### PDF ### -->
     <string name="export_pdf">Export PDF</string>
     <string name="export">Export</string>
+    <string name="share">Share</string>
     <string name="heading_export">Please select a range of dates for which your pain diary entries should be exported as PDF.</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="start_date_error">Please enter a start date.</string>
+    <string name="end_date_error">Please enter an end date.</string>
     <string name="patient_details">Patient Details</string>
     <string name="diary_entries">Pain Diary Entries</string>
     <string name="diary_entries_none">No entries found.</string>
+    <string name="permission_write_error">Error: Do not have permission to write.</string>
+    <string name="export_success">PDF was saved to documents folder.</string>
+    <string name="export_failure">Unknown Error: PDF could not be saved.</string>
+    <string name="share_caution">Be careful who you share your medical information with.</string>
 
 </resources>

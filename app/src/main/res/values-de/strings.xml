@@ -139,12 +139,18 @@
     <!-- ### PDF ### -->
     <string name="export_pdf">PDF Export</string>
     <string name="export">Exportieren</string>
+    <string name="share">Teilen</string>
     <string name="heading_export">Bitte wählen Sie den Zeitraum, für den Ihre Schmerztagebuch-Einträge als PDF exportiert werden sollen.</string>
-    <string name="start_date">Start-Datum</string>
-    <string name="end_date">End-Datum</string>
+    <string name="start_date">Startdatum</string>
+    <string name="end_date">Enddatum</string>
+    <string name="start_date_error">Bitte geben Sie ein Startdatum ein.</string>
+    <string name="end_date_error">Bitte geben Sie ein Enddatum ein.</string>
     <string name="patient_details">Patienten Details</string>
     <string name="diary_entries">Schmerztagebuch-Einträge</string>
     <string name="diary_entries_none">Keine Einträge gefunden.</string>
-
+    <string name="permission_write_error">Fehler: Keine Schreibberechtigung.</string>
+    <string name="export_success">PDF wurde im Dokumenten-Ordner gespeichert.</string>
+    <string name="export_failure">Unbekannter Fehler: PDF konnte nicht gespeichert werden.</string>
+    <string name="share_caution">Seien Sie vorsichtig, mit wem Sie Ihre medizinischen Informationen teilen.</string>
 
 </resources>

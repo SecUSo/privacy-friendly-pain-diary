@@ -47,6 +47,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInte
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -139,7 +140,8 @@ public class PdfCreator {
             layout.draw(canvas);
             canvas.restore();
         }
-        for (DiaryEntryInterface diaryEntry : diaryEntries) {
+        for (Iterator<DiaryEntryInterface> iter = diaryEntries.iterator(); iter.hasNext(); ) {
+            DiaryEntryInterface diaryEntry = iter.next();
             canvas.save();
             canvas.translate(0, height);
             height += drawDiaryEntry(canvas, height, diaryEntry);
@@ -153,7 +155,7 @@ public class PdfCreator {
             canvas.restore();
 
             numberOfEntries += 1;
-            if(numberOfEntries == 2) {
+            if(numberOfEntries == 2 && iter.hasNext()) {
                 document.finishPage(page);
                 pageNumber += 1;
                 pageInfo = new PdfDocument.PageInfo.Builder(WIDTH_A4, HEIGHT_A4, pageNumber).create();
