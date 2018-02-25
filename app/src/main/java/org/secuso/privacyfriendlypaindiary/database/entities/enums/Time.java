@@ -27,7 +27,7 @@ import java.util.Map;
  * @version 20171205
  */
 public enum Time {
-    ALL_DAY("all day", R.string.time_day), MORNING("morning", R.string.time_morning), AFTERNOON("afternoon", R.string.time_afternoon), EVENING("evening", R.string.time_evening);
+    ALL_DAY("all day", R.string.time_day), MORNING("morning", R.string.time_morning), AFTERNOON("afternoon", R.string.time_afternoon), EVENING("evening", R.string.time_evening), NIGHT("at night", R.string.time_night);
 
     public static final EnumSet<Time> ALL_OPTIONS = EnumSet.allOf(Time.class);
     private String stringValue;

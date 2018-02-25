@@ -39,6 +39,8 @@
     <string name="help_privacy_answer">Die Privacy Friendly Schmerztagebuch App benötigt keine Berechtigungen. Sie enthält außerdem keinerlei Tracking-Mechanismen oder Werbung.</string>
     <string name="help_permission">Welche Berechtigungen benötigt die App?</string>
     <string name="help_permission_answer">Die Privacy Friendly Schmerztagebuch App benötigt keine Berechtigungen.</string>
+    <string name="help_pdfExport">Wie exportiere ich eine PDF?</string>
+    <string name="help_pdfExport_answer">Mit dem Menüpunkt "PDF Export" können sie ihre Schmerztagebuch-Einträge exportieren. Sie müssen hierfür einen Zeitraum angeben.</string>
 
     <string name="help_add_entry">Wie kann ich einen neuen Tagebuch-Eintrag erstellen?</string>
     <string name="help_add_entry_answer">Ein neuer Tagebuch-Eintrag kann erstellt werden, indem der entsprechende Tag im Kalender ausgewählt wird. Pro Tag kann jedoch nur ein Eintrag erstellt werden.</string>
@@ -97,6 +99,8 @@
     <string name="pain_stabbing">stechend</string>
     <string name="pain_dull">dumpf</string>
     <string name="pain_shooting">einschießend</string>
+    <string name="pain_burning">brennend</string>
+    <string name="pain_throbbing">pochend</string>
 
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Neuer Eintrag</string>
@@ -104,6 +108,7 @@
     <string name="warning_leaving">Die Eingaben, die Sie gemacht haben, gehen verloren. Wollen Sie fortfahren?</string>
     <string name="heading_condition">Wie fühlen Sie sich?</string>
     <string name="heading_painlevel">Wie stark sind Ihre Schmerzen?</string>
+    <string name="heading_painlevel_description">(0 = keine Schmerzen, 10 = allerschlimste Schmerzen)</string>
     <string name="heading_bodyregion">Wo haben Sie Schmerzen?</string>
     <string name="heading_paindescription">Wie empfinden Sie den Schmerz?</string>
     <string name="heading_timeofpain">Wann haben Sie Schmerzen?</string>
@@ -111,7 +116,9 @@
     <string name="time_morning">morgens</string>
     <string name="time_afternoon">nachmittags</string>
     <string name="time_evening">abends</string>
+    <string name="time_night">nachts</string>
     <string name="heading_notes">Haben Sie noch Anmerkungen?</string>
+    <string name="heading_notes_hint">(z.B. bzgl. Bewegung oder Ernährung)</string>
     <string name="heading_medication">Welche Medikamente nehmen Sie ein?</string>
     <string name="subheading_medication">Drücken Sie auf das grüne Plus, um neue Medikamente hinzuzufügen. Geben Sie die Menge (z. B. Anzahl an Tabletten) ein, die Sie morgens, mittags, abends und nachts nehmen.</string>
     <string name="medication">Medikament</string>

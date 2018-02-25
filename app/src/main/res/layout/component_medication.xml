@@ -50,6 +50,8 @@
                 android:id="@+id/quantity_morning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:textSize="14dp"
                 android:textAlignment="center"
                 android:maxLength="4"/>
@@ -57,6 +59,8 @@
                 android:id="@+id/quantity_noon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:textAlignment="center"
                 android:textSize="14dp"
                 android:maxLength="4" />
@@ -64,6 +68,8 @@
                 android:id="@+id/quantity_evening"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:textAlignment="center"
                 android:textSize="14dp"
                 android:maxLength="4" />
@@ -71,6 +77,8 @@
                 android:id="@+id/quantity_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="0123456789"
                 android:textAlignment="center"
                 android:textSize="14dp"
                 android:maxLength="4" />

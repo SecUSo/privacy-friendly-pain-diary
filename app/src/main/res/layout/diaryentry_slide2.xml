@@ -124,6 +124,13 @@
                 android:textSize="11dp"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/painleveldescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/heading_painlevel_description"
+            android:textSize="18dp"/>
     </LinearLayout>
 
 </RelativeLayout>

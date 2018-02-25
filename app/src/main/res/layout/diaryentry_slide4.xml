@@ -51,6 +51,20 @@
             android:onClick="onPainQualityClicked"
             android:text="@string/pain_shooting" />
 
+        <CheckBox
+            android:id="@+id/pain_burning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onPainQualityClicked"
+            android:text="@string/pain_burning" />
+
+        <CheckBox
+            android:id="@+id/pain_throbbing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onPainQualityClicked"
+            android:text="@string/pain_throbbing" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,73 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
+    android:id="@+id/diaryentry_slide6"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:id="@+id/diaryentry_slide7"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.DiaryEntryActivity"
-        android:orientation="vertical"
-        style="@style/AlertDialog.AppCompat">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.DiaryEntryActivity"
+    android:orientation="vertical"
+    style="@style/AlertDialog.AppCompat">
 
-            <LinearLayout
-                android:id="@+id/medication_wrapper"
+    <LinearLayout
+        android:id="@+id/notes_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/diaryentry_marginTop"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/heading_notes"
+            android:textSize="@dimen/diaryentry_heading"/>
+
+            <EditText
+                android:id="@+id/notes_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/diaryentry_marginTop"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_marginTop="4dp"
+                android:padding="8dp"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="20"
+                android:minLines="8"
+                android:gravity="top|left"
+                android:scrollbars="vertical"
+                android:textSize="16dp"
+                android:maxLength="256"
+                android:background="@drawable/custom_border"/>
 
-                <TextView
-                    android:id="@+id/medication"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/fab_margin"
-                    android:text="@string/heading_medication"
-                    android:textSize="@dimen/diaryentry_heading"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subheading_medication"
-                    android:textSize="@dimen/diaryentry_subheading"/>
+        <TextView
+            android:id="@+id/notes_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/heading_notes_hint"
+            android:textAlignment="textStart"
+            android:textSize="17sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="1"
-                        android:text="@string/medication"
-                        android:textSize="16sp" />
-                    <ImageButton
-                        android:layout_height="24dp"
-                        android:layout_width="24dp"
-                        android:layout_marginLeft="6dp"
-                        android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/ic_add_circle_outline"
-                        android:backgroundTint="@color/green"
-                        android:onClick="addMedication"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/medication_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <include layout="@layout/component_medication" />
+    </LinearLayout>
 
-                </LinearLayout>
-
-            </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+</RelativeLayout>

@@ -66,6 +66,9 @@ public class HelpDataDump {
         permission.add(context.getResources().getString(R.string.help_permission_answer));
         expandableListDetail.put(context.getResources().getString(R.string.help_permission), permission);
 
+        List<String> pdfExport = new ArrayList<String>();
+        pdfExport.add(context.getResources().getString(R.string.help_pdfExport_answer));
+        expandableListDetail.put(context.getResources().getString(R.string.help_pdfExport), pdfExport);
 
 
         return expandableListDetail;

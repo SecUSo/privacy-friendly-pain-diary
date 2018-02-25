@@ -21,9 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -32,13 +30,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -373,9 +369,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
         if (timesOfPain.contains(Time.EVENING)) {
             ((CheckBox) findViewById(R.id.time_evening)).setChecked(true);
         }
+        if (timesOfPain.contains(Time.NIGHT)) {
+            ((CheckBox) findViewById(R.id.time_night)).setChecked(true);
+        }
     }
 
-    private void setDataOnSlide6() {
+    private void setDataOnSlide7() {
         final EditText notesEditText = findViewById(R.id.notes_text);
         notesEditText.setText(notes);
         notesEditText.addTextChangedListener(new TextWatcher() {
@@ -397,7 +396,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         });
     }
 
-    private void setDataOnSlide7() {
+    private void setDataOnSlide6() {
         LinearLayout layout = findViewById(R.id.medication_container);
         layout.removeAllViews();
         for(DrugIntakeInterface drugIntake : drugIntakes) {
@@ -493,6 +492,9 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 break;
             case R.id.time_evening:
                 time = Time.EVENING;
+                break;
+            case R.id.time_night:
+                time = Time.NIGHT;
                 break;
             default:
                 break;
