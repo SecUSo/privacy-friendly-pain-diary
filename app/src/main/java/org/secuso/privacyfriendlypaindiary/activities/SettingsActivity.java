@@ -39,6 +39,7 @@ import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService;
 public class SettingsActivity extends BaseActivity {
 
     private static final String KEY_PREF_RESET = "pref_reset";
+    public static final String KEY_PREF_MEDICATION = "pref_medication";
     private static final String KEY_PREF_REMINDER = "pref_reminder";
     private static final String KEY_PREF_REMINDER_TIME = "pref_reminder_time";
 
@@ -123,9 +124,12 @@ public class SettingsActivity extends BaseActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
 //            updatePrefSummary(findPreference(key));
-            if(key.equals(KEY_PREF_RESET)) {
-
-            }
+//            if(key.equals(KEY_PREF_RESET)) {
+//
+//            }
+//            if(key.equals(KEY_PREF_MEDICATION)) {
+//
+//            }
             if (key.equals(KEY_PREF_REMINDER)) {
                 boolean enabled = sharedPreferences.getBoolean(KEY_PREF_REMINDER, false);
                 if(enabled) {

@@ -46,48 +46,70 @@ public class Helper {
     public static int getResourceIDForBodyRegion(BodyRegion bodyRegion) {
         switch(bodyRegion) {
             case ABDOMEN_RIGHT:
+            case ABDOMEN_RIGHT_BACK:
                 return R.drawable.paindiary_person_abdomen_right;
             case ABDOMEN_LEFT:
+            case ABDOMEN_LEFT_BACK:
                 return R.drawable.paindiary_person_abdomen_left;
             case GROIN_LEFT:
+            case GROIN_LEFT_BACK:
                 return R.drawable.paindiary_person_groin_left;
             case GROIN_RIGHT:
+            case GROIN_RIGHT_BACK:
                 return R.drawable.paindiary_person_groin_right;
             case THIGH_LEFT:
+            case THIGH_LEFT_BACK:
                 return R.drawable.paindiary_person_thigh_left;
             case THIGH_RIGHT:
+            case THIGH_RIGHT_BACK:
                 return R.drawable.paindiary_person_thigh_right;
             case KNEE_LEFT:
+            case KNEE_LEFT_BACK:
                 return R.drawable.paindiary_person_knee_left;
             case KNEE_RIGHT:
+            case KNEE_RIGHT_BACK:
                 return R.drawable.paindiary_person_knee_right;
             case LOWER_LEG_LEFT:
+            case LOWER_LEG_LEFT_BACK:
                 return R.drawable.paindiary_person_leg_left;
             case LOWER_LEG_RIGHT:
+            case LOWER_LEG_RIGHT_BACK:
                 return R.drawable.paindiary_person_leg_right;
             case FOOT_LEFT:
+            case FOOT_LEFT_BACK:
                 return R.drawable.paindiary_person_foot_left;
             case FOOT_RIGHT:
+            case FOOT_RIGHT_BACK:
                 return R.drawable.paindiary_person_foot_right;
             case CHEST_LEFT:
+            case CHEST_LEFT_BACK:
                 return R.drawable.paindiary_person_chest_left;
             case CHEST_RIGHT:
+            case CHEST_RIGHT_BACK:
                 return R.drawable.paindiary_person_chest_right;
             case NECK:
+            case NECK_BACK:
                 return R.drawable.paindiary_person_neck;
             case HEAD:
+            case HEAD_BACK:
                 return R.drawable.paindiary_person_head;
             case UPPER_ARM_LEFT:
+            case UPPER_ARM_LEFT_BACK:
                 return R.drawable.paindiary_person_upperarm_left;
             case UPPER_ARM_RIGHT:
+            case UPPER_ARM_RIGHT_BACK:
                 return R.drawable.paindiary_person_upperarm_right;
             case LOWER_ARM_LEFT:
+            case LOWER_ARM_LEFT_BACK:
                 return R.drawable.paindiary_person_lowerarm_left;
             case LOWER_ARM_RIGHT:
+            case LOWER_ARM_RIGHT_BACK:
                 return R.drawable.paindiary_person_lowerarm_right;
             case HAND_LEFT:
+            case HAND_LEFT_BACK:
                 return R.drawable.paindiary_person_hand_left;
             case HAND_RIGHT:
+            case HAND_RIGHT_BACK:
                 return R.drawable.paindiary_person_hand_right;
             default:
                 return 0;
@@ -153,9 +175,14 @@ public class Helper {
         }
         String medication = "";
         for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
-            medication = medication + drugIntake.getDrug().getName() + " (" + drugIntake.getDrug().getDose() + ") " +
-                    drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
-                    System.getProperty("line.separator");
+            if(drugIntake.getDrug().getName() != null) {
+                medication += drugIntake.getDrug().getName();
+            }
+            if(drugIntake.getDrug().getDose() != null) {
+                medication += " (" + drugIntake.getDrug().getDose() + ") ";
+            }
+            medication += ": " + drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
+                        System.getProperty("line.separator");
         }
         if(!medication.isEmpty()) {
             ((TextView) view.findViewById(R.id.medication_value)).setText(medication);

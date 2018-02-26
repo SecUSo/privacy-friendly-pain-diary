@@ -68,6 +68,8 @@
     <string name="pref_reset">Reset app</string>
     <string name="pref_reset_summary">Delete all diary entries and user details</string>
     <string name="pref_reset_warning">All diary entries and user details will be deleted irrevocably.\nAre you sure?</string>
+    <string name="pref_medication">Remember Medication</string>
+    <string name="pref_medication_summary">The medication last entered is automatically added to new entries.</string>
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_reminder">Daily Reminder</string>
     <string name="pref_reminder_time">Reminder Time</string>
@@ -114,6 +116,8 @@
     <string name="heading_painlevel">How strong is your pain?</string>
     <string name="subheading_painlevel">(0 = no pain, 10 = very strong pain)</string>
     <string name="heading_bodyregion">Where do you feel pain?</string>
+    <string name="body_front">Front:</string>
+    <string name="body_back">Back:</string>
     <string name="heading_paindescription">What is the nature of your pain?</string>
     <string name="heading_timeofpain">When do you feel pain?</string>
     <string name="time_day">during the day</string>

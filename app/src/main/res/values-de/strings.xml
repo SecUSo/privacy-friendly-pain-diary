@@ -64,6 +64,8 @@
     <string name="pref_reset">App zurücksetzen</string>
     <string name="pref_reset_summary">Lösche alle Tagebuch-Einträge und gespeicherte Benutzerdaten</string>
     <string name="pref_reset_warning">Alle Tagebuch-Einträge und gespeicherte Benutzerdaten werden unwiderruflich gelöscht.\nSind Sie sicher?</string>
+    <string name="pref_medication">Medikation speichern</string>
+    <string name="pref_medication_summary">Die zuletzt eingegebene Medikation wird automatisch übernommen für neue Einträge.</string>
     <string name="pref_header_notifications">Benachrichtigungen</string>
     <string name="pref_reminder">Tägliche Erinnerung</string>
     <string name="pref_reminder_time">Erinnerungszeit</string>
@@ -110,6 +112,8 @@
     <string name="heading_painlevel">Wie stark sind Ihre Schmerzen?</string>
     <string name="subheading_painlevel">(0 = keine Schmerzen, 10 = allerschlimmste Schmerzen)</string>
     <string name="heading_bodyregion">Wo haben Sie Schmerzen?</string>
+    <string name="body_front">Vorderseite:</string>
+    <string name="body_back">Rückseite:</string>
     <string name="heading_paindescription">Wie empfinden Sie den Schmerz?</string>
     <string name="heading_timeofpain">Wann haben Sie Schmerzen?</string>
     <string name="time_day">tagsüber</string>

@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -82,7 +83,7 @@ import java.util.Set;
  * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
  *
  * @author Susanne Felsen
- * @version 20180110
+ * @version 20180226
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
@@ -224,15 +225,19 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
         if (diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
 
-        if(!edit) { //TODO check settings
-            long ID = service.getIDOfLatestDiaryEntry();
-            if (ID != -1) {
-                Set<DrugIntakeInterface> intakes = service.getDrugIntakesForDiaryEntry(ID);
-                for(DrugIntakeInterface intake : intakes) {
-                    drugIntakes.add(new DrugIntake(intake));
+        if(!edit) {
+            boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_MEDICATION, true);
+            if(rememberMedication) {
+                long ID = service.getIDOfLatestDiaryEntry();
+                if (ID != -1) {
+                    Set<DrugIntakeInterface> intakes = service.getDrugIntakesForDiaryEntry(ID);
+                    for (DrugIntakeInterface intake : intakes) {
+                        drugIntakes.add(new DrugIntake(intake));
+                    }
                 }
             }
         }
+
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
