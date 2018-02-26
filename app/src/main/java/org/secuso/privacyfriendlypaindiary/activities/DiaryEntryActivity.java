@@ -75,6 +75,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -214,15 +215,24 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
         edit = getIntent().getBooleanExtra("EDIT", false);
         DBServiceInterface service = DBService.getInstance(this);
-        if(!edit) {
+        if (!edit) {
             diaryEntry = new DiaryEntry(date);
         } else {
             setTitle(getString(R.string.edit_diary_entry));
             diaryEntry = service.getDiaryEntryByDate(date);
             initFields();
         }
-        if(diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
+        if (diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
 
+        if(!edit) { //TODO check settings
+            long ID = service.getIDOfLatestDiaryEntry();
+            if (ID != -1) {
+                Set<DrugIntakeInterface> intakes = service.getDrugIntakesForDiaryEntry(ID);
+                for(DrugIntakeInterface intake : intakes) {
+                    drugIntakes.add(new DrugIntake(intake));
+                }
+            }
+        }
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {

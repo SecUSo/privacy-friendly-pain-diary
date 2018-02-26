@@ -56,6 +56,14 @@ public class DrugIntake extends AbstractPersistentObject implements DrugIntakeIn
         this.quantityNight = quantityNight;
     }
 
+    public DrugIntake(DrugIntakeInterface intake) {
+        this.drug = intake.getDrug();
+        this.quantityMorning = intake.getQuantityMorning();
+        this.quantityNoon = intake.getQuantityNoon();
+        this.quantityEvening = intake.getQuantityEvening();
+        this.quantityNight = intake.getQuantityNight();
+    }
+
     @Override
     public DiaryEntryInterface getDiaryEntry() {
         return diaryEntry;

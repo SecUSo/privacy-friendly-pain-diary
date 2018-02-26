@@ -16,7 +16,9 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
@@ -37,9 +39,11 @@ import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PersistentObject;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +62,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = UserDetailsActivity.class.getSimpleName();
 
+    private PrefManager prefManager;
     private UserInterface user;
     private String firstName;
     private String lastName;
@@ -181,14 +186,15 @@ public class UserDetailsActivity extends AppCompatActivity {
             ((Button) findViewById(R.id.btn_cancel)).setText(getString(R.string.skip));
         }
 
-        DBServiceInterface service = DBService.getInstance(this);
-        List<UserInterface> users = service.getAllUsers();
-        if (users.isEmpty()) {
+        prefManager = new PrefManager(this);
+        long userID = prefManager.getUserID();
+        if(userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
             user = new User();
         } else {
-            //TODO: alternative: save user ID and getUserByID
-            user = users.get(0); //users should only contain one element
+            DBServiceInterface service = DBService.getInstance(this);
+            user = service.getUserByID(userID);
         }
+
         dateWrapper = findViewById(R.id.date_of_birth_wrapper);
         dateWrapper.getEditText().addTextChangedListener(dateWatcher);
 
@@ -300,6 +306,7 @@ public class UserDetailsActivity extends AppCompatActivity {
             long userID;
             if (user.getObjectID() == PersistentObject.INVALID_OBJECT_ID) {
                 userID = service.storeUser(user);
+                prefManager.setUserID(userID);
             } else {
                 service.updateUser(user);
                 userID = user.getObjectID();

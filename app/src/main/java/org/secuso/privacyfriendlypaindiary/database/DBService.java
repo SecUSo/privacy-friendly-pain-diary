@@ -334,6 +334,24 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return diaryEntry;
     }
 
+    @Override
+    public long getIDOfLatestDiaryEntry() {
+        long ID = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT MAX(" + DiaryEntry.COLUMN_ID + ") FROM " + DiaryEntry.TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{});
+
+        Date date;
+        if (cursor != null && cursor.moveToFirst()) {
+            ID = cursor.getLong(0);
+        }
+        cursor.close();
+
+        return ID;
+    }
+
+    @Override
     public DiaryEntryInterface getDiaryEntryByDate(Date date) {
         SQLiteDatabase db = this.getReadableDatabase();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
@@ -453,7 +471,11 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         }
         int indexCondition = cursor.getColumnIndex(DiaryEntry.COLUMN_CONDITION);
         if(!cursor.isNull(indexCondition)) {
-            diaryEntry.setCondition(Condition.valueOf(cursor.getInt(indexCondition)));
+            try {
+                diaryEntry.setCondition(Condition.valueOf(cursor.getInt(indexCondition)));
+            } catch (IllegalArgumentException e) {
+                Log.d(TAG, "Illegal condition was saved to database.");
+            }
         }
 
         long painDescriptionID = cursor.getLong(cursor.getColumnIndex(PainDescription.TABLE_NAME + "_id"));
@@ -705,7 +727,7 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return drugIntake;
     }
 
-
+    @Override
     public Set<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID) {
         Set<DrugIntakeInterface> intakes = new HashSet<>();
 

@@ -39,6 +39,7 @@ import org.secuso.privacyfriendlypaindiary.helpers.PdfCreator;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,6 +62,36 @@ public class ExportPDFActivity extends AppCompatActivity {
         setContentView(R.layout.activity_export_pdf);
         startDateWrapper = findViewById(R.id.start_date_wrapper);
         endDateWrapper = findViewById(R.id.end_date_wrapper);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(startDate != null) {
+            outState.putString("startDate", dateFormat.format(startDate));
+        }
+        if(endDate != null) {
+            outState.putString("endDate", dateFormat.format(endDate));
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String startDateAsString = savedInstanceState.getString("startDate");
+        if(startDateAsString != null) {
+            try {
+                startDate = dateFormat.parse(startDateAsString);
+            } catch (ParseException e) {
+            }
+        }
+        String endDateAsString = savedInstanceState.getString("endDate");
+        if(endDateAsString != null) {
+            try {
+                endDate = dateFormat.parse(endDateAsString);
+            } catch (ParseException e) {
+            }
+        }
     }
 
     public void onClick(View view) {

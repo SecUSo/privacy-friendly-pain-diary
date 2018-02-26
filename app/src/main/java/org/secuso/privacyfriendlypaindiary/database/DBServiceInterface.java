@@ -17,6 +17,7 @@
 package org.secuso.privacyfriendlypaindiary.database;
 
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 
@@ -65,6 +66,12 @@ public interface DBServiceInterface {
 
     public DiaryEntryInterface getDiaryEntryByID(long id);
 
+    /**
+     *
+     * @return the ID of the latest diary entry or -1 if none has been made yet
+     */
+    public long getIDOfLatestDiaryEntry();
+
     public DiaryEntryInterface getDiaryEntryByDate(Date date);
 
     /**
@@ -95,6 +102,8 @@ public interface DBServiceInterface {
     public Set<Date> getDiaryEntryDatesByMonth(int month, int year);
 
     public Set<Date> getDiaryEntryDatesByTimeSpan(Date startDate, Date endDate);
+
+    public Set<DrugIntakeInterface> getDrugIntakesForDiaryEntry(long diaryEntryID);
 
     public long storeDrug(DrugInterface drug);
 

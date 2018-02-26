@@ -19,6 +19,8 @@ package org.secuso.privacyfriendlypaindiary.tutorial;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
+
 /**
  * @author Karola Marky
  * @version 20161214
@@ -35,6 +37,7 @@ public class PrefManager {
     private static final String PREF_NAME = "privacy_friendly_apps";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
+    private static final String USER_ID = "userID";
 
     public PrefManager(Context context) {
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -48,6 +51,15 @@ public class PrefManager {
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+
+    public void setUserID(long userID) {
+        editor.putLong(USER_ID, userID);
+        editor.commit();
+    }
+
+    public long getUserID() {
+        return pref.getLong(USER_ID, AbstractPersistentObject.INVALID_OBJECT_ID);
     }
 
 }

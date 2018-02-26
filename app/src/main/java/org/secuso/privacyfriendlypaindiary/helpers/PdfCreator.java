@@ -28,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,11 +39,13 @@ import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,11 +95,11 @@ public class PdfCreator {
         DBServiceInterface service = DBService.getInstance(context);
         diaryEntries = service.getDiaryEntriesByTimeSpan(startDate, endDate);
 
-        List<UserInterface> users = service.getAllUsers(); //TODO
-        if (!users.isEmpty()) {
-            user = users.get(0);
-        } else {
+        long userID = new PrefManager(context).getUserID();
+        if(userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
             user = new User();
+        } else {
+            user = service.getUserByID(userID);
         }
     }
 
@@ -190,7 +193,7 @@ public class PdfCreator {
         if(user.getLastName() != null) {
             sb.append(user.getLastName());
         }
-        sb.append(context.getResources().getString(R.string.date_of_birth)).append(": ");
+        sb.append("\n").append(context.getResources().getString(R.string.date_of_birth)).append(": ");
         if(user.getDateOfBirth() != null) {
             sb.append(dateFormat.format(user.getDateOfBirth()));
         }
@@ -226,20 +229,22 @@ public class PdfCreator {
         sb.append(context.getResources().getString(R.string.condition));
         layout = new StaticLayout(sb.toString(), normalTextPaint, WIDTH_A4 / 5 * 4, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
         layout.draw(canvas);
-        height += layout.getHeight() + 5;
+        height += layout.getHeight();
         canvas.restore();
 
         canvas.save();
         canvas.translate(0, totalHeight + height);
-        int resourceID = Helper.getResourceIDForCondition(diaryEntry.getCondition());
-        Drawable drawable = ContextCompat.getDrawable(context, resourceID);
-        Bitmap condition = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
-        Canvas bitmapCanvas = new Canvas(condition);
-        drawable.setBounds(0, 0, bitmapCanvas.getWidth(), bitmapCanvas.getHeight());
-        drawable.draw(bitmapCanvas);
-        canvas.drawBitmap(condition, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
-        condition.recycle();
-        height += 35;
+        if(diaryEntry.getCondition() != null) {
+            int resourceID = Helper.getResourceIDForCondition(diaryEntry.getCondition());
+            Drawable drawable = ContextCompat.getDrawable(context, resourceID);
+            Bitmap condition = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
+            Canvas bitmapCanvas = new Canvas(condition);
+            drawable.setBounds(0, 0, bitmapCanvas.getWidth(), bitmapCanvas.getHeight());
+            drawable.draw(bitmapCanvas);
+            canvas.drawBitmap(condition, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+            condition.recycle();
+            height += 35;
+        }
         canvas.restore();
 
         canvas.save();
