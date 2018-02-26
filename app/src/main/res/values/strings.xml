@@ -37,11 +37,9 @@
     <string name="help_whatis">What is Privacy Friendly Pain Diary?</string>
     <string name="help_whatis_answer">Privacy Friendly Pain Diary is an app that allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as additional notes and the medication you take.</string>
     <string name="help_privacy">What makes the app privacy friendly?</string>
-    <string name="help_privacy_answer">Privacy Friendly Pain Diary does not require any permissions. It further does not include any tracking mechanisms or advertisement.</string>
+    <string name="help_privacy_answer">Privacy Friendly Pain Diary requires minimal permissions. It does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions does the app require?</string>
-    <string name="help_permission_answer">Privacy Friendly Pain Diary does not require any permissions.</string>
-    <string name="help_pdfExport">How to export a PDF?</string>
-    <string name="help_pdfExport_answer">With the menu item "PDF Export" you can export your pain diary entries. You must specify a time period for the export.</string>
+    <string name="help_permission_answer">Privacy Friendly Pain Diary requires write access to your device\'s external storage if you wish to export your diary entries to PDF. All other features do not require any permissions.</string>
 
     <string name="help_add_entry">How do I add a new diary entry?</string>
     <string name="help_add_entry_answer">A new diary entry can be added by selecting a day in the calendar. There can however only be one entry per day.</string>
@@ -49,6 +47,8 @@
     <string name="help_entry_information_answer">Diary entries can be used to document your condition and the intensity, location, nature and time of the pain you feel. Additional notes and the medication you take can also be recorded.</string>
     <string name="help_userdetails">Do I have to enter user details?</string>
     <string name="help_userdetails_answer">The app does not require you to enter any user details. You are free to enter your name, date of birth and gender and you can delete information you previously entered at any time. The information you enter is not shared or transmitted in any way.</string>
+    <string name="help_pdf_export">How can I export my diary entries?</string>
+    <string name="help_pdf_export_answer">You can export all diary entries made within a period of time that you specify. You also have the option to share that PDF. Select the menu item "PDF Export" to do so.</string>
 
     <!--### ABOUT ###-->
     <string name="about">About</string>
@@ -112,7 +112,7 @@
     <string name="warning_leaving">The information you have entered will be lost. Do you want to continue?</string>
     <string name="heading_condition">How do you feel?</string>
     <string name="heading_painlevel">How strong is your pain?</string>
-    <string name="heading_painlevel_description">(0 = no pain, 10 = very strong pain)</string>
+    <string name="subheading_painlevel">(0 = no pain, 10 = very strong pain)</string>
     <string name="heading_bodyregion">Where do you feel pain?</string>
     <string name="heading_paindescription">What is the nature of your pain?</string>
     <string name="heading_timeofpain">When do you feel pain?</string>
@@ -122,7 +122,7 @@
     <string name="time_evening">in the evening</string>
     <string name="time_night">at night</string>
     <string name="heading_notes">Do you have any additional comments?</string>
-    <string name="heading_notes_hint">(e.g. concerning exercise or nutrition)</string>
+    <string name="subheading_notes">(e.g. concerning exercise or diet)</string>
     <string name="heading_medication">What medication are you taking?</string>
     <string name="subheading_medication">Press the green plus to add new medications. Enter the quantity (e. g. number of pills) you take in the morning, at noon, in the evening and at night.</string>
     <string name="medication">Medication</string>
@@ -148,7 +148,7 @@
     <string name="snooze">Snooze</string>
 
     <!-- ### PDF ### -->
-    <string name="export_pdf">Export PDF</string>
+    <string name="export_pdf">PDF Export</string>
     <string name="export">Export</string>
     <string name="share">Share</string>
     <string name="heading_export">Please select a range of dates for which your pain diary entries should be exported as PDF.</string>

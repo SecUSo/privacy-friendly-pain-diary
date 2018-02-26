@@ -36,11 +36,9 @@
     <string name="help_whatis">Was ist die Privacy Friendly Schmerztagebuch App?</string>
     <string name="help_whatis_answer">Die Privacy Friendly Schmerztagebuch App erlaubt Ihnen das Erstellen täglicher Tagebuch-Einträge, um Ihren Gemütszustand und die Intensität, die Position, die Eigenschaften und die Zeit Ihrer Schmerzen festzuhalten, sowie zusätzliche Notizen und die von Ihnen eingenommenen Medikamente.</string>
     <string name="help_privacy">Was macht die App Privatsphäre-freundlich?</string>
-    <string name="help_privacy_answer">Die Privacy Friendly Schmerztagebuch App benötigt keine Berechtigungen. Sie enthält außerdem keinerlei Tracking-Mechanismen oder Werbung.</string>
+    <string name="help_privacy_answer">Die Privacy Friendly Schmerztagebuch App benötigt minimale Berechtigungen. Sie enthält außerdem keinerlei Tracking-Mechanismen oder Werbung.</string>
     <string name="help_permission">Welche Berechtigungen benötigt die App?</string>
-    <string name="help_permission_answer">Die Privacy Friendly Schmerztagebuch App benötigt keine Berechtigungen.</string>
-    <string name="help_pdfExport">Wie exportiere ich eine PDF?</string>
-    <string name="help_pdfExport_answer">Mit dem Menüpunkt "PDF Export" können sie ihre Schmerztagebuch-Einträge exportieren. Sie müssen hierfür einen Zeitraum angeben.</string>
+    <string name="help_permission_answer">Die Privacy Friendly Schmerztagebuch App benötigt eine Schreibberechtigung für den externen Speicher Ihres Gerätes, falls Sie Ihre Tagebuch-Einträge als PDF exportieren möchten. Für alle anderen Funktionen der App müssen keine Berechtigungen erteilt werden.</string>
 
     <string name="help_add_entry">Wie kann ich einen neuen Tagebuch-Eintrag erstellen?</string>
     <string name="help_add_entry_answer">Ein neuer Tagebuch-Eintrag kann erstellt werden, indem der entsprechende Tag im Kalender ausgewählt wird. Pro Tag kann jedoch nur ein Eintrag erstellt werden.</string>
@@ -48,6 +46,8 @@
     <string name="help_entry_information_answer">Tagebuch-Einträge können verwendet werden, um Ihr Wohlbefinden und den Grad, die Position, die Qualität und die Zeit Ihrer Schmerzen festzuhalten. Außerdem können zusätzliche Notizen und die von Ihnen eingenommenen Medikamente dokumentiert werden.</string>
     <string name="help_userdetails">Muss ich meine Benutzerdaten eingeben?</string>
     <string name="help_userdetails_answer">Die App erfordert keine Eingabe Ihrer Benutzerdaten. Es ist Ihnen freigestellt, Ihren Namen, Ihr Geburtsdatum und Ihr Geschlecht einzugeben und Sie können eingegebene Informationen jederzeit wieder löschen. Die Informationen, die Sie eingeben werden nicht übertragen oder geteilt.</string>
+    <string name="help_pdf_export">Wie kann ich meine Tagebuch-Einträge exportieren?</string>
+    <string name="help_pdf_export_answer">Sie können alle Tagebuch-Einträge in einem von Ihnen gewählten Zeitraum als PDF exportieren und dieses wahlweise teilen. Dazu wählen Sie den Menüpunkt "PDF Export".</string>
 
     <!--### ABOUT ###-->
     <string name="about">Über</string>
@@ -108,7 +108,7 @@
     <string name="warning_leaving">Die Eingaben, die Sie gemacht haben, gehen verloren. Wollen Sie fortfahren?</string>
     <string name="heading_condition">Wie fühlen Sie sich?</string>
     <string name="heading_painlevel">Wie stark sind Ihre Schmerzen?</string>
-    <string name="heading_painlevel_description">(0 = keine Schmerzen, 10 = allerschlimste Schmerzen)</string>
+    <string name="subheading_painlevel">(0 = keine Schmerzen, 10 = allerschlimmste Schmerzen)</string>
     <string name="heading_bodyregion">Wo haben Sie Schmerzen?</string>
     <string name="heading_paindescription">Wie empfinden Sie den Schmerz?</string>
     <string name="heading_timeofpain">Wann haben Sie Schmerzen?</string>
@@ -118,7 +118,7 @@
     <string name="time_evening">abends</string>
     <string name="time_night">nachts</string>
     <string name="heading_notes">Haben Sie noch Anmerkungen?</string>
-    <string name="heading_notes_hint">(z.B. bzgl. Bewegung oder Ernährung)</string>
+    <string name="subheading_notes">(z.B. bezüglich Bewegung oder Ernährung)</string>
     <string name="heading_medication">Welche Medikamente nehmen Sie ein?</string>
     <string name="subheading_medication">Drücken Sie auf das grüne Plus, um neue Medikamente hinzuzufügen. Geben Sie die Menge (z. B. Anzahl an Tabletten) ein, die Sie morgens, mittags, abends und nachts nehmen.</string>
     <string name="medication">Medikament</string>

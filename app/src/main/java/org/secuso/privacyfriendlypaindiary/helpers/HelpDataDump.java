@@ -54,6 +54,10 @@ public class HelpDataDump {
         information.add(context.getResources().getString(R.string.help_entry_information_answer));
         expandableListDetail.put(context.getResources().getString(R.string.help_entry_information), information);
 
+        List<String> pdfExport = new ArrayList<String>();
+        pdfExport.add(context.getResources().getString(R.string.help_pdf_export_answer));
+        expandableListDetail.put(context.getResources().getString(R.string.help_pdf_export), pdfExport);
+
         List<String> personalInfo = new ArrayList<String>();
         personalInfo.add(context.getResources().getString(R.string.help_userdetails_answer));
         expandableListDetail.put(context.getResources().getString(R.string.help_userdetails), personalInfo);
@@ -65,11 +69,6 @@ public class HelpDataDump {
         List<String> permission = new ArrayList<String>();
         permission.add(context.getResources().getString(R.string.help_permission_answer));
         expandableListDetail.put(context.getResources().getString(R.string.help_permission), permission);
-
-        List<String> pdfExport = new ArrayList<String>();
-        pdfExport.add(context.getResources().getString(R.string.help_pdfExport_answer));
-        expandableListDetail.put(context.getResources().getString(R.string.help_pdfExport), pdfExport);
-
 
         return expandableListDetail;
     }

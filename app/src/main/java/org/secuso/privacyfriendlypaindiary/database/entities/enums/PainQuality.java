@@ -28,7 +28,7 @@ import java.util.Map;
  * @version 20171205
  */
 public enum PainQuality {
-    STABBING("stabbing", R.string.pain_stabbing), DULL("dull", R.string.pain_dull), SHOOTING("shooting", R.string.pain_shooting);
+    STABBING("stabbing", R.string.pain_stabbing), DULL("dull", R.string.pain_dull), SHOOTING("shooting", R.string.pain_shooting), BURNING("burning", R.string.pain_burning), THROBBING("throbbing", R.string.pain_throbbing);
 
     public static final EnumSet<PainQuality> ALL_OPTIONS = EnumSet.allOf(PainQuality.class);
     private String stringValue;

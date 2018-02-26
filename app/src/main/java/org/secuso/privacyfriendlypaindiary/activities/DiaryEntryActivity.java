@@ -88,7 +88,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private static final String TAG = DiaryEntryActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEGREY = Color.parseColor("#a8a8a8");
     private static final int COLOR_LIGHTBLUE = Color.parseColor("#0274b2");
-//    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
+    //    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
     private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
 
     private boolean changesMade = false;
@@ -354,6 +354,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
         if (painQualities.contains(PainQuality.SHOOTING)) {
             ((CheckBox) findViewById(R.id.pain_shooting)).setChecked(true);
         }
+        if (painQualities.contains(PainQuality.BURNING)) {
+            ((CheckBox) findViewById(R.id.pain_burning)).setChecked(true);
+        }
+        if (painQualities.contains(PainQuality.THROBBING)) {
+            ((CheckBox) findViewById(R.id.pain_throbbing)).setChecked(true);
+        }
     }
 
     private void setDataOnSlide5() {
@@ -371,6 +377,14 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
         if (timesOfPain.contains(Time.NIGHT)) {
             ((CheckBox) findViewById(R.id.time_night)).setChecked(true);
+        }
+    }
+
+    private void setDataOnSlide6() {
+        LinearLayout layout = findViewById(R.id.medication_container);
+        layout.removeAllViews();
+        for(DrugIntakeInterface drugIntake : drugIntakes) {
+            layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
         }
     }
 
@@ -394,14 +408,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void setDataOnSlide6() {
-        LinearLayout layout = findViewById(R.id.medication_container);
-        layout.removeAllViews();
-        for(DrugIntakeInterface drugIntake : drugIntakes) {
-            layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
-        }
     }
 
     private void addBottomDots(int currentPage) {
@@ -465,6 +471,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 break;
             case R.id.pain_shooting:
                 quality = PainQuality.SHOOTING;
+                break;
+            case R.id.pain_burning:
+                quality = PainQuality.BURNING;
+                break;
+            case R.id.pain_throbbing:
+                quality = PainQuality.THROBBING;
                 break;
             default:
                 break;

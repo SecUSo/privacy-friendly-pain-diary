@@ -28,31 +28,27 @@
             android:layout_marginTop="@dimen/fab_margin"
             android:text="@string/heading_notes"
             android:textSize="@dimen/diaryentry_heading"/>
-
-            <EditText
-                android:id="@+id/notes_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:padding="8dp"
-                android:inputType="textMultiLine"
-                android:lines="8"
-                android:maxLines="20"
-                android:minLines="8"
-                android:gravity="top|left"
-                android:scrollbars="vertical"
-                android:textSize="16dp"
-                android:maxLength="256"
-                android:background="@drawable/custom_border"/>
-
         <TextView
-            android:id="@+id/notes_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/heading_notes_hint"
-            android:textAlignment="textStart"
-            android:textSize="17sp" />
+            android:text="@string/subheading_notes"
+            android:textSize="@dimen/diaryentry_subheading"/>
+
+        <EditText
+            android:id="@+id/notes_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="8dp"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLines="20"
+            android:minLines="8"
+            android:gravity="top|left"
+            android:scrollbars="vertical"
+            android:textSize="16dp"
+            android:maxLength="256"
+            android:background="@drawable/custom_border"/>
 
     </LinearLayout>
 
