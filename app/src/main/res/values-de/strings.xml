@@ -156,8 +156,11 @@
     <string name="diary_entries">Schmerztagebuch-Einträge</string>
     <string name="diary_entries_none">Keine Einträge gefunden.</string>
     <string name="permission_write_error">Fehler: Keine Schreibberechtigung.</string>
+    <string name="permission_write_denied">Berechtigung verweigert. Export nicht möglich.</string>
+    <string name="permission_write_granted">Berechtiung gewährt. Bitte versuchen Sie es erneut.</string>
     <string name="export_success">PDF wurde im Dokumenten-Ordner gespeichert.</string>
     <string name="export_failure">Unbekannter Fehler: PDF konnte nicht gespeichert werden.</string>
     <string name="share_caution">Seien Sie vorsichtig, mit wem Sie Ihre medizinischen Informationen teilen.</string>
+
 
 </resources>

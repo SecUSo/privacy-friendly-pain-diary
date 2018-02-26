@@ -184,24 +184,25 @@ public class PdfCreator {
         sb.setLength(0);
         sb.append(context.getResources().getString(R.string.first_name)).append(": ");
         if(user.getFirstName() != null) {
-            sb.append(user.getFirstName()).append("\n");
+            sb.append(user.getFirstName());
         }
-        sb.append(context.getResources().getString(R.string.last_name)).append(": ");
+        sb.append("\n").append(context.getResources().getString(R.string.last_name)).append(": ");
         if(user.getLastName() != null) {
-            sb.append(user.getLastName()).append("\n");
+            sb.append(user.getLastName());
         }
         sb.append(context.getResources().getString(R.string.date_of_birth)).append(": ");
         if(user.getDateOfBirth() != null) {
-            sb.append(dateFormat.format(user.getDateOfBirth())).append("\n");
+            sb.append(dateFormat.format(user.getDateOfBirth()));
         }
-        sb.append(context.getResources().getString(R.string.gender)).append(": ");
+        sb.append("\n").append(context.getResources().getString(R.string.gender)).append(": ");
         if(user.getGender() != null) {
             String gender = context.getResources().getString(R.string.female);
             if(user.getGender() == Gender.MALE) {
                 gender = context.getResources().getString(R.string.male);
             }
-            sb.append(gender).append("\n");
+            sb.append(gender);
         }
+        sb.append("\n");
 
         layout = new StaticLayout(sb.toString(), normalTextPaint, WIDTH_A4 / 5 * 4, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
         layout.draw(canvas);

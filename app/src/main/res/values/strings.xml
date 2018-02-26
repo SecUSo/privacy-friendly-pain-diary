@@ -160,6 +160,8 @@
     <string name="diary_entries">Pain Diary Entries</string>
     <string name="diary_entries_none">No entries found.</string>
     <string name="permission_write_error">Error: Do not have permission to write.</string>
+    <string name="permission_write_denied">Permission denied. Cannot export diary entries.</string>
+    <string name="permission_write_granted">Permission granted. Please try again.</string>
     <string name="export_success">PDF was saved to documents folder.</string>
     <string name="export_failure">Unknown Error: PDF could not be saved.</string>
     <string name="share_caution">Be careful who you share your medical information with.</string>

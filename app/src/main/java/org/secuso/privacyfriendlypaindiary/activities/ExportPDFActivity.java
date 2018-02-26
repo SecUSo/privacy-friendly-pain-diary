@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,6 +46,7 @@ import java.util.Date;
 public class ExportPDFActivity extends AppCompatActivity {
 
     private static final String TAG = ExportPDFActivity.class.getSimpleName();
+    private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 42;
 
     private TextInputLayout startDateWrapper;
     private TextInputLayout endDateWrapper;
@@ -144,20 +146,20 @@ public class ExportPDFActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(ExportPDFActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
-                //          if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                //                  Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, getString(R.string.permission_write_error), Toast.LENGTH_LONG).show();
-                //          }
-            }
-            //      else {
-            //          ActivityCompat.requestPermissions(ExportPDFActivity.this,
-            //                  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-            //                  MY_PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
-            //  }
+                ActivityCompat.requestPermissions(ExportPDFActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+                return null;
+              }
         }
-//        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
 
-        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), getString(R.string.app_name));
+        if(!directory.exists()) {
+            if(!directory.mkdirs()) {
+                Toast.makeText(this, getString(R.string.export_failure), Toast.LENGTH_LONG).show();
+                return null;
+            }
+        }
 
         SimpleDateFormat s = new SimpleDateFormat("ddMMyyyy");
         String filename = s.format(startDate) + "-" + s.format(endDate);
@@ -188,6 +190,20 @@ public class ExportPDFActivity extends AppCompatActivity {
             sendIntent.putExtra(Intent.EXTRA_STREAM, attachment);
             sendIntent.setType("application/pdf");
             startActivity(Intent.createChooser(sendIntent, getString(R.string.share_caution)));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, getString(R.string.permission_write_granted), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, getString(R.string.permission_write_denied), Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
         }
     }
 
