@@ -1,124 +1,137 @@
-<RelativeLayout
-    android:id="@+id/userdetails_content"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.UserDetailsActivity">
-
-    <LinearLayout
-        android:id="@+id/userdetails_wrapper"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+    <RelativeLayout
+        android:id="@+id/userdetails_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.UserDetailsActivity">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/first_name_wrapper"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin">
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/first_name"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/first_name" />
-                <!--android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ- "-->
-                <!--android:maxLength="40" />-->
-        </android.support.design.widget.TextInputLayout>
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/last_name_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/last_name"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/first_name_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_margin">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:hint="@string/first_name" />
+                        <!--android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ- "-->
+                        <!--android:maxLength="40" />-->
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/last_name_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:hint="@string/last_name" />
+                        <!--android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ- "-->
+                        <!--android:maxLength="40" />-->
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/date_of_birth_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/date_of_birth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:hint="@string/date_of_birth" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/gender_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    android:textSize="12sp"/>
+
+                <RadioGroup
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/gender_male"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/male"
+                        android:checked="false"
+                        android:onClick="onClick" />
+
+                    <RadioButton
+                        android:id="@+id/gender_female"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/female"
+                        android:checked="false"
+                        android:onClick="onClick" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/last_name" />
-                <!--android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ- "-->
-                <!--android:maxLength="40" />-->
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha=".5"
+                    android:layout_above="@id/btn_save"
+                    android:background="@android:color/darker_gray" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/date_of_birth_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/date_of_birth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:hint="@string/date_of_birth" />
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:text="@string/save"
+                    android:onClick="onClick" />
 
-        </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:background="@null"
+                    android:text="@string/cancel"
+                    android:onClick="onClick" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/gender_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gender"
-            android:textSize="12sp"/>
-
-        <RadioGroup
-            android:id="@+id/gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <RadioButton
-                android:id="@+id/gender_male"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/male"
-                android:checked="false"
-                android:onClick="onClick" />
-
-            <RadioButton
-                android:id="@+id/gender_female"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/female"
-                android:checked="false"
-                android:onClick="onClick" />
-
-        </RadioGroup>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha=".5"
-        android:layout_above="@id/btn_save"
-        android:background="@android:color/darker_gray" />
-
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@null"
-        android:text="@string/save"
-        android:onClick="onClick" />
-
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:text="@string/cancel"
-        android:onClick="onClick" />
-
-</RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

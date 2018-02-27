@@ -193,6 +193,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         } else {
             DBServiceInterface service = DBService.getInstance(this);
             user = service.getUserByID(userID);
+            if(user == null) user = new User(); //this is an error case
         }
 
         dateWrapper = findViewById(R.id.date_of_birth_wrapper);

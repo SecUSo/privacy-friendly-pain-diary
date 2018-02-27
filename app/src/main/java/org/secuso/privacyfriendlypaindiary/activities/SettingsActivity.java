@@ -28,7 +28,9 @@ import android.preference.PreferenceManager;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService;
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 /**
  * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/settings.html"/> and <a href="https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su/4325239#4325239"/>
@@ -157,7 +159,7 @@ public class SettingsActivity extends BaseActivity {
             PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).edit().clear().commit();
             PreferenceManager.setDefaultValues(getActivity().getApplicationContext(), R.xml.pref_general, true);
             NotificationJobService.cancelJob(getActivity().getApplicationContext());
-
+            new PrefManager(getActivity().getApplicationContext()).setUserID(AbstractPersistentObject.INVALID_OBJECT_ID);
             getPreferenceScreen().removeAll();
             initPreferences();
         }

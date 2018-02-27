@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/diaryentry_slide3"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.DiaryEntryActivity"
-    android:orientation="vertical"
-    style="@style/AlertDialog.AppCompat">
-
-    <LinearLayout
-        android:id="@+id/bodyregion_wrapper"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/diaryentry_slide3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/diaryentry_marginTop"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.DiaryEntryActivity"
+        android:orientation="vertical"
+        style="@style/AlertDialog.AppCompat">
 
-        <TextView
-            android:id="@+id/bodyregion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/heading_bodyregion"
-            android:textSize="@dimen/diaryentry_heading"/>
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/bodyregion_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/diaryentry_marginTop"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/person"
+            <TextView
+                android:id="@+id/bodyregion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/paindiary_person_fullbody" />
+                android:layout_marginTop="@dimen/fab_margin"
+                android:text="@string/heading_bodyregion"
+                android:textSize="@dimen/diaryentry_heading"/>
 
-            <ImageView
-                android:id="@+id/person_coloured"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/paindiary_person_fullbody_coloured"
-                android:visibility="invisible"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/bodyregion_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:tint="@color/yellow"
-                app:srcCompat="@drawable/paindiary_person_fullbody"
-                android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/paindiary_person_fullbody" />
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/person_coloured"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/paindiary_person_fullbody_coloured"
+                    android:visibility="invisible"/>
 
+                <ImageView
+                    android:id="@+id/bodyregion_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tint="@color/yellow"
+                    app:srcCompat="@drawable/paindiary_person_fullbody"
+                    android:visibility="gone"/>
 
-    </LinearLayout>
-</RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

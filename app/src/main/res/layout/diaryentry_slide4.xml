@@ -1,70 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/diaryentry_slide4"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.DiaryEntryActivity"
-    android:orientation="vertical"
-    style="@style/AlertDialog.AppCompat">
-
-    <LinearLayout
-        android:id="@+id/painquality_wrapper"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/diaryentry_slide4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/diaryentry_marginTop"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.DiaryEntryActivity"
+        android:orientation="vertical"
+        style="@style/AlertDialog.AppCompat">
 
-        <TextView
-            android:id="@+id/paindescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/heading_paindescription"
-            android:textSize="@dimen/diaryentry_heading" />
-
-        <CheckBox
-            android:id="@+id/pain_stabbing"
+        <LinearLayout
+            android:id="@+id/painquality_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:onClick="onPainQualityClicked"
-            android:text="@string/pain_stabbing" />
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/diaryentry_marginTop"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
 
-        <CheckBox
-            android:id="@+id/pain_dull"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onPainQualityClicked"
-            android:text="@string/pain_dull" />
+            <TextView
+                android:id="@+id/paindescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:text="@string/heading_paindescription"
+                android:textSize="@dimen/diaryentry_heading" />
 
-        <CheckBox
-            android:id="@+id/pain_shooting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onPainQualityClicked"
-            android:text="@string/pain_shooting" />
+            <CheckBox
+                android:id="@+id/pain_stabbing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:onClick="onPainQualityClicked"
+                android:text="@string/pain_stabbing" />
 
-        <CheckBox
-            android:id="@+id/pain_burning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onPainQualityClicked"
-            android:text="@string/pain_burning" />
+            <CheckBox
+                android:id="@+id/pain_dull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onPainQualityClicked"
+                android:text="@string/pain_dull" />
 
-        <CheckBox
-            android:id="@+id/pain_throbbing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onPainQualityClicked"
-            android:text="@string/pain_throbbing" />
+            <CheckBox
+                android:id="@+id/pain_shooting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onPainQualityClicked"
+                android:text="@string/pain_shooting" />
 
-    </LinearLayout>
+            <CheckBox
+                android:id="@+id/pain_burning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onPainQualityClicked"
+                android:text="@string/pain_burning" />
 
-</RelativeLayout>
+            <CheckBox
+                android:id="@+id/pain_throbbing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onPainQualityClicked"
+                android:text="@string/pain_throbbing" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

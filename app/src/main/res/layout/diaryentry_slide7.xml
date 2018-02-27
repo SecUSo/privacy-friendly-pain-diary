@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/diaryentry_slide6"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.DiaryEntryActivity"
-    android:orientation="vertical"
-    style="@style/AlertDialog.AppCompat">
-
-    <LinearLayout
-        android:id="@+id/notes_wrapper"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/diaryentry_slide7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/diaryentry_marginTop"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.DiaryEntryActivity"
+        android:orientation="vertical"
+        style="@style/AlertDialog.AppCompat">
 
-        <TextView
-            android:id="@+id/notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:text="@string/heading_notes"
-            android:textSize="@dimen/diaryentry_heading"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subheading_notes"
-            android:textSize="@dimen/diaryentry_subheading"/>
-
-        <EditText
-            android:id="@+id/notes_text"
+        <LinearLayout
+            android:id="@+id/notes_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="8dp"
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:maxLines="20"
-            android:minLines="8"
-            android:gravity="top|left"
-            android:scrollbars="vertical"
-            android:textSize="16dp"
-            android:maxLength="256"
-            android:background="@drawable/custom_border"/>
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/diaryentry_marginTop"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:text="@string/heading_notes"
+                android:textSize="@dimen/diaryentry_heading"
+                android:focusable="true"
+                android:focusableInTouchMode="true"	/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subheading_notes"
+                android:textSize="@dimen/diaryentry_subheading"/>
 
-</RelativeLayout>
+            <EditText
+                android:id="@+id/notes_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="8dp"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:maxLines="20"
+                android:minLines="8"
+                android:gravity="top|left"
+                android:scrollbars="vertical"
+                android:textSize="16dp"
+                android:maxLength="256"
+                android:background="@drawable/custom_border"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
