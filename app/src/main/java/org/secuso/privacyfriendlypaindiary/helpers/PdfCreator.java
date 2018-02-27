@@ -308,8 +308,18 @@ public class PdfCreator {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.pdf_person, null);
             EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
-            if(!bodyRegions.isEmpty()) {
-                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegions);
+            EnumSet<BodyRegion> bodyRegionsFront = EnumSet.noneOf(BodyRegion.class);
+            EnumSet<BodyRegion> bodyRegionsBack = EnumSet.noneOf(BodyRegion.class);
+            // body regions are split up into two separate sets (front and back)
+            for(BodyRegion region : bodyRegions) {
+                if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+                    bodyRegionsFront.add(region);
+                } else {
+                    bodyRegionsBack.add(region);
+                }
+            }
+            if(!bodyRegionsFront.isEmpty()) {
+                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsFront);
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }

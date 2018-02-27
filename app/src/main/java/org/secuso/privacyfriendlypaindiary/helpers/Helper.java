@@ -159,10 +159,25 @@ public class Helper {
         if(painDescription != null) {
             ((TextView) view.findViewById(R.id.painlevel_value)).setText(Integer.toString(painDescription.getPainLevel()));
             EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
-            if(!bodyRegions.isEmpty()) {
-                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegions);
+            EnumSet<BodyRegion> bodyRegionsFront = EnumSet.noneOf(BodyRegion.class);
+            EnumSet<BodyRegion> bodyRegionsBack = EnumSet.noneOf(BodyRegion.class);
+            // body regions are split up into two separate sets (front and back)
+            for(BodyRegion region : bodyRegions) {
+                if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+                    bodyRegionsFront.add(region);
+                } else {
+                    bodyRegionsBack.add(region);
+                }
+            }
+            if(!bodyRegionsFront.isEmpty()) {
+                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsFront);
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+            }
+            if(!bodyRegionsBack.isEmpty()) {
+                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsBack);
+                ((ImageView) view.findViewById(R.id.bodyregion_back_value)).setImageBitmap(Helper.overlay(images));
+                view.findViewById(R.id.bodyregion_back_value).setVisibility(View.VISIBLE);
             }
             String painQualities = convertPainQualityEnumSetToString(context, painDescription.getPainQualities());
             if(painQualities != null) {

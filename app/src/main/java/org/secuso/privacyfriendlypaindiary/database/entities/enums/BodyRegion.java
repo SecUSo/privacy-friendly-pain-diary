@@ -32,6 +32,7 @@ public enum BodyRegion {
 
     private int value;
     private static Map<Integer, BodyRegion> map = new HashMap<>();
+    public static final int LOWEST_BACK_INDEX = 22;
 
     private BodyRegion(int value) {
         this.value = value;

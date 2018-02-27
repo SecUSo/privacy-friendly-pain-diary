@@ -1,67 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
+    android:id="@+id/diaryentry_slide3"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:id="@+id/diaryentry_slide3"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.DiaryEntryActivity"
+    style="@style/AlertDialog.AppCompat">
+
+    <LinearLayout
+        android:id="@+id/bodyregion_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.DiaryEntryActivity"
-        android:orientation="vertical"
-        style="@style/AlertDialog.AppCompat">
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/diaryentry_marginTop"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bodyregion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="@string/heading_bodyregion"
+            android:textSize="@dimen/diaryentry_heading"/>
 
         <LinearLayout
-            android:id="@+id/bodyregion_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/diaryentry_marginTop"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/bodyregion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fab_margin"
-                android:text="@string/heading_bodyregion"
-                android:textSize="@dimen/diaryentry_heading"/>
-
+            android:layout_marginTop="@dimen/fab_margin">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_weight="1"
                 android:text="@string/body_front"
                 android:textSize="@dimen/diaryentry_heading"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/body_back"
+                android:textSize="@dimen/diaryentry_heading"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/person"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/paindiary_person_fullbody" />
 
                 <ImageView
                     android:id="@+id/person_coloured"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/paindiary_person_fullbody_coloured"
                     android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/bodyregion_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:tint="@color/yellow"
                     app:srcCompat="@drawable/paindiary_person_fullbody"
@@ -69,36 +84,30 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fab_margin"
-                android:text="@string/body_back"
-                android:textSize="@dimen/diaryentry_heading"/>
-
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/person_back"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/paindiary_person_fullbody" />
 
                 <ImageView
                     android:id="@+id/person_back_coloured"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/paindiary_person_fullbody_coloured"
                     android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/bodyregion_back_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:tint="@color/yellow"
                     app:srcCompat="@drawable/paindiary_person_fullbody"
@@ -107,5 +116,5 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+    </LinearLayout>
+</RelativeLayout>

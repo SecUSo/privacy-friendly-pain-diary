@@ -83,7 +83,7 @@ import java.util.Set;
  * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
  *
  * @author Susanne Felsen
- * @version 20180226
+ * @version 20180227
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
@@ -110,7 +110,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private Condition condition;
     private String notes;
     private int painLevel = 0;
-    private EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
+    private EnumSet<BodyRegion> bodyRegionsFront = EnumSet.noneOf(BodyRegion.class);
+    private EnumSet<BodyRegion> bodyRegionsBack = EnumSet.noneOf(BodyRegion.class);
     private EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
     private EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
     private List<DrugInterface> drugs = new ArrayList<>();
@@ -257,7 +258,15 @@ public class DiaryEntryActivity extends AppCompatActivity {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             if(painDescription != null) {
                 painLevel = painDescription.getPainLevel();
-                bodyRegions = painDescription.getBodyRegions();
+                EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
+                // body regions are split up into two separate sets (front and back)
+                for(BodyRegion region : bodyRegions) {
+                    if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+                        bodyRegionsFront.add(region);
+                    } else {
+                        bodyRegionsBack.add(region);
+                    }
+                }
                 painQualities = painDescription.getPainQualities();
                 timesOfPain = painDescription.getTimesOfPain();
             }
@@ -265,10 +274,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-        ((TextView) findViewById(R.id.date)).setText(dateAsString);
+        TextView date = findViewById(R.id.date);
+        if(date != null) date.setText(dateAsString);
 
         initConditions();
-        if (condition != null) {
+        if (condition != null && conditions.length != 0) {
             conditions[condition.getValue()].setBackgroundColor(COLOR_YELLOW);
         }
     }
@@ -284,67 +294,84 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     private void setDataOnSlide2() {
         SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
-        seekBar.setProgress(painLevel);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) painLevel = progress;
-                changesMade = true;
-            }
+        if(seekBar != null) {
+            seekBar.setProgress(painLevel);
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser) painLevel = progress;
+                    changesMade = true;
+                }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+        }
     }
 
-    //TODO: have a look at https://developer.android.com/training/gestures/detector.html
     private void setDataOnSlide3() {
-        ImageView person = findViewById(R.id.person);
+        initClickableBodyRegions(bodyRegionsFront, R.id.person, R.id.person_coloured, R.id.bodyregion_value, true);
+        initClickableBodyRegions(bodyRegionsBack, R.id.person_back, R.id.person_back_coloured, R.id.bodyregion_back_value, false);
+    }
+
+    /**
+     * 
+     * @param bodyRegions
+     * @param personID resource ID of ImageView displaying the person
+     * @param personColouredID resource ID of (invisible) ImageView displaying the coloured person
+     * @param valueID resource ID of Image View displaying the selected body parts
+     */
+    private void initClickableBodyRegions(final EnumSet<BodyRegion> bodyRegions, int personID, final int personColouredID, final int valueID, final boolean front) {
+        ImageView person = findViewById(personID);
         if(!bodyRegions.isEmpty()) {
             Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-            ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
-            findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+            ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
+            findViewById(valueID).setVisibility(View.VISIBLE);
         }
-        person.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    float x = event.getX();
-                    float y = event.getY();
-                    int touchColor = getHotspotColor(R.id.person_coloured, Math.round(x), Math.round(y));
-                    BodyRegion bodyPart = getBodyRegion(touchColor);
-                    if(bodyPart != null) {
-                        if(!bodyRegions.contains(bodyPart)) {
-                            bodyRegions.add(bodyPart);
-                            changesMade = true;
+        if(person != null) {
+            person.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        float x = event.getX();
+                        float y = event.getY();
+                        int touchColor = getHotspotColor(personColouredID, Math.round(x), Math.round(y));
+                        BodyRegion bodyPart = getBodyRegion(touchColor, front);
+                        Log.d(TAG, "body region: " + bodyPart);
+                        if (bodyPart != null) {
+                            if (!bodyRegions.contains(bodyPart)) {
+                                bodyRegions.add(bodyPart);
+                                changesMade = true;
 
-                            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                            ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
-                            findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
-                        } else { //already selected >> deselect
-                            bodyRegions.remove(bodyPart);
-                            changesMade = true;
-
-                            if(!bodyRegions.isEmpty()) {
                                 Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                                ((ImageView) findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
-                                findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
-                            } else {
-                                findViewById(R.id.bodyregion_value).setVisibility(View.GONE);
+                                ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
+                                findViewById(valueID).setVisibility(View.VISIBLE);
+                            } else { //already selected >> deselect
+                                bodyRegions.remove(bodyPart);
+                                changesMade = true;
+
+                                if (!bodyRegions.isEmpty()) {
+                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                                    ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
+                                    findViewById(valueID).setVisibility(View.VISIBLE);
+                                } else {
+                                    findViewById(valueID).setVisibility(View.GONE);
+                                }
                             }
                         }
-                    }
 
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
     }
+    
 
     private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
         Bitmap[] images = new Bitmap[bodyRegions.size()];
@@ -397,32 +424,36 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     private void setDataOnSlide6() {
         LinearLayout layout = findViewById(R.id.medication_container);
-        layout.removeAllViews();
-        for(DrugIntakeInterface drugIntake : drugIntakes) {
-            layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
+        if(layout != null) {
+            layout.removeAllViews();
+            for (DrugIntakeInterface drugIntake : drugIntakes) {
+                layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
+            }
         }
     }
 
     private void setDataOnSlide7() {
         final EditText notesEditText = findViewById(R.id.notes_text);
-        notesEditText.setText(notes);
-        notesEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence text, int start, int count, int after) {
+        if(notesEditText != null) {
+            notesEditText.setText(notes);
+            notesEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence text, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                notes = notesEditText.getText().toString();
-                changesMade = true;
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    notes = notesEditText.getText().toString();
+                    changesMade = true;
+                }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private void addBottomDots(int currentPage) {
@@ -558,53 +589,141 @@ public class DiaryEntryActivity extends AppCompatActivity {
         return true;
     }
 
-    private BodyRegion getBodyRegion(int touchColor) {
+    private BodyRegion getBodyRegion(int touchColor, boolean front) {
         int tolerance = 25;
         BodyRegion bodyPart = null;
         if (closeMatch (Color.parseColor("#ff00ff"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.ABDOMEN_RIGHT;
+            if(front) {
+                bodyPart = BodyRegion.ABDOMEN_RIGHT;
+            } else {
+                bodyPart = BodyRegion.ABDOMEN_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#0000ff"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.ABDOMEN_LEFT;
+            if(front) {
+                bodyPart = BodyRegion.ABDOMEN_LEFT;
+            } else {
+                bodyPart = BodyRegion.ABDOMEN_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#ffff00"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.GROIN_LEFT;
+            if(front) {
+                bodyPart = BodyRegion.GROIN_LEFT;
+            } else {
+                bodyPart = BodyRegion.GROIN_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#00ff00"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.GROIN_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.GROIN_RIGHT;
+            } else {
+                bodyPart = BodyRegion.GROIN_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#ff7e00"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.THIGH_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.THIGH_LEFT;
+            } else {
+                bodyPart = BodyRegion.THIGH_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#a774d2"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.THIGH_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.THIGH_RIGHT;
+            } else {
+                bodyPart = BodyRegion.THIGH_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#147914"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.KNEE_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.KNEE_LEFT;
+            } else {
+                bodyPart = BodyRegion.KNEE_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#775205"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.KNEE_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.KNEE_RIGHT;
+            } else {
+                bodyPart = BodyRegion.KNEE_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#ff007e"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.LOWER_LEG_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.LOWER_LEG_LEFT;
+            } else {
+                bodyPart = BodyRegion.LOWER_LEG_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#00ffff"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.LOWER_LEG_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.LOWER_LEG_RIGHT;
+            } else {
+                bodyPart = BodyRegion.LOWER_LEG_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#7ec8ff"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.FOOT_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.FOOT_LEFT;
+            } else {
+                bodyPart = BodyRegion.FOOT_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#173081"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.FOOT_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.FOOT_RIGHT;
+            } else {
+                bodyPart = BodyRegion.FOOT_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#007ba9"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.CHEST_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.CHEST_LEFT;
+            } else {
+                bodyPart = BodyRegion.CHEST_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#00ffb4"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.CHEST_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.CHEST_RIGHT;
+            } else {
+                bodyPart = BodyRegion.CHEST_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#042c3a"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.NECK;
+            if (front) {
+                bodyPart = BodyRegion.NECK;
+            } else {
+                bodyPart = BodyRegion.NECK_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#ff0000"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.HEAD;
+            if (front) {
+                bodyPart = BodyRegion.HEAD;
+            } else {
+                bodyPart = BodyRegion.HEAD_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#81173d"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.UPPER_ARM_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.UPPER_ARM_LEFT;
+            } else {
+                bodyPart = BodyRegion.UPPER_ARM_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#bc3b13"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.UPPER_ARM_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.UPPER_ARM_RIGHT;
+            } else {
+                bodyPart = BodyRegion.UPPER_ARM_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#7e007e"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.LOWER_ARM_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.LOWER_ARM_LEFT;
+            } else {
+                bodyPart = BodyRegion.LOWER_ARM_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#7e7e00"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.LOWER_ARM_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.LOWER_ARM_RIGHT;
+            } else {
+                bodyPart = BodyRegion.LOWER_ARM_RIGHT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#7e7e7e"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.HAND_LEFT;
+            if (front) {
+                bodyPart = BodyRegion.HAND_LEFT;
+            } else {
+                bodyPart = BodyRegion.HAND_LEFT_BACK;
+            }
         } else if (closeMatch (Color.parseColor("#7e7eff"), touchColor, tolerance)) {
-            bodyPart = BodyRegion.HAND_RIGHT;
+            if (front) {
+                bodyPart = BodyRegion.HAND_RIGHT;
+            } else {
+                bodyPart = BodyRegion.HAND_RIGHT_BACK;
+            }
         }
         return bodyPart;
     }
@@ -809,6 +928,9 @@ public class DiaryEntryActivity extends AppCompatActivity {
             }
         }
 
+        EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
+        bodyRegions.addAll(bodyRegionsFront);
+        bodyRegions.addAll(bodyRegionsBack);
         if(edit && diaryEntry.getPainDescription() != null) {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             painDescription.setPainLevel(painLevel);
@@ -870,6 +992,5 @@ public class DiaryEntryActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
 }

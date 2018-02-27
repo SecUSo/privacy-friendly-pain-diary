@@ -63,7 +63,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="date"
-                        android:hint="@string/date_of_birth" />
+                        android:hint="@string/date_of_birth"
+                        android:onClick="onClick"
+                        android:focusable="false" />
 
                 </android.support.design.widget.TextInputLayout>
 
