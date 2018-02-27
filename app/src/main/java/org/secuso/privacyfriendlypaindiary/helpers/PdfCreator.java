@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -64,7 +65,8 @@ public class PdfCreator {
     private static final int HEIGHT_A4 = 842;
     private static final int TEXT_SIZE = 12;
     private static final int PADDING = 20;
-    private static final int DX_SECOND_COLUMN = 150;
+    private static final int PERSON_WIDTH = 80;
+    private static final int DX_SECOND_COLUMN = 200;
 
     private Context context;
     private SimpleDateFormat dateFormat;
@@ -234,17 +236,18 @@ public class PdfCreator {
 
         canvas.save();
         canvas.translate(0, totalHeight + height);
+        int resourceID = R.drawable.ic_menu_help;
         if(diaryEntry.getCondition() != null) {
-            int resourceID = Helper.getResourceIDForCondition(diaryEntry.getCondition());
-            Drawable drawable = ContextCompat.getDrawable(context, resourceID);
-            Bitmap condition = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
-            Canvas bitmapCanvas = new Canvas(condition);
-            drawable.setBounds(0, 0, bitmapCanvas.getWidth(), bitmapCanvas.getHeight());
-            drawable.draw(bitmapCanvas);
-            canvas.drawBitmap(condition, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
-            condition.recycle();
-            height += 35;
+            resourceID = Helper.getResourceIDForCondition(diaryEntry.getCondition());
         }
+        Drawable drawable = ContextCompat.getDrawable(context, resourceID);
+        Bitmap condition = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
+        Canvas bitmapCanvas = new Canvas(condition);
+        drawable.setBounds(0, 0, bitmapCanvas.getWidth(), bitmapCanvas.getHeight());
+        drawable.draw(bitmapCanvas);
+        canvas.drawBitmap(condition, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+        condition.recycle();
+        height += 35;
         canvas.restore();
 
         canvas.save();
@@ -257,6 +260,23 @@ public class PdfCreator {
         sb.append("\n");
         sb.append(context.getResources().getString(R.string.bodyregion));
         layout = new StaticLayout(sb.toString(), normalTextPaint, WIDTH_A4 / 5 * 4, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
+        layout.draw(canvas);
+        height += layout.getHeight();
+        canvas.restore();
+
+        canvas.save();
+        canvas.translate(0, totalHeight + height);
+        sb.setLength(0);
+        sb.append(context.getResources().getString(R.string.body_front));
+        layout = new StaticLayout(sb.toString(), normalTextPaint, WIDTH_A4 / 5 * 4, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
+        layout.draw(canvas);
+        canvas.restore();
+
+        canvas.save();
+        canvas.translate(PERSON_WIDTH + 10, totalHeight + height);
+        sb.setLength(0);
+        sb.append(context.getResources().getString(R.string.body_back));
+        layout = new StaticLayout(sb.toString(), normalTextPaint, WIDTH_A4 / 5 * 3, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
         layout.draw(canvas);
         canvas.restore();
 
@@ -289,9 +309,13 @@ public class PdfCreator {
         String medication = "";
         sb.append(context.getResources().getString(R.string.medication_taken)).append("\n");
         for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
-            medication = medication + drugIntake.getDrug().getName() + " (" + drugIntake.getDrug().getDose() + ") " +
-                    drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
-                    System.getProperty("line.separator");
+            if(drugIntake.getDrug().getName() != null) {
+                medication += Html.fromHtml("&#8226;") + " " + drugIntake.getDrug().getName();
+            }
+            if(drugIntake.getDrug().getDose() != null) {
+                medication += " (" + drugIntake.getDrug().getDose() + ") ";
+            }
+            medication += ": " + drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() + "\n";
         }
         if(medication.isEmpty()) {
             medication = context.getResources().getString(R.string.none);
@@ -325,7 +349,22 @@ public class PdfCreator {
             }
 
             Bitmap bitmap = createBitmapFromView(view.findViewById(R.id.bodyregion));
-            bitmap = Bitmap.createScaledBitmap(bitmap, 80, 160, true);
+            bitmap = Bitmap.createScaledBitmap(bitmap, PERSON_WIDTH, 160, true);
+            canvas.drawBitmap(bitmap, 0, 0, new Paint());
+//            height += bitmap.getHeight() + 5;
+            canvas.restore();
+            bitmap.recycle();
+
+            canvas.save();
+            canvas.translate(PERSON_WIDTH + 10, totalHeight + height);
+            if(!bodyRegionsBack.isEmpty()) {
+                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsBack);
+                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+                view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
+            }
+
+            bitmap = createBitmapFromView(view.findViewById(R.id.bodyregion));
+            bitmap = Bitmap.createScaledBitmap(bitmap, PERSON_WIDTH, 160, true);
             canvas.drawBitmap(bitmap, 0, 0, new Paint());
             height += bitmap.getHeight() + 5;
             canvas.restore();

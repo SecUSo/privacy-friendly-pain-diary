@@ -24,27 +24,27 @@
             android:id="@+id/bodyregion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/diaryentry_heading_marginTop"
             android:text="@string/heading_bodyregion"
             android:textSize="@dimen/diaryentry_heading"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin">
+            android:layout_marginTop="@dimen/diaryentry_heading_marginTop">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/body_front"
-                android:textSize="@dimen/diaryentry_heading"/>
+                android:textSize="@dimen/diaryentry_textsize_normal"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/body_back"
-                android:textSize="@dimen/diaryentry_heading"/>
+                android:textSize="@dimen/diaryentry_textsize_normal"/>
         </LinearLayout>
 
         <LinearLayout

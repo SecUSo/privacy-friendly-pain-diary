@@ -28,7 +28,7 @@
                 android:id="@+id/timeofpain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/diaryentry_heading_marginTop"
                 android:text="@string/heading_timeofpain"
                 android:textSize="@dimen/diaryentry_heading"/>
 

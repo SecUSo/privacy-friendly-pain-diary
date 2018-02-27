@@ -45,7 +45,7 @@
             android:id="@+id/condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/diaryentry_heading_marginTop"
             android:text="@string/heading_condition"
             android:textSize="@dimen/diaryentry_heading"/>
 

@@ -28,7 +28,7 @@
                     android:id="@+id/medication"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/fab_margin"
+                    android:layout_marginTop="@dimen/diaryentry_heading_marginTop"
                     android:text="@string/heading_medication"
                     android:textSize="@dimen/diaryentry_heading"/>
                 <TextView
@@ -48,7 +48,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_weight="1"
                         android:text="@string/medication"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/diaryentry_textsize_normal" />
                     <ImageButton
                         android:layout_height="24dp"
                         android:layout_width="24dp"

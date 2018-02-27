@@ -148,11 +148,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 addBottomDots(position);
+                btnBack.setVisibility(View.VISIBLE);
                 if (position == 0) {
                     btnBack.setVisibility(View.GONE);
                     setDataOnSlide1();
                 } else if (position == 1) {
-                    btnBack.setVisibility(View.VISIBLE);
                     setDataOnSlide2();
                 } else if (position == 2) {
                     setDataOnSlide3();
@@ -295,6 +295,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private void setDataOnSlide2() {
         SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
         if(seekBar != null) {
+//            TextView label = findViewById(R.id.label);
+//            seekBar.setPaddingRelative(label.getWidth() / 2, 0, label.getWidth() / 2, 0);
             seekBar.setProgress(painLevel);
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
@@ -439,7 +441,11 @@ public class DiaryEntryActivity extends AppCompatActivity {
             notesEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence text, int start, int count, int after) {
-
+                    String result = text.toString().replaceAll("\n", " ");
+                    if (!text.toString().equals(result)) {
+                        notesEditText.setText(result);
+                        notesEditText.setSelection(result.length());
+                    }
                 }
 
                 @Override

@@ -129,7 +129,7 @@ public class Helper {
             case VERY_GOOD:
                 return R.drawable.ic_sentiment_very_satisfied;
             default:
-                return R.drawable.ic_sentiment_neutral;
+                return R.drawable.ic_menu_help;
         }
     }
 

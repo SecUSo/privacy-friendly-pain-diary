@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="diaryentry_heading_marginTop">5dp</dimen>
+
+</resources>

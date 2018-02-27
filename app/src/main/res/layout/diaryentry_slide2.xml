@@ -25,7 +25,7 @@
             android:id="@+id/painlevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/diaryentry_heading_marginTop"
             android:text="@string/heading_painlevel"
             android:textSize="@dimen/diaryentry_heading"/>
         <TextView
@@ -51,6 +51,7 @@
             android:weightSum="11">
 
             <TextView
+                android:id="@+id/label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
