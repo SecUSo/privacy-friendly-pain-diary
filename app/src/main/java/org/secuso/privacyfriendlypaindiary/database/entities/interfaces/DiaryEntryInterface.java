@@ -22,43 +22,58 @@ import java.util.Date;
 import java.util.Set;
 
 /**
+ * Pain diary entry made by a user. A diary entry is identified by its date. There
+ * can only be ony entry per day. It holds information entered by the user such as
+ * his condition and additional notes. Every diary entry contains a
+ * {@link PainDescriptionInterface} object that encapsulates information
+ * about the pain he is experiencing. Furthermore, a set of {@link DrugIntakeInterface}
+ * objects is associated with each diary entry. Each of these objects encapsulates
+ * information about a specific drug taken in by the user (i.e. the quantity taken at
+ * different times of day).
+ * </p>
+ * Since users are not required to enter any information, the getter-methods might
+ * return <code>null</code>.
+ *
  * @author Susanne Felsen
  * @version 20171124
  */
 public interface DiaryEntryInterface extends PersistentObject {
 
-    public Date getDate();
+    Date getDate();
 
-    public void setDate(Date date);
+    void setDate(Date date);
 
-    public Condition getCondition();
+    Condition getCondition();
 
-    public void setCondition(Condition condition);
+    void setCondition(Condition condition);
 
-    public PainDescriptionInterface getPainDescription();
+    PainDescriptionInterface getPainDescription();
 
-    public void setPainDescription(PainDescriptionInterface painDescription);
+    void setPainDescription(PainDescriptionInterface painDescription);
 
-    public String getNotes();
+    String getNotes();
 
-    public void setNotes(String notes);
+    void setNotes(String notes);
 
-    public Set<DrugIntakeInterface> getDrugIntakes();
+    Set<DrugIntakeInterface> getDrugIntakes();
 
     /**
      * Adds a drug intake to the set of drug intakes associated with this entry.
-     * The set must not contain another drug intake associated with the same drug.
+     * Calls {@link DrugIntakeInterface#setDiaryEntry(DiaryEntryInterface)}.
      *
      * @param intake drug intake to be added
      */
-    public void addDrugIntake(DrugIntakeInterface intake);
+    void addDrugIntake(DrugIntakeInterface intake);
 
-    public void removeDrugIntake(DrugIntakeInterface intake);
+    void removeDrugIntake(DrugIntakeInterface intake);
 
     /**
-     * @param id
+     * Returns the drug intake with the given object ID from the set of drug intakes
+     * associated with this entry.
+     *
+     * @param id object ID of the drug intake to remove
      * @return drug intake object or <code>null</code>
      */
-    public DrugIntakeInterface getDrugIntakeByID(long id);
+    DrugIntakeInterface getDrugIntakeByID(long id);
 
 }

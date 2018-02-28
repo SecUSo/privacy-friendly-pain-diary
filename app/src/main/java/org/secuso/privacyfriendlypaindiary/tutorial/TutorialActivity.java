@@ -42,11 +42,11 @@ import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
  * displayed at the first start of the application but can also be accessed from
  * the navigation drawer. At the end of the tutorial, the {@link UserDetailsActivity}
  * is launched.
- * <p/>
- * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  *
  * @author Karola Marky, Susanne Felsen
  * @version 20180228
+ *
+ * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  */
 
 public class TutorialActivity extends AppCompatActivity {

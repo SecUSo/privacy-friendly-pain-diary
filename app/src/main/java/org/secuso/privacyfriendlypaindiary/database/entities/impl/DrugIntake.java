@@ -21,6 +21,11 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInta
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
 
 /**
+ * Instances of this class store in which quantity a specific drug
+ * (represented by the associated {@link DrugInterface} object) is
+ * taken in by the user at different times of day. Every drug intake is
+ * associated with a diary entry.
+ *
  * @author Susanne Felsen
  * @version 20171124
  */
@@ -77,11 +82,6 @@ public class DrugIntake extends AbstractPersistentObject implements DrugIntakeIn
     @Override
     public DrugInterface getDrug() {
         return drug;
-    }
-
-    @Override
-    public void setDrug(DrugInterface drug) {
-        this.drug = drug;
     }
 
     @Override

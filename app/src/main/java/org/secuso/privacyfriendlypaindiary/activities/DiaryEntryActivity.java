@@ -300,7 +300,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         final int current = savedInstanceState.getInt("current");
-        Log.d(TAG, "" + current);
 
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -429,7 +428,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                         float y = event.getY();
                         int touchColor = getHotspotColor(personColouredID, Math.round(x), Math.round(y));
                         BodyRegion bodyPart = getBodyRegion(touchColor, front);
-                        Log.d(TAG, "body region: " + bodyPart);
+//                        Log.d(TAG, "body region: " + bodyPart);
                         if (bodyPart != null) {
                             if (!bodyRegions.contains(bodyPart)) {
                                 bodyRegions.add(bodyPart);
@@ -1062,7 +1061,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.action_save:
-                Log.d(TAG, "Diary entry saved.");
                 save();
                 launchHomeScreen();
                 return true;

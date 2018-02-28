@@ -17,21 +17,26 @@
 package org.secuso.privacyfriendlypaindiary.database.entities.interfaces;
 
 /**
+ * Defines methods common to all objects that can be persisted to the database.
+ * The ID of objects that have not been persisted yet should be set to
+ * {@link PersistentObject#INVALID_OBJECT_ID}.
+ *
  * @author Susanne Felsen
  * @version 20171118
  */
 public interface PersistentObject {
 
-    public static final long INVALID_OBJECT_ID = 0L;
+    long INVALID_OBJECT_ID = 0L;
 
-    public long getObjectID();
+    long getObjectID();
 
     /**
-     * Sets the object's ID. Should not be set unless object is retrieved from the database!
+     * Sets the object's ID. Should not be set unless the object is retrieved from the database!
+     *
      * @param objectID
      */
-    public void setObjectID(long objectID);
+    void setObjectID(long objectID);
 
-    public boolean isPersistent();
+    boolean isPersistent();
 
 }

@@ -21,18 +21,31 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import java.util.Date;
 
 /**
+ * User, i.e. person that is using the app, characterized by his first and last name,
+ * date of birth and gender.
+ * <p/>
+ * Since users are not required to enter any information, the methods might return
+ * <code>null</code>.
+ *
  * @author Susanne Felsen
  * @version 20171118
  */
 public interface UserInterface extends PersistentObject {
 
-    public String getFirstName();
-    public void setFirstName(String firstName);
-    public String getLastName();
-    public void setLastName(String lastName);
-    public Gender getGender();
-    public void setGender(Gender gender);
-    public Date getDateOfBirth();
-    public void setDateOfBirth(Date dateOfBirth);
+    String getFirstName();
+
+    void setFirstName(String firstName);
+
+    String getLastName();
+
+    void setLastName(String lastName);
+
+    Gender getGender();
+
+    void setGender(Gender gender);
+
+    Date getDateOfBirth();
+
+    void setDateOfBirth(Date dateOfBirth);
 
 }

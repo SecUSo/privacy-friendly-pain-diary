@@ -50,6 +50,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Implements methods for storing, updating, retrieving and deleting users, drugs
+ * and diary entries and associated objects.
+ *
  * @author Susanne Felsen
  * @version 20171229
  */
@@ -495,9 +498,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
 
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        values.put(PainDescription.COLUMN_BODY_REGION, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
-        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
-        values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
+        values.put(PainDescription.COLUMN_BODY_REGIONS, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
+        values.put(PainDescription.COLUMN_PAIN_QUALITIES, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        values.put(PainDescription.COLUMN_TIMES_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         return db.insert(PainDescription.TABLE_NAME, null, values);
     }
 
@@ -505,9 +508,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PainDescription.COLUMN_PAIN_LEVEL, painDescription.getPainLevel());
-        values.put(PainDescription.COLUMN_BODY_REGION, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
-        values.put(PainDescription.COLUMN_PAIN_QUALITY, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
-        values.put(PainDescription.COLUMN_TIME_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
+        values.put(PainDescription.COLUMN_BODY_REGIONS, convertBodyRegionEnumSetToString(painDescription.getBodyRegions()));
+        values.put(PainDescription.COLUMN_PAIN_QUALITIES, convertPainQualityEnumSetToString(painDescription.getPainQualities()));
+        values.put(PainDescription.COLUMN_TIMES_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});
     }
@@ -615,9 +618,9 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         long objectID = cursor.getLong(cursor.getColumnIndex(PainDescription.COLUMN_ID));
         int painLevel = cursor.getInt(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_LEVEL));
 
-        String bodyRegionsAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGION));
-        String painQualitiesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_QUALITY));
-        String timesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_TIME_OF_PAIN));
+        String bodyRegionsAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_BODY_REGIONS));
+        String painQualitiesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_PAIN_QUALITIES));
+        String timesAsString = cursor.getString(cursor.getColumnIndex(PainDescription.COLUMN_TIMES_OF_PAIN));
         EnumSet<BodyRegion> bodyRegions = convertStringToBodyRegionEnumSet(bodyRegionsAsString);
         EnumSet<PainQuality> painQualities = convertStringToPainQualityEnumSet(painQualitiesAsString);
         EnumSet<Time> timesOfPain = convertStringToTimeEnumSet(timesAsString);
@@ -773,7 +776,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         ContentValues values = new ContentValues();
         values.put(Drug.COLUMN_NAME, drug.getName());
         values.put(Drug.COLUMN_DOSE, drug.getDose());
-        values.put(Drug.COLUMN_CURRENTLY_TAKEN, drug.isCurrentlyTaken());
 
         long id = db.insert(Drug.TABLE_NAME, null, values);
         Log.d(TAG, "Created drug.");
@@ -788,7 +790,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         ContentValues values = new ContentValues();
         values.put(Drug.COLUMN_NAME, drug.getName());
         values.put(Drug.COLUMN_DOSE, drug.getDose());
-        values.put(Drug.COLUMN_CURRENTLY_TAKEN, drug.isCurrentlyTaken());
 
         db.update(Drug.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(drug.getObjectID())});
@@ -869,27 +870,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         return drugs;
     }
 
-    @Override
-    public List<DrugInterface> getAllCurrentlyTakenDrugs() {
-        List<DrugInterface> drugs = new ArrayList<>();
-
-        String selectQuery = "SELECT  * FROM " + Drug.TABLE_NAME + "WHERE " + Drug.COLUMN_CURRENTLY_TAKEN + " = 1";
-
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-
-        DrugInterface drug = null;
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                drug = instantiateDrugFromCursor(cursor);
-                drugs.add(drug);
-            } while (cursor.moveToNext());
-        }
-
-        return drugs;
-    }
-
     private DrugInterface instantiateDrugFromCursor(Cursor cursor) {
         long objectID = cursor.getLong(cursor.getColumnIndex(Drug.COLUMN_ID));
         String name = cursor.getString(cursor.getColumnIndex(Drug.COLUMN_NAME));
@@ -898,12 +878,8 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         if (!cursor.isNull(indexDose)) {
             dose = cursor.getString(indexDose);
         }
-        int currentlyTakenInt = cursor.getInt(cursor.getColumnIndex(Drug.COLUMN_CURRENTLY_TAKEN));
-        boolean currentlyTaken = true;
         DrugInterface drug = new Drug(name, dose);
         drug.setObjectID(objectID);
-        if (currentlyTakenInt == 0) currentlyTaken = false;
-        drug.setCurrentlyTaken(currentlyTaken);
 
         return drug;
     }

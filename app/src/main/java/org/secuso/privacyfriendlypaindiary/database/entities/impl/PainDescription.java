@@ -24,28 +24,35 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDesc
 import java.util.EnumSet;
 
 /**
+ * Instances of this class encapsulate information about the pain a user is
+ * experiencing, i.e. the intensity, nature (qualities) and times of the pain,
+ * as well as the affected body regions.
+ * </p>
+ * Since users are not required to enter any information, some of the
+ * fields might contain empty sets or be <code>null</code>.
+ *
  * @author Susanne Felsen
- * @version 20171205
+ * @version 20180228
  */
 public class PainDescription extends AbstractPersistentObject implements PainDescriptionInterface {
 
     public static final String TABLE_NAME = "paindescription";
     public static final String COLUMN_PAIN_LEVEL = "painlevel";
-    public static final String COLUMN_BODY_REGION = "bodyregion";
-    public static final String COLUMN_PAIN_QUALITY = "painquality";
-    public static final String COLUMN_TIME_OF_PAIN = "timeofpain";
+    public static final String COLUMN_BODY_REGIONS = "bodyregions";
+    public static final String COLUMN_PAIN_QUALITIES = "painqualities";
+    public static final String COLUMN_TIMES_OF_PAIN = "timesofpain";
 
     public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_PAIN_LEVEL + " INTEGER NOT NULL, " +
-            COLUMN_BODY_REGION + " INTEGER, " +
-            COLUMN_PAIN_QUALITY + " STRING, " +
-            COLUMN_TIME_OF_PAIN + " STRING);";
+            COLUMN_BODY_REGIONS + " INTEGER, " +
+            COLUMN_PAIN_QUALITIES + " STRING, " +
+            COLUMN_TIMES_OF_PAIN + " STRING);";
 
     private int painLevel;
     private EnumSet<BodyRegion> bodyRegions;
 
-    private EnumSet<PainQuality> painQualities ;
+    private EnumSet<PainQuality> painQualities;
     private EnumSet<Time> timesOfPain;
 
     public PainDescription(int painLevel, EnumSet<BodyRegion> bodyRegions) {

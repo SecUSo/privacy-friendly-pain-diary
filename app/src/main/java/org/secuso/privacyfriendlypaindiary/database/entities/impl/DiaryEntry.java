@@ -27,6 +27,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Instances of this class represent pain diary entries made by a user.
+ * A diary entry is identified by its date. There can only be ony entry
+ * per day. It holds information entered by the user such as his condition
+ * and additional notes. Every diary entry contains a {@link PainDescriptionInterface}
+ * object that encapsulates information about the pain he is experiencing.
+ * Furthermore, a set of {@link DrugIntakeInterface} objects is associated
+ * with each diary entry. Each of these objects encapsulates information
+ * about a specific drug taken in by the user (i.e. the quantity taken at
+ * different times of day).
+ * </p>
+ * Since users are not required to enter any information, some of the
+ * fields might be <code>null</code>.
+ *
  * @author Susanne Felsen
  * @version 20171124
  */

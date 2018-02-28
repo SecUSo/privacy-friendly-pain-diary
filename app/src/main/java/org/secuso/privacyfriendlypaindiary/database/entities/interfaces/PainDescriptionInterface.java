@@ -23,18 +23,32 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import java.util.EnumSet;
 
 /**
+ * A pain description encapsulates information about the pain a user is
+ * experiencing, i.e. the intensity, nature (qualities) and times of the pain,
+ * as well as the affected body regions.
+ * </p>
+ * Since users are not required to enter any information, some of the methods
+ * might return empty sets or <code>null</code>.
+ *
  * @author Susanne Felsen
  * @version 20180110
  */
 public interface PainDescriptionInterface extends PersistentObject {
 
-    public int getPainLevel();
-    public void setPainLevel(int painLevel);
-    public EnumSet<BodyRegion> getBodyRegions();
-    public void setBodyRegions(EnumSet<BodyRegion> bodyRegions);
-    public EnumSet<PainQuality> getPainQualities();
-    public void setPainQualities(EnumSet<PainQuality> painQualities);
-    public EnumSet<Time> getTimesOfPain();
-    public void setTimesOfPain(EnumSet<Time> timesOfPain);
+    int getPainLevel();
+
+    void setPainLevel(int painLevel);
+
+    EnumSet<BodyRegion> getBodyRegions();
+
+    void setBodyRegions(EnumSet<BodyRegion> bodyRegions);
+
+    EnumSet<PainQuality> getPainQualities();
+
+    void setPainQualities(EnumSet<PainQuality> painQualities);
+
+    EnumSet<Time> getTimesOfPain();
+
+    void setTimesOfPain(EnumSet<Time> timesOfPain);
 
 }

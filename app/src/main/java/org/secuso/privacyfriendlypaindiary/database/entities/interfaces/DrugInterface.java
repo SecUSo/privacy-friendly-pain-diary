@@ -17,16 +17,19 @@
 package org.secuso.privacyfriendlypaindiary.database.entities.interfaces;
 
 /**
+ * Pharmaceutical drug characterized by its name and dose.
+ *
  * @author Susanne Felsen
  * @version 20171124
  */
 public interface DrugInterface extends PersistentObject {
 
-    public String getName();
-    public void setName(String name);
-    public String getDose();
-    public void setDose(String dose);
-    public boolean isCurrentlyTaken();
-    public void setCurrentlyTaken(boolean currentlyTaken);
+    String getName();
+
+    void setName(String name);
+
+    String getDose();
+
+    void setDose(String dose);
 
 }

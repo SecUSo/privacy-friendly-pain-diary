@@ -17,22 +17,36 @@
 package org.secuso.privacyfriendlypaindiary.database.entities.interfaces;
 
 /**
+ * A drug intake encapsulates information about the quantity in which a
+ * specific drug (represented by the associated {@link DrugInterface} object)
+ * is taken in by a user at different times of day. Every drug intake is
+ * associated with a diary entry.
+ *
  * @author Susanne Felsen
  * @version 20171124
  */
 public interface DrugIntakeInterface extends PersistentObject {
 
-    public DiaryEntryInterface getDiaryEntry();
-    public void setDiaryEntry(DiaryEntryInterface diaryEntry);
-    public DrugInterface getDrug();
-    public void setDrug(DrugInterface drug);
-    public int getQuantityMorning();
-    public void setQuantityMorning(int quantityMorning);
-    public int getQuantityNoon();
-    public void setQuantityNoon(int quantityNoon);
-    public int getQuantityEvening();
-    public void setQuantityEvening(int quantityEvening);
-    public int getQuantityNight();
-    public void setQuantityNight(int quantityNight);
+    DiaryEntryInterface getDiaryEntry();
+
+    void setDiaryEntry(DiaryEntryInterface diaryEntry);
+
+    DrugInterface getDrug();
+
+    int getQuantityMorning();
+
+    void setQuantityMorning(int quantityMorning);
+
+    int getQuantityNoon();
+
+    void setQuantityNoon(int quantityNoon);
+
+    int getQuantityEvening();
+
+    void setQuantityEvening(int quantityEvening);
+
+    int getQuantityNight();
+
+    void setQuantityNight(int quantityNight);
 
 }

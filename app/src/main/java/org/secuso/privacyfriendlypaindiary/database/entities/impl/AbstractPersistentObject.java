@@ -19,6 +19,9 @@ package org.secuso.privacyfriendlypaindiary.database.entities.impl;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PersistentObject;
 
 /**
+ * Abstract superclass of all entities that can be persisted to the database.
+ * Provides an object ID field.
+ *
  * @author Susanne Felsen
  * @version 20171118
  */
