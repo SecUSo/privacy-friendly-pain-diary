@@ -35,7 +35,7 @@
     <string name="help">Help</string>
 
     <string name="help_whatis">What is Privacy Friendly Pain Diary?</string>
-    <string name="help_whatis_answer">Privacy Friendly Pain Diary is an app that allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as additional notes and the medication you take.</string>
+    <string name="help_whatis_answer">Privacy Friendly Pain Diary is an app that allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as the medication you take and additional notes.</string>
     <string name="help_privacy">What makes the app privacy friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Pain Diary requires minimal permissions. It does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions does the app require?</string>
@@ -44,7 +44,7 @@
     <string name="help_add_entry">How do I add a new diary entry?</string>
     <string name="help_add_entry_answer">A new diary entry can be added by selecting a day in the calendar. There can however only be one entry per day.</string>
     <string name="help_entry_information">Which information is recorded in a diary entry?</string>
-    <string name="help_entry_information_answer">Diary entries can be used to document your condition and the intensity, location, nature and time of the pain you feel. Additional notes and the medication you take can also be recorded.</string>
+    <string name="help_entry_information_answer">Diary entries can be used to document your condition and the intensity, location, nature and time of the pain you feel. The medication you take and additional notes can also be recorded.</string>
     <string name="help_userdetails">Do I have to enter user details?</string>
     <string name="help_userdetails_answer">The app does not require you to enter any user details. You are free to enter your name, date of birth and gender and you can delete information you previously entered at any time. The information you enter is not shared or transmitted in any way.</string>
     <string name="help_pdf_export">How can I export my diary entries?</string>

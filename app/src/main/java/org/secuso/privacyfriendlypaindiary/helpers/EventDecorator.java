@@ -25,10 +25,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Adapted from <a href="https://github.com/prolificinteractive/material-calendarview/blob/master/docs/DECORATORS.md"/a>.
+ * Decorates (i.e. highlights) all dates contained in a set of dates supplied to it.
  *
  * @author Susanne Felsen
  * @version 20171205
+ *
+ * Adapted from <a href="https://github.com/prolificinteractive/material-calendarview/blob/master/docs/DECORATORS.md">here</a>.
  */
 public class EventDecorator implements DayViewDecorator {
 

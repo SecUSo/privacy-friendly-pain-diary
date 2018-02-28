@@ -23,6 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents a region on a person's body.
+ * <br/>
+ * The values of this enum can be divided into two categories: body regions on
+ * the front of a person's body and body regions on the back of a person's body.
+ * All body regions with an index smaller than {@link BodyRegion#LOWEST_BACK_INDEX}
+ * are body regions on the front of a person's body.
+ *
  * @author Susanne Felsen
  * @version 20180226
  */

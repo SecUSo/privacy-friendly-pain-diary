@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents a user's condition, i.e. how he feels at the time of making a diary entry.
+ *
  * @author Susanne Felsen
  * @version 20171117
  */

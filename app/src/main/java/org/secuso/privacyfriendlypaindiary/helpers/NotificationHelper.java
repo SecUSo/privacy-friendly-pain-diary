@@ -31,10 +31,14 @@ import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
 
 /**
- * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html"/> and <a href="https://www.androidauthority.com/android-8-0-oreo-app-implementing-notification-channels-801097/"/>.
+ * Configures the daily reminder notification (via a {@link Notification.Builder})
+ * (and in Android Oreo also the notification channel).
  *
  * @author Susanne Felsen
  * @version 20180130
+ *
+ * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html">Link 1</a>
+ * <a href="https://www.androidauthority.com/android-8-0-oreo-app-implementing-notification-channels-801097/">Link 2</a>.
  */
 public class NotificationHelper extends ContextWrapper {
 
@@ -63,7 +67,7 @@ public class NotificationHelper extends ContextWrapper {
         }
     }
 
-    //<a href="https://materialdoc.com/patterns/notifications/"/>
+    //https://materialdoc.com/patterns/notifications/
     public Notification.Builder getNotificationBuilder(String title, String body) {
         Notification.Builder notificationBuilder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

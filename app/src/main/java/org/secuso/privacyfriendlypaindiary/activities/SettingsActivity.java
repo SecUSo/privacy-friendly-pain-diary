@@ -33,10 +33,16 @@ import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService;
 import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 /**
- * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/settings.html"/> and <a href="https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su/4325239#4325239"/>
+ * This activity provides methods to enable or disable certain features such as
+ * daily reminders and whether the medication last entered is automatically added
+ * to new entries based on preferences set by the user. It also provides methods
+ * to set the reminder time or reset the app.
  *
  * @author Susanne Felsen
- * @version 20180130
+ * @version 20180228
+ *
+ * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/settings.html">Link 1</a>
+ * <a href="https://stackoverflow.com/questions/531427/how-do-i-display-the-current-value-of-an-android-preference-in-the-preference-su/4325239#4325239">Link 2</a>
  */
 public class SettingsActivity extends BaseActivity {
 

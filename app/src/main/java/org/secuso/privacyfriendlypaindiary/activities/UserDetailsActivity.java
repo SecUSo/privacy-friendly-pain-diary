@@ -50,6 +50,8 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
+ * This activity allows a user to enter and save personal data such as name,
+ * date of birth and gender.
  *
  * @author Susanne Felsen
  * @version 201802227

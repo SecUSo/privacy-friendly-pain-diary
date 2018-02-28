@@ -43,8 +43,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Christopher Beckmann, Karola Marky, Susanne Felsen
- * @version 20180110
+ * This activity corresponds to the main screen of the application which shows
+ * a calendar. By selecting a day in that calendar a user can create a new diary
+ * entry or view an existing one. Days for which entries exist are highlighted.
+ * Existing entries can be edited or deleted.
+ *
+ * @author Susanne Felsen
+ * @version 20180228
  */
 public class MainActivity extends BaseActivity {
 

@@ -17,6 +17,7 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -68,6 +69,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDesc
 import org.secuso.privacyfriendlypaindiary.helpers.AutocompleteAdapter;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
+import org.secuso.privacyfriendlypaindiary.helpers.RetainedFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,19 +81,28 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
- * Tutorial for making parts of images clickable: <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/"/a>.
+ * This activity allows to create a new diary entry or edit an existing one.
+ * There currently are 7 slides on which the user can input data such as his
+ * condition and the intensity, location, nature and time of the pain he feels,
+ * as well the medication he is taking and additional notes.
  *
  * @author Susanne Felsen
- * @version 20180227
+ * @version 20180228
+ *
+ * <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/">Click here</a>
+ * for a tutorial for making parts of images clickable.
+ *
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
     private static final String TAG = DiaryEntryActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEGREY = Color.parseColor("#a8a8a8");
     private static final int COLOR_LIGHTBLUE = Color.parseColor("#0274b2");
-    //    private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
     private static final int COLOR_YELLOW = Color.parseColor("#f6d126");
+
+    private static final String TAG_RETAINED_FRAGMENT = "DIARY_ENTRY_FRAGMENT";
+
+    private RetainedFragment retainedFragment;
 
     private boolean changesMade = false;
     private boolean edit = false;
@@ -217,14 +228,25 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
         edit = getIntent().getBooleanExtra("EDIT", false);
         DBServiceInterface service = DBService.getInstance(this);
+
+        // find the retained fragment on activity restarts
+        FragmentManager fm = getFragmentManager();
+        retainedFragment = (RetainedFragment) fm.findFragmentByTag(TAG_RETAINED_FRAGMENT);
+
         if (!edit) {
             diaryEntry = new DiaryEntry(date);
         } else {
             setTitle(getString(R.string.edit_diary_entry));
             diaryEntry = service.getDiaryEntryByDate(date);
-            initFields();
         }
         if (diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
+
+        if (retainedFragment != null) {
+            DiaryEntryInterface temp = retainedFragment.getDiaryEntry();
+            initFields(temp);
+        } else if(edit) {
+            initFields(diaryEntry);
+        }
 
         if(!edit) {
             boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_MEDICATION, true);
@@ -239,18 +261,77 @@ public class DiaryEntryActivity extends AppCompatActivity {
             }
         }
 
+        if(savedInstanceState == null) {
+            viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    setDataOnSlide1();
+                    viewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
+        drugs = service.getAllDrugs();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(isFinishing() && retainedFragment != null) {
+            getFragmentManager().beginTransaction().remove(retainedFragment).commit();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("current", viewPager.getCurrentItem());
+
+        if(retainedFragment == null) {
+            retainedFragment = new RetainedFragment();
+            getFragmentManager().beginTransaction().add(retainedFragment, TAG_RETAINED_FRAGMENT).commit();
+        }
+        DiaryEntryInterface temp = new DiaryEntry(diaryEntry.getDate());
+        setFields(temp);
+        retainedFragment.setDiaryEntry(temp);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int current = savedInstanceState.getInt("current");
+        Log.d(TAG, "" + current);
+
         viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                setDataOnSlide1();
+                initPage(current);
                 viewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
-        drugs = service.getAllDrugs();
     }
 
-    private void initFields() {
+    private void initPage(int position) {
+        if (position == 0) {
+            btnBack.setVisibility(View.GONE);
+            setDataOnSlide1();
+        } else if (position == 1) {
+            setDataOnSlide2();
+        } else if (position == 2) {
+            setDataOnSlide3();
+        } else if (position == 3) {
+            setDataOnSlide4();
+        } else if (position == 4) {
+            setDataOnSlide5();
+        } else if (position == 5) {
+            setDataOnSlide6();
+        } else if (position == 6) {
+            setDataOnSlide7();
+        }
+    }
+
+    private void initFields(DiaryEntryInterface diaryEntry) {
         if(diaryEntry != null) {
             condition = diaryEntry.getCondition();
             notes = diaryEntry.getNotes();
@@ -274,12 +355,14 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-        TextView date = findViewById(R.id.date);
-        if(date != null) date.setText(dateAsString);
+        if(findViewById(R.id.diaryentry_slide1) != null) {
+            TextView date = findViewById(R.id.date);
+            date.setText(dateAsString);
 
-        initConditions();
-        if (condition != null && conditions.length != 0) {
-            conditions[condition.getValue()].setBackgroundColor(COLOR_YELLOW);
+            initConditions();
+            if (condition != null) {
+                conditions[condition.getValue()].setBackgroundColor(COLOR_YELLOW);
+            }
         }
     }
 
@@ -293,8 +376,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide2() {
-        SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
-        if(seekBar != null) {
+        if(findViewById(R.id.diaryentry_slide2) != null) {
+            SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
 //            TextView label = findViewById(R.id.label);
 //            seekBar.setPaddingRelative(label.getWidth() / 2, 0, label.getWidth() / 2, 0);
             seekBar.setProgress(painLevel);
@@ -317,12 +400,14 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide3() {
-        initClickableBodyRegions(bodyRegionsFront, R.id.person, R.id.person_coloured, R.id.bodyregion_value, true);
-        initClickableBodyRegions(bodyRegionsBack, R.id.person_back, R.id.person_back_coloured, R.id.bodyregion_back_value, false);
+        if(findViewById(R.id.diaryentry_slide3) != null) {
+            initClickableBodyRegions(bodyRegionsFront, R.id.person, R.id.person_coloured, R.id.bodyregion_value, true);
+            initClickableBodyRegions(bodyRegionsBack, R.id.person_back, R.id.person_back_coloured, R.id.bodyregion_back_value, false);
+        }
     }
 
     /**
-     * 
+     *
      * @param bodyRegions
      * @param personID resource ID of ImageView displaying the person
      * @param personColouredID resource ID of (invisible) ImageView displaying the coloured person
@@ -373,7 +458,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             });
         }
     }
-    
+
 
     private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
         Bitmap[] images = new Bitmap[bodyRegions.size()];
@@ -389,44 +474,48 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide4() {
-        if (painQualities.contains(PainQuality.STABBING)) {
-            ((CheckBox) findViewById(R.id.pain_stabbing)).setChecked(true);
-        }
-        if (painQualities.contains(PainQuality.DULL)) {
-            ((CheckBox) findViewById(R.id.pain_dull)).setChecked(true);
-        }
-        if (painQualities.contains(PainQuality.SHOOTING)) {
-            ((CheckBox) findViewById(R.id.pain_shooting)).setChecked(true);
-        }
-        if (painQualities.contains(PainQuality.BURNING)) {
-            ((CheckBox) findViewById(R.id.pain_burning)).setChecked(true);
-        }
-        if (painQualities.contains(PainQuality.THROBBING)) {
-            ((CheckBox) findViewById(R.id.pain_throbbing)).setChecked(true);
+        if(findViewById(R.id.diaryentry_slide4) != null) {
+            if (painQualities.contains(PainQuality.STABBING)) {
+                ((CheckBox) findViewById(R.id.pain_stabbing)).setChecked(true);
+            }
+            if (painQualities.contains(PainQuality.DULL)) {
+                ((CheckBox) findViewById(R.id.pain_dull)).setChecked(true);
+            }
+            if (painQualities.contains(PainQuality.SHOOTING)) {
+                ((CheckBox) findViewById(R.id.pain_shooting)).setChecked(true);
+            }
+            if (painQualities.contains(PainQuality.BURNING)) {
+                ((CheckBox) findViewById(R.id.pain_burning)).setChecked(true);
+            }
+            if (painQualities.contains(PainQuality.THROBBING)) {
+                ((CheckBox) findViewById(R.id.pain_throbbing)).setChecked(true);
+            }
         }
     }
 
     private void setDataOnSlide5() {
-        if (timesOfPain.contains(Time.ALL_DAY)) {
-            ((CheckBox) findViewById(R.id.time_all_day)).setChecked(true);
-        }
-        if (timesOfPain.contains(Time.MORNING)) {
-            ((CheckBox) findViewById(R.id.time_morning)).setChecked(true);
-        }
-        if (timesOfPain.contains(Time.AFTERNOON)) {
-            ((CheckBox) findViewById(R.id.time_afternoon)).setChecked(true);
-        }
-        if (timesOfPain.contains(Time.EVENING)) {
-            ((CheckBox) findViewById(R.id.time_evening)).setChecked(true);
-        }
-        if (timesOfPain.contains(Time.NIGHT)) {
-            ((CheckBox) findViewById(R.id.time_night)).setChecked(true);
+        if(findViewById(R.id.diaryentry_slide5) != null) {
+            if (timesOfPain.contains(Time.ALL_DAY)) {
+                ((CheckBox) findViewById(R.id.time_all_day)).setChecked(true);
+            }
+            if (timesOfPain.contains(Time.MORNING)) {
+                ((CheckBox) findViewById(R.id.time_morning)).setChecked(true);
+            }
+            if (timesOfPain.contains(Time.AFTERNOON)) {
+                ((CheckBox) findViewById(R.id.time_afternoon)).setChecked(true);
+            }
+            if (timesOfPain.contains(Time.EVENING)) {
+                ((CheckBox) findViewById(R.id.time_evening)).setChecked(true);
+            }
+            if (timesOfPain.contains(Time.NIGHT)) {
+                ((CheckBox) findViewById(R.id.time_night)).setChecked(true);
+            }
         }
     }
 
     private void setDataOnSlide6() {
-        LinearLayout layout = findViewById(R.id.medication_container);
-        if(layout != null) {
+        if(findViewById(R.id.diaryentry_slide6) != null) {
+            LinearLayout layout = findViewById(R.id.medication_container);
             layout.removeAllViews();
             for (DrugIntakeInterface drugIntake : drugIntakes) {
                 layout.addView(initMedicationView(layout, drugIntake), layout.getChildCount());
@@ -435,8 +524,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide7() {
-        final EditText notesEditText = findViewById(R.id.notes_text);
-        if(notesEditText != null) {
+        if(findViewById(R.id.diaryentry_slide7) != null) {
+            final EditText notesEditText = findViewById(R.id.notes_text);
             notesEditText.setText(notes);
             notesEditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -924,7 +1013,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         return newView;
     }
 
-    public void save() {
+    private void setFields(DiaryEntryInterface diaryEntry) {
         diaryEntry.setCondition(condition);
         diaryEntry.setNotes(notes);
 
@@ -947,6 +1036,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
             PainDescriptionInterface painDescription = new PainDescription(painLevel, bodyRegions, painQualities, timesOfPain);
             diaryEntry.setPainDescription(painDescription);
         }
+    }
+
+    public void save() {
+        setFields(diaryEntry);
         DBServiceInterface service = DBService.getInstance(this);
         if(!edit) {
             service.storeDiaryEntryAndAssociatedObjects(diaryEntry);

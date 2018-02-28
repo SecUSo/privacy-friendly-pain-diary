@@ -38,6 +38,10 @@ import java.text.SimpleDateFormat;
 import java.util.EnumSet;
 
 /**
+ * Assortment of static helper methods, e.g. to obtain the resource ID of a
+ * resource associated with an enum value or to convert enum sets to a string
+ * representation.
+ *
  * @author Susanne Felsen
  * @version 20180208
  */

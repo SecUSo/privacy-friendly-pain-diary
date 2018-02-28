@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents a user's gender.
+ *
  * @author Susanne Felsen
  * @version 20171117
  */
@@ -46,10 +48,5 @@ public enum Gender {
     public int getValue() {
         return value;
     }
-
-//  @Override
-//  public String toString() {
-//      TODO: return localized String
-//  }
 
 }

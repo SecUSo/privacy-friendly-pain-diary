@@ -22,9 +22,15 @@ import android.content.SharedPreferences;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 
 /**
- * @author Karola Marky
- * @version 20161214
- * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
+ * Instances of this class can be used to store or get values to or from shared preferences.
+ * Specifically, it is recorded whether it is the app's first launch (which helps to determine
+ * whether the tutorial should be shown), as well as the user ID for retrieving the user object
+ * from the database.
+ * <p/>
+ * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
+ *
+ * @author Karola Marky, Susanne Felsen
+ * @version 20180228
  */
 public class PrefManager {
     private SharedPreferences pref;

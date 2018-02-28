@@ -24,6 +24,9 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ * Represents the quality of the pain experienced by a user, i.e. how he would
+ * characterize the nature of his pain.
+ *
  * @author Susanne Felsen
  * @version 20171205
  */

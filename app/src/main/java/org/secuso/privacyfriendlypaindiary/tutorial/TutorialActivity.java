@@ -38,10 +38,15 @@ import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 
 /**
- * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
+ * This activity corresponds to the application's tutorial. It is automatically
+ * displayed at the first start of the application but can also be accessed from
+ * the navigation drawer. At the end of the tutorial, the {@link UserDetailsActivity}
+ * is launched.
+ * <p/>
+ * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  *
  * @author Karola Marky, Susanne Felsen
- * @version 20171129
+ * @version 20180228
  */
 
 public class TutorialActivity extends AppCompatActivity {
@@ -75,7 +80,7 @@ public class TutorialActivity extends AppCompatActivity {
         }
 
         // Making notification bar transparent
-        if(Build.VERSION.SDK_INT >=21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
@@ -87,7 +92,7 @@ public class TutorialActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_next);
 
         // layouts of all welcome sliders
-        layouts = new int[] {
+        layouts = new int[]{
                 R.layout.tutorial_slide1,
                 R.layout.tutorial_slide2,
                 R.layout.tutorial_slide3,
@@ -105,31 +110,31 @@ public class TutorialActivity extends AppCompatActivity {
 
         btnSkip.setOnClickListener(new View.OnClickListener()
 
-    {
-        @Override
-        public void onClick (View v){
-        launchHomeScreen();
-    }
-    });
+        {
+            @Override
+            public void onClick(View v) {
+                launchHomeScreen();
+            }
+        });
         btnNext.setOnClickListener(new View.OnClickListener()
 
-    {
-        @Override
-        public void onClick (View v){
-            // checking for last page; if last page user detail screen will be launched
-            int current = getItem(+1);
-            if (current < layouts.length) {
-                // move to next screen
-                viewPager.setCurrentItem(current);
-            } else {
-                launchUserDetails();
+        {
+            @Override
+            public void onClick(View v) {
+                // checking for last page; if last page user detail screen will be launched
+                int current = getItem(+1);
+                if (current < layouts.length) {
+                    // move to next screen
+                    viewPager.setCurrentItem(current);
+                } else {
+                    launchUserDetails();
 //                if(prefManager.isFirstTimeLaunch()) {
 //                    launchUserDetails();
 //                } else {
 //                    launchHomeScreen();
 //                }
+                }
             }
-        }
         });
     }
 

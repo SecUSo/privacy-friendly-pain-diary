@@ -29,7 +29,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
@@ -44,6 +43,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This activity allows to export and/or share a pdf document of the diary entries made
+ * within a specific period of time marked by a start date and an end date.
+ * Exporting the pdf file requires the permission <code>WRITE_EXTERNAL_STORAGE</code>.
+ *
+ * @author Susanne Felsen
+ * @version 20180228
+ */
 public class ExportPDFActivity extends AppCompatActivity {
 
     private static final String TAG = ExportPDFActivity.class.getSimpleName();

@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Represents the time of the pain experienced by a user, i.e. when he feels pain.
+ *
  * @author Susanne Felsen
  * @version 20171205
  */

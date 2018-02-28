@@ -41,10 +41,14 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEnt
 import java.util.Calendar;
 
 /**
- * Inspiration from: <a href="https://medium.com/google-developers/scheduling-jobs-like-a-pro-with-jobscheduler-286ef8510129"/> and <a href="https://blog.klinkerapps.com/android-o-background-services/"/>.
+ * Responsible for scheduling and displaying snoozable daily reminder notifications
+ * at the reminder time set by the user (see also {@link org.secuso.privacyfriendlypaindiary.activities.SettingsActivity}).
  *
  * @author Susanne Felsen
  * @version 20180130
+ *
+ * Inspiration from: <a href="https://medium.com/google-developers/scheduling-jobs-like-a-pro-with-jobscheduler-286ef8510129">Link 1</a>
+ * <a href="https://blog.klinkerapps.com/android-o-background-services/">Link 2</a>.
  */
 public class NotificationJobService extends JobService {
 

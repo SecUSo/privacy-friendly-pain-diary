@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Filter;
 import android.widget.TextView;
 
@@ -30,11 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * Example found at: <a href="https://stackoverflow.com/questions/33047156/how-to-create-custom-baseadapter-for-autocompletetextview"/a>.
+ * This adapter can be added to an {@link AutoCompleteTextView} and will provide
+ * a list of suggestions containing the names and doses of all drugs from a list
+ * of drugs supplied to it that match the user's input.
  *
  * @author Susanne Felsen
  * @version 20180105
+ *
+ * Example found <a href="https://stackoverflow.com/questions/33047156/how-to-create-custom-baseadapter-for-autocompletetextview">here</a>.
  */
 public class AutocompleteAdapter extends ArrayAdapter<DrugInterface> {
 

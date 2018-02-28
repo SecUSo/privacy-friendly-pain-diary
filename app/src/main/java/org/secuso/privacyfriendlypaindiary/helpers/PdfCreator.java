@@ -55,6 +55,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Responsible for creating a pdf document containing all diary entries made
+ * within a specific period of time marked by a start date and an end date.
+ * The pdf document additionally contains the personal data that the user has
+ * entered such as name, date of birth and gender.
  *
  * @author Susanne Felsen
  * @version 20180207

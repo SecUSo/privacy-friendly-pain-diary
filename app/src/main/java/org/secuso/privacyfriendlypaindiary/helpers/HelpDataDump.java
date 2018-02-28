@@ -25,10 +25,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author Karola Marky
+ * Provides help questions and answers in the form of a {@link LinkedHashMap}.
+ *
+ * @author Karola Marky, Susanne Felsen, Rybien Sinjari
  * @version 20171016
- * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
- * last access 27th October 2016
+ *
+ * Class structure taken from <a href="http://www.journaldev.com/9942/android-expandablelistview-example-tutorial">this tutorial</a>
+ * (last access 27th October 2016).
  */
 
 public class HelpDataDump {
