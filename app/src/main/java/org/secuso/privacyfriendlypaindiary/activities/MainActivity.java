@@ -61,6 +61,8 @@ public class MainActivity extends BaseActivity {
     private MaterialCalendarView calendar;
     private EventDecorator decorator;
 
+    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +111,15 @@ public class MainActivity extends BaseActivity {
                 .commit();
         getDiaryEntryDates(calendar.getCurrentDate().getMonth(), calendar.getCurrentDate().getYear());
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
     }
 
     private void getDiaryEntryDates(int month, int year) {
@@ -160,18 +171,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void viewDiaryEntry(final Date date) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         DBServiceInterface service = DBService.getInstance(this);
         DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
-        alertDialog.setView(Helper.getDiaryEntrySummary(this, diaryEntry));
-        alertDialog.setPositiveButton("OK", null);
-        alertDialog.setNegativeButton(getString(R.string.edit),
+        alertDialogBuilder.setView(Helper.getDiaryEntrySummary(this, diaryEntry));
+        alertDialogBuilder.setPositiveButton("OK", null);
+        alertDialogBuilder.setNegativeButton(getString(R.string.edit),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         editDiaryEntry(date);
                     }
                 });
-        alertDialog.setNeutralButton(getString(R.string.delete),
+        alertDialogBuilder.setNeutralButton(getString(R.string.delete),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         new AlertDialog.Builder(MainActivity.this)
@@ -196,7 +207,8 @@ public class MainActivity extends BaseActivity {
                                 .show();
                     }
                 });
-        alertDialog.create().show();
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void editDiaryEntry(Date date) {

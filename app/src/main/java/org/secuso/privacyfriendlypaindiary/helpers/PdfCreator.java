@@ -29,7 +29,6 @@ import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -242,7 +241,7 @@ public class PdfCreator {
         canvas.translate(0, totalHeight + height);
         int resourceID = R.drawable.ic_menu_help;
         if(diaryEntry.getCondition() != null) {
-            resourceID = Helper.getResourceIDForCondition(diaryEntry.getCondition());
+            resourceID = diaryEntry.getCondition().getResourceID();
         }
         Drawable drawable = ContextCompat.getDrawable(context, resourceID);
         Bitmap condition = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
@@ -347,8 +346,8 @@ public class PdfCreator {
                 }
             }
             if(!bodyRegionsFront.isEmpty()) {
-                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsFront);
-                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+//                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsFront);
+                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsFront));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
 
@@ -362,8 +361,8 @@ public class PdfCreator {
             canvas.save();
             canvas.translate(PERSON_WIDTH + 10, totalHeight + height);
             if(!bodyRegionsBack.isEmpty()) {
-                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsBack);
-                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+//                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsBack);
+                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsBack));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
 

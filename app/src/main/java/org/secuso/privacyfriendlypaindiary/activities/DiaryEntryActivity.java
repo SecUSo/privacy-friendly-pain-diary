@@ -25,13 +25,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +51,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
@@ -128,6 +133,9 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private List<DrugInterface> drugs = new ArrayList<>();
     private ArrayList<DrugIntakeInterface> drugIntakes = new ArrayList<>();
     private DiaryEntryInterface diaryEntry;
+
+    private Bitmap front;
+    private Bitmap back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,46 +419,105 @@ public class DiaryEntryActivity extends AppCompatActivity {
      * @param personID resource ID of ImageView displaying the person
      * @param personColouredID resource ID of (invisible) ImageView displaying the coloured person
      * @param valueID resource ID of Image View displaying the selected body parts
+     * @param isFront indicates whether this concerns the body regions on the front of the body or on the back
      */
-    private void initClickableBodyRegions(final EnumSet<BodyRegion> bodyRegions, int personID, final int personColouredID, final int valueID, final boolean front) {
+    private void initClickableBodyRegions(final EnumSet<BodyRegion> bodyRegions, int personID, final int personColouredID, final int valueID, final boolean isFront) {
         ImageView person = findViewById(personID);
         if(!bodyRegions.isEmpty()) {
-            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-            ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
-            findViewById(valueID).setVisibility(View.VISIBLE);
+//            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+            ImageView img = findViewById(valueID);
+            if(isFront) {
+                this.front = Helper.overlay(this, bodyRegions);
+                img.setImageBitmap(this.front);
+            } else {
+                this.back = Helper.overlay(this, bodyRegions);
+                img.setImageBitmap(this.back);
+            }
+            img.setVisibility(View.VISIBLE);
         }
+
         if(person != null) {
             person.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        float x = event.getX();
-                        float y = event.getY();
-                        int touchColor = getHotspotColor(personColouredID, Math.round(x), Math.round(y));
-                        BodyRegion bodyPart = getBodyRegion(touchColor, front);
-//                        Log.d(TAG, "body region: " + bodyPart);
-                        if (bodyPart != null) {
-                            if (!bodyRegions.contains(bodyPart)) {
-                                bodyRegions.add(bodyPart);
-                                changesMade = true;
+                        final float x = event.getX();
+                        final float y = event.getY();
+                        ImageView img = findViewById(personColouredID);
+                        Glide.with(DiaryEntryActivity.this)
+                            .asBitmap()
+                            .load(R.drawable.paindiary_person_fullbody_coloured)
+                            .into(new SimpleTarget<Bitmap>(img.getWidth(),img.getHeight()) {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    int touchColor = resource.getPixel(Math.round(x), Math.round(y));
+                                    BodyRegion bodyPart = getBodyRegion(touchColor, isFront);
 
-                                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                                ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
-                                findViewById(valueID).setVisibility(View.VISIBLE);
-                            } else { //already selected >> deselect
-                                bodyRegions.remove(bodyPart);
-                                changesMade = true;
+                                    if (bodyPart != null) {
+                                        ImageView img = findViewById(valueID);
+                                        if (!bodyRegions.contains(bodyPart)) {
+                                            bodyRegions.add(bodyPart);
+                                            changesMade = true;
 
-                                if (!bodyRegions.isEmpty()) {
-                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                                    ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
-                                    findViewById(valueID).setVisibility(View.VISIBLE);
-                                } else {
-                                    findViewById(valueID).setVisibility(View.GONE);
+//                                            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+//                                            ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
+                                            Bitmap bitmapToAdd = BitmapFactory.decodeResource(getResources(), bodyPart.getResourceID());
+                                            Bitmap value;
+                                            if(isFront) {
+                                                if (getFront() == null) {
+                                                    value = bitmapToAdd;
+                                                } else {
+                                                    value = Helper.overlay(getFront(), bitmapToAdd);
+                                                }
+                                                setFront(value);
+                                            } else {
+                                                if (getBack() == null) {
+                                                    value = bitmapToAdd;
+                                                } else {
+                                                    value = Helper.overlay(getBack(), bitmapToAdd);
+                                                }
+                                                setBack(value);
+                                            }
+                                            img.setImageBitmap(value);
+                                            img.setVisibility(View.VISIBLE);
+                                        } else { //already selected >> deselect
+                                            bodyRegions.remove(bodyPart);
+                                            changesMade = true;
+
+//                                            if (!bodyRegions.isEmpty()) {
+//                                                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+//                                                ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
+//                                                findViewById(valueID).setVisibility(View.VISIBLE);
+//                                            } else {
+//                                                findViewById(valueID).setVisibility(View.GONE);
+//                                            }
+                                            if(isFront) {
+                                                if (bodyRegions.isEmpty() || getFront() == null) {
+                                                    setFront(null);
+                                                    img.setVisibility(View.GONE);
+                                                } else {
+//                                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                                                    Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
+                                                    setFront(value);
+                                                    img.setImageBitmap(value);
+                                                    img.setVisibility(View.VISIBLE);
+                                                }
+                                            } else {
+                                                if (bodyRegions.isEmpty() || getBack() == null) {
+                                                    setBack(null);
+                                                    img.setVisibility(View.GONE);
+                                                } else {
+//                                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
+                                                    Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
+                                                    setBack(value);
+                                                    img.setImageBitmap(value);
+                                                    img.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                            }
-                        }
-
+                            });
                     }
                     return false;
                 }
@@ -458,16 +525,28 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
+    private Bitmap getFront() {
+        return front;
+    }
+
+    private void setFront(Bitmap front) {
+        this.front = front;
+    }
+
+    private Bitmap getBack() {
+        return back;
+    }
+
+    private void setBack(Bitmap back) {
+        this.back = back;
+    }
 
     private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
         Bitmap[] images = new Bitmap[bodyRegions.size()];
         int i = 0;
         for(BodyRegion region : bodyRegions) {
-            int resourceID = Helper.getResourceIDForBodyRegion(region);
-            if (resourceID != 0) {
-                images[i] = BitmapFactory.decodeResource(getResources(), resourceID);
-                i++;
-            }
+            images[i] = BitmapFactory.decodeResource(getResources(), region.getResourceID());
+            i++;
         }
         return images;
     }
@@ -658,22 +737,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    private int getHotspotColor(int hotspotId, int x, int y) {
-        ImageView img = findViewById(hotspotId);
-        img.setDrawingCacheEnabled(true);
-        if(img.getDrawingCache() == null) {
-            img.setDrawingCacheEnabled(false);
-            Log.d(TAG, "DRAWING CACHE ERROR");
-            //TODO:
-            return 0;
-        } else {
-            Bitmap hotspots = Bitmap.createBitmap(img.getDrawingCache());
-            img.setDrawingCacheEnabled(false);
-            return hotspots.getPixel(x, y);
-        }
-    }
-
-    public boolean closeMatch (int color1, int color2, int tolerance) {
+    private boolean closeMatch (int color1, int color2, int tolerance) {
         if (Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
             return false;
         if (Math.abs (Color.green (color1) - Color.green (color2)) > tolerance )
@@ -686,17 +750,17 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private BodyRegion getBodyRegion(int touchColor, boolean front) {
         int tolerance = 25;
         BodyRegion bodyPart = null;
-        if (closeMatch (Color.parseColor("#ff00ff"), touchColor, tolerance)) {
+        if (closeMatch (Color.parseColor("#0000ff"), touchColor, tolerance)) {
+            if (front) {
+                bodyPart = BodyRegion.ABDOMEN_LEFT;
+            } else {
+                bodyPart = BodyRegion.ABDOMEN_LEFT_BACK;
+            }
+        } else if (closeMatch (Color.parseColor("#ff00ff"), touchColor, tolerance)) {
             if(front) {
                 bodyPart = BodyRegion.ABDOMEN_RIGHT;
             } else {
                 bodyPart = BodyRegion.ABDOMEN_RIGHT_BACK;
-            }
-        } else if (closeMatch (Color.parseColor("#0000ff"), touchColor, tolerance)) {
-            if(front) {
-                bodyPart = BodyRegion.ABDOMEN_LEFT;
-            } else {
-                bodyPart = BodyRegion.ABDOMEN_LEFT_BACK;
             }
         } else if (closeMatch (Color.parseColor("#ffff00"), touchColor, tolerance)) {
             if(front) {

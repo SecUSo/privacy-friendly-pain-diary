@@ -31,7 +31,7 @@ public enum Gender {
     private int value;
     private static Map<Integer, Gender> map = new HashMap<>();
 
-    private Gender(int value) {
+    Gender(int value) {
         this.value = value;
     }
 

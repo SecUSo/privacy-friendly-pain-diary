@@ -33,12 +33,11 @@ import java.util.Map;
 public enum PainQuality {
     STABBING("stabbing", R.string.pain_stabbing), DULL("dull", R.string.pain_dull), SHOOTING("shooting", R.string.pain_shooting), BURNING("burning", R.string.pain_burning), THROBBING("throbbing", R.string.pain_throbbing);
 
-    public static final EnumSet<PainQuality> ALL_OPTIONS = EnumSet.allOf(PainQuality.class);
     private String stringValue;
     private int resourceID;
     private static Map<String, PainQuality> map = new HashMap<>();
 
-    private PainQuality(String stringValue, int resourceID) {
+    PainQuality(String stringValue, int resourceID) {
         this.stringValue = stringValue;
         this.resourceID = resourceID;
     }
@@ -57,6 +56,11 @@ public enum PainQuality {
         return stringValue;
     }
 
+    /**
+     * Returns the resource ID of the corresponding string resource.
+     *
+     * @return resource ID
+     */
     public int getResourceID() {
         return resourceID;
     }

@@ -27,7 +27,6 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Time;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
@@ -36,6 +35,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDesc
 
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.Iterator;
 
 /**
  * Assortment of static helper methods, e.g. to obtain the resource ID of a
@@ -43,106 +43,47 @@ import java.util.EnumSet;
  * representation.
  *
  * @author Susanne Felsen
- * @version 20180208
+ * @version 20180301
  */
 public class Helper {
 
-    public static int getResourceIDForBodyRegion(BodyRegion bodyRegion) {
-        switch(bodyRegion) {
-            case ABDOMEN_RIGHT:
-            case ABDOMEN_RIGHT_BACK:
-                return R.drawable.paindiary_person_abdomen_right;
-            case ABDOMEN_LEFT:
-            case ABDOMEN_LEFT_BACK:
-                return R.drawable.paindiary_person_abdomen_left;
-            case GROIN_LEFT:
-            case GROIN_LEFT_BACK:
-                return R.drawable.paindiary_person_groin_left;
-            case GROIN_RIGHT:
-            case GROIN_RIGHT_BACK:
-                return R.drawable.paindiary_person_groin_right;
-            case THIGH_LEFT:
-            case THIGH_LEFT_BACK:
-                return R.drawable.paindiary_person_thigh_left;
-            case THIGH_RIGHT:
-            case THIGH_RIGHT_BACK:
-                return R.drawable.paindiary_person_thigh_right;
-            case KNEE_LEFT:
-            case KNEE_LEFT_BACK:
-                return R.drawable.paindiary_person_knee_left;
-            case KNEE_RIGHT:
-            case KNEE_RIGHT_BACK:
-                return R.drawable.paindiary_person_knee_right;
-            case LOWER_LEG_LEFT:
-            case LOWER_LEG_LEFT_BACK:
-                return R.drawable.paindiary_person_leg_left;
-            case LOWER_LEG_RIGHT:
-            case LOWER_LEG_RIGHT_BACK:
-                return R.drawable.paindiary_person_leg_right;
-            case FOOT_LEFT:
-            case FOOT_LEFT_BACK:
-                return R.drawable.paindiary_person_foot_left;
-            case FOOT_RIGHT:
-            case FOOT_RIGHT_BACK:
-                return R.drawable.paindiary_person_foot_right;
-            case CHEST_LEFT:
-            case CHEST_LEFT_BACK:
-                return R.drawable.paindiary_person_chest_left;
-            case CHEST_RIGHT:
-            case CHEST_RIGHT_BACK:
-                return R.drawable.paindiary_person_chest_right;
-            case NECK:
-            case NECK_BACK:
-                return R.drawable.paindiary_person_neck;
-            case HEAD:
-            case HEAD_BACK:
-                return R.drawable.paindiary_person_head;
-            case UPPER_ARM_LEFT:
-            case UPPER_ARM_LEFT_BACK:
-                return R.drawable.paindiary_person_upperarm_left;
-            case UPPER_ARM_RIGHT:
-            case UPPER_ARM_RIGHT_BACK:
-                return R.drawable.paindiary_person_upperarm_right;
-            case LOWER_ARM_LEFT:
-            case LOWER_ARM_LEFT_BACK:
-                return R.drawable.paindiary_person_lowerarm_left;
-            case LOWER_ARM_RIGHT:
-            case LOWER_ARM_RIGHT_BACK:
-                return R.drawable.paindiary_person_lowerarm_right;
-            case HAND_LEFT:
-            case HAND_LEFT_BACK:
-                return R.drawable.paindiary_person_hand_left;
-            case HAND_RIGHT:
-            case HAND_RIGHT_BACK:
-                return R.drawable.paindiary_person_hand_right;
-            default:
-                return 0;
+//    public static Bitmap overlay(Bitmap[] images) {
+//        Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());
+//        Canvas canvas = new Canvas(overlay);
+//        for(int i = 0; i < images.length; i++) {
+//            canvas.drawBitmap(images[i], 0, 0, null);
+//        }
+//        return overlay;
+//    }
+
+    public static Bitmap overlay(Context context, EnumSet<BodyRegion> bodyRegions) {
+        Bitmap overlay = null;
+        Iterator<BodyRegion> it = bodyRegions.iterator();
+        if(it.hasNext()) {
+            Bitmap img = BitmapFactory.decodeResource(context.getResources(), it.next().getResourceID());
+            overlay = Bitmap.createBitmap(img.getWidth(), img.getHeight(), img.getConfig());
+            if(overlay != null) {
+                Canvas canvas = new Canvas(overlay);
+                canvas.drawBitmap(img, 0, 0, null);
+                img.recycle();
+
+                while (it.hasNext()) {
+                    img = BitmapFactory.decodeResource(context.getResources(), it.next().getResourceID());
+                    canvas.drawBitmap(img, 0, 0, null);
+                    img.recycle();
+                }
+            }
         }
+        return overlay;
     }
 
-    public static int getResourceIDForCondition(Condition condition) {
-        switch(condition) {
-            case VERY_BAD:
-                return R.drawable.ic_sentiment_very_dissatisfied;
-            case BAD:
-                return R.drawable.ic_sentiment_dissatisfied;
-            case OKAY:
-                return R.drawable.ic_sentiment_neutral;
-            case GOOD:
-                return R.drawable.ic_sentiment_satisfied;
-            case VERY_GOOD:
-                return R.drawable.ic_sentiment_very_satisfied;
-            default:
-                return R.drawable.ic_menu_help;
-        }
-    }
-
-    public static Bitmap overlay(Bitmap[] images) {
-        Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());
+    public static Bitmap overlay(Bitmap bitmap, Bitmap bitmapToAdd) {
+        Bitmap overlay = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
         Canvas canvas = new Canvas(overlay);
-        for(int i = 0; i < images.length; i++) {
-            canvas.drawBitmap(images[i], 0, 0, null);
-        }
+        canvas.drawBitmap(bitmap, 0, 0, null);
+        bitmap.recycle();
+        canvas.drawBitmap(bitmapToAdd, 0, 0, null);
+        bitmapToAdd.recycle();
         return overlay;
     }
 
@@ -158,7 +99,7 @@ public class Helper {
             ((TextView) view.findViewById(R.id.notes_value)).setText(diaryEntry.getNotes());
         }
         if(diaryEntry.getCondition() != null) {
-            ((ImageView) view.findViewById(R.id.condition_icon)).setImageResource(getResourceIDForCondition(diaryEntry.getCondition()));
+            ((ImageView) view.findViewById(R.id.condition_icon)).setImageResource(diaryEntry.getCondition().getResourceID());
         }
         if(painDescription != null) {
             ((TextView) view.findViewById(R.id.painlevel_value)).setText(Integer.toString(painDescription.getPainLevel()));
@@ -174,13 +115,13 @@ public class Helper {
                 }
             }
             if(!bodyRegionsFront.isEmpty()) {
-                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsFront);
-                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(images));
+//                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsFront);
+                ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsFront));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
             if(!bodyRegionsBack.isEmpty()) {
-                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsBack);
-                ((ImageView) view.findViewById(R.id.bodyregion_back_value)).setImageBitmap(Helper.overlay(images));
+//                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsBack);
+                ((ImageView) view.findViewById(R.id.bodyregion_back_value)).setImageBitmap(Helper.overlay(context, bodyRegionsBack));
                 view.findViewById(R.id.bodyregion_back_value).setVisibility(View.VISIBLE);
             }
             String painQualities = convertPainQualityEnumSetToString(context, painDescription.getPainQualities());
@@ -210,18 +151,15 @@ public class Helper {
         return view;
     }
 
-    public static Bitmap[] getBitmapArrayForBodyRegions(Context context, EnumSet<BodyRegion> bodyRegions) {
-        Bitmap[] images = new Bitmap[bodyRegions.size()];
-        int i = 0;
-        for(BodyRegion region : bodyRegions) {
-            int resourceID = Helper.getResourceIDForBodyRegion(region);
-            if (resourceID != 0) {
-                images[i] = BitmapFactory.decodeResource(context.getResources(), resourceID);
-                i++;
-            }
-        }
-        return images;
-    }
+//    public static Bitmap[] getBitmapArrayForBodyRegions(Context context, EnumSet<BodyRegion> bodyRegions) {
+//        Bitmap[] images = new Bitmap[bodyRegions.size()];
+//        int i = 0;
+//        for(BodyRegion region : bodyRegions) {
+//            images[i] = BitmapFactory.decodeResource(context.getResources(), region.getResourceID());
+//            i++;
+//        }
+//        return images;
+//    }
 
     public static String convertPainQualityEnumSetToString(Context context, EnumSet<PainQuality> painQualities) {
         String painQualitiesAsString = "";

@@ -25,16 +25,20 @@ import java.util.Map;
  * Represents a user's condition, i.e. how he feels at the time of making a diary entry.
  *
  * @author Susanne Felsen
- * @version 20171117
+ * @version 20180301
  */
 public enum Condition {
-    VERY_BAD(0), BAD(1), OKAY(2), GOOD(3), VERY_GOOD(4);
+    VERY_BAD(0, R.drawable.ic_sentiment_very_dissatisfied), BAD(1, R.drawable.ic_sentiment_dissatisfied),
+    OKAY(2, R.drawable.ic_sentiment_neutral), GOOD(3, R.drawable.ic_sentiment_satisfied),
+    VERY_GOOD(4, R.drawable.ic_sentiment_very_satisfied);
 
     private int value;
+    private int resourceID;
     private static Map<Integer, Condition> map = new HashMap<>();
 
-    private Condition(int value) {
+    Condition(int value, int resourceID) {
         this.value = value;
+        this.resourceID = resourceID;
     }
 
     static {
@@ -49,6 +53,15 @@ public enum Condition {
 
     public int getValue() {
         return value;
+    }
+
+    /**
+     * Returns the resource ID of the corresponding drawable resource.
+     *
+     * @return resource ID
+     */
+    public int getResourceID() {
+        return resourceID;
     }
 
 }

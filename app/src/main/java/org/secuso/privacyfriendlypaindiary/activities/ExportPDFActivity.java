@@ -174,7 +174,7 @@ public class ExportPDFActivity extends AppCompatActivity {
             startDateWrapper.setError(getString(R.string.start_date_error));
         } else if (endDate == null) {
             endDateWrapper.setError(getString(R.string.end_date_error));
-        } else if (startDate.before(endDate)) {
+        } else if (startDate.compareTo(endDate) <= 0) {
             file = exportAsPDF(new PdfCreator(this, startDate, endDate).createPdfDocument());
         }
         return file;
