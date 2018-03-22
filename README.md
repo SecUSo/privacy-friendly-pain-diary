@@ -1,10 +1,10 @@
 ﻿# Privacy Friendly Pain Diary
 
-Privacy Friendly Pain Diary is an app that allows its users to make daily diary entries recording their condition and the intensity, location, nature and time of the pain they feel, as well as the medication they take and additional notes. This app belongs to the group of Privacy Friendly Apps developed at Technische Universität Darmstadt.
+Privacy Friendly Pain Diary is an Android app that allows its users to make daily diary entries recording their condition and the intensity, location, nature and time of the pain they feel, as well as the medication they take and additional notes. It belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Technische Universität Darmstadt.
 
 ## Motivation
 
-This privacy friendly application has been developed to be used as a pain diary. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on https://secuso.org/pfa
+Privacy Friendly Pain Diary can help users track and share their pain. Systematic pain records can help health professionals gain an insight into the pain a patient is experiencing. Privacy Friendly Apps are group of Android applications which are optimized regarding privacy. Further information can be found on https://secuso.org/pfa
 
 ## Download and more Information
 
@@ -12,12 +12,12 @@ Further development requires Android Studio, we recommend to use at least versio
  
 ### API Reference
 
-Mininum SDK: 21
+Mininum SDK: 21<br/>
 Target SDK: 26 
 
 ## License
 
-Privacy Friendly Pain Diary is licensed under the GPLv3.
+Privacy Friendly Pain Diary is licensed under the GPLv3.<br/>
 Copyright (C) 2017-2018 Karola Marky, Susanne Felsen, Rybien Sinjari
 
 This program is free software: you can redistribute it and/or modify
