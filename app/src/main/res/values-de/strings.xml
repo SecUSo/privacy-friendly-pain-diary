@@ -34,19 +34,19 @@
     <string name="help">Help</string>
 
     <string name="help_whatis">Was ist das Privacy Friendly Schmerztagebuch?</string>
-    <string name="help_whatis_answer">Das Privacy Friendly Schmerztagebuch ist eine App, die Ihnen das Erstellen täglicher Tagebuch-Einträge erlaubt, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>    <string name="help_privacy">Was macht die App Privatsphäre-freundlich?</string>
+    <string name="help_whatis_answer">Das Privacy Friendly Schmerztagebuch ist eine App, die Ihnen das Erstellen täglicher Tagebucheinträge erlaubt, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>    <string name="help_privacy">Was macht die App Privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Das Privacy Friendly Schmerztagebuch benötigt minimale Berechtigungen. Die App enthält außerdem keinerlei Tracking-Mechanismen oder Werbung.</string>
     <string name="help_permission">Welche Berechtigungen benötigt die App?</string>
-    <string name="help_permission_answer">Das Privacy Friendly Schmerztagebuch benötigt eine Schreibberechtigung für den Speicher Ihres Gerätes, falls Sie Ihre Tagebuch-Einträge als PDF exportieren möchten. Für alle anderen Funktionen der App müssen keine Berechtigungen erteilt werden.</string>
+    <string name="help_permission_answer">Das Privacy Friendly Schmerztagebuch benötigt eine Schreibberechtigung für den Speicher Ihres Gerätes, falls Sie Ihre Tagebucheinträge als PDF exportieren möchten. Für alle anderen Funktionen der App müssen keine Berechtigungen erteilt werden.</string>
 
-    <string name="help_add_entry">Wie kann ich einen neuen Tagebuch-Eintrag erstellen?</string>
-    <string name="help_add_entry_answer">Ein neuer Tagebuch-Eintrag kann erstellt werden, indem der entsprechende Tag im Kalender ausgewählt wird. Pro Tag kann nur ein Eintrag erstellt werden. Tage, an denen bereits ein Eintrag existiert, sind im Kalender markiert.</string>
-    <string name="help_entry_information">Welche Informationen werden in einem Tagebuch-Eintrag festgehalten?</string>
-    <string name="help_entry_information_answer">In einem Tagebuch-Eintrag können Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten. Außerdem können Sie die von Ihnen eingenommenen Medikamente dokumentieren. Zusätzlich ist Platz für Notizen.</string>
+    <string name="help_add_entry">Wie kann ich einen neuen Tagebucheintrag erstellen?</string>
+    <string name="help_add_entry_answer">Ein neuer Tagebucheintrag kann erstellt werden, indem der entsprechende Tag im Kalender ausgewählt wird. Pro Tag kann nur ein Eintrag erstellt werden. Tage, an denen bereits ein Eintrag existiert, sind im Kalender markiert.</string>
+    <string name="help_entry_information">Welche Informationen werden in einem Tagebucheintrag festgehalten?</string>
+    <string name="help_entry_information_answer">In einem Tagebucheintrag können Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten. Außerdem können Sie die von Ihnen eingenommenen Medikamente dokumentieren. Zusätzlich ist Platz für Notizen.</string>
     <string name="help_userdetails">Muss ich meine Benutzerdaten eingeben?</string>
     <string name="help_userdetails_answer">Die App erfordert keine Eingabe Ihrer Benutzerdaten. Es ist Ihnen freigestellt, Ihren Namen, Ihr Geburtsdatum und Ihr Geschlecht einzugeben und Sie können eingegebene Informationen jederzeit wieder löschen. Die Informationen, die Sie eingeben werden nicht übertragen oder geteilt.</string>
-    <string name="help_pdf_export">Wie kann ich meine Tagebuch-Einträge exportieren?</string>
-    <string name="help_pdf_export_answer">Sie können alle Tagebuch-Einträge in einem von Ihnen gewählten Zeitraum als PDF exportieren und dieses wahlweise teilen. Dazu wählen Sie den Menüpunkt "PDF Export".</string>
+    <string name="help_pdf_export">Wie kann ich meine Tagebucheinträge exportieren?</string>
+    <string name="help_pdf_export_answer">Sie können alle Tagebucheinträge in einem von Ihnen gewählten Zeitraum als PDF exportieren und dieses wahlweise teilen. Dazu wählen Sie den Menüpunkt "PDF Export".</string>
 
     <!--### ABOUT ###-->
     <string name="about">Über</string>
@@ -61,8 +61,8 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_header_general">Allgemein</string>
     <string name="pref_reset">App zurücksetzen</string>
-    <string name="pref_reset_summary">Lösche alle Tagebuch-Einträge und gespeicherte Benutzerdaten</string>
-    <string name="pref_reset_warning">Alle Tagebuch-Einträge und gespeicherte Benutzerdaten werden unwiderruflich gelöscht.\nSind Sie sicher?</string>
+    <string name="pref_reset_summary">Lösche alle Tagebucheinträge und gespeicherte Benutzerdaten</string>
+    <string name="pref_reset_warning">Alle Tagebucheinträge und gespeicherte Benutzerdaten werden unwiderruflich gelöscht.\nSind Sie sicher?</string>
     <string name="pref_medication">Medikation speichern</string>
     <string name="pref_medication_summary">Die zuletzt eingegebene Medikation wird automatisch übernommen für neue Einträge</string>
     <string name="pref_header_notifications">Benachrichtigungen</string>
@@ -71,10 +71,10 @@
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
-    <string name="slide1_text">Diese App erlaubt Ihnen das Erstellen täglicher Tagebuch-Einträge, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>
+    <string name="slide1_text">Diese App erlaubt Ihnen das Erstellen täglicher Tagebucheinträge, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>
 
-    <string name="slide2_heading">Neuer Tagebuch-Eintrag</string>
-    <string name="slide2_text">Die Hauptansicht der App ist ein Kalender. Durch Auswahl eines Tages in diesem Kalender können Sie einen neuen Tagebuch-Eintrag erstellen. Anschließend werden Sie gebeten, verschiedene Fragen zu Ihrem Wohlbefinden und den von Ihnen empfundenen Schmerzen zu beantworten.</string>
+    <string name="slide2_heading">Neuer Tagebucheintrag</string>
+    <string name="slide2_text">Die Hauptansicht der App ist ein Kalender. Durch Auswahl eines Tages in diesem Kalender können Sie einen neuen Tagebucheintrag erstellen. Anschließend werden Sie gebeten, verschiedene Fragen zu Ihrem Wohlbefinden und den von Ihnen empfundenen Schmerzen zu beantworten.</string>
 
     <string name="slide3_heading">Benutzerdaten</string>
     <string name="slide3_text">Am Ende dieses Tutorials werden Sie aufgefordert werden, Ihre Benutzerdaten einzugeben. Dieser Schritt ist optional und kann übersprungen werden. Benutzerdaten können auch zu einem späteren Zeitpunkt eingegeben oder gelöscht werden.</string>
@@ -138,25 +138,25 @@
     <string name="notes">Anmerkungen:</string>
     <string name="none">keine</string>
     <string name="medication_taken">Eingenommene Medikamente:</string>
-    <string name="warning_deleting">Sind Sie sicher, dass Sie den Tagebuch-Eintrag löschen wollen?</string>
+    <string name="warning_deleting">Sind Sie sicher, dass Sie den Tagebucheintrag löschen wollen?</string>
 
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Erinnerungen</string>
     <string name="notification_title">Erinnerung</string>
-    <string name="notification_text">Vergessen Sie Ihren täglichen Schmerztagebuch-Eintrag nicht!</string>
+    <string name="notification_text">Vergessen Sie Ihren täglichen Schmerztagebucheintrag nicht!</string>
     <string name="snooze">Snooze</string>
 
     <!-- ### PDF ### -->
     <string name="export_pdf">PDF Export</string>
     <string name="export">Exportieren</string>
     <string name="share">Teilen</string>
-    <string name="heading_export">Bitte wählen Sie den Zeitraum, für den Ihre Schmerztagebuch-Einträge als PDF exportiert werden sollen.</string>
+    <string name="heading_export">Bitte wählen Sie den Zeitraum, für den Ihre Schmerztagebucheinträge als PDF exportiert werden sollen.</string>
     <string name="start_date">Startdatum</string>
     <string name="end_date">Enddatum</string>
     <string name="start_date_error">Bitte geben Sie ein Startdatum ein.</string>
     <string name="end_date_error">Bitte geben Sie ein Enddatum ein.</string>
     <string name="patient_details">Patienten-Details</string>
-    <string name="diary_entries">Schmerztagebuch-Einträge</string>
+    <string name="diary_entries">Schmerztagebucheinträge</string>
     <string name="diary_entries_none">Keine Einträge gefunden.</string>
     <string name="permission_write_error">Fehler: Keine Schreibberechtigung.</string>
     <string name="permission_write_denied">Berechtigung verweigert. Export nicht möglich.</string>

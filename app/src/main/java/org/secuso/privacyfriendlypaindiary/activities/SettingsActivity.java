@@ -75,8 +75,6 @@ public class SettingsActivity extends BaseActivity {
 
         private void initPreferences() {
             addPreferencesFromResource(R.xml.pref_general);
-//            PreferenceManager.setDefaultValues(Preferences.this, R.xml.pref_general, false);
-//            initSummary(getPreferenceScreen());
 
             Preference resetPref = findPreference(KEY_PREF_RESET);
             if(resetPref != null) {
@@ -111,33 +109,7 @@ public class SettingsActivity extends BaseActivity {
             getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         }
 
-//        private void initSummary(Preference p) {
-//            if (p instanceof PreferenceGroup) {
-//                PreferenceGroup pGrp = (PreferenceGroup) p;
-//                for (int i = 0; i < pGrp.getPreferenceCount(); i++) {
-//                    initSummary(pGrp.getPreference(i));
-//                }
-//            } else {
-//                updatePrefSummary(p);
-//            }
-//        }
-//
-//        private void updatePrefSummary(Preference p) {
-//            if (p instanceof ListPreference) {
-//                ListPreference listPref = (ListPreference) p;
-//                p.setSummary(listPref.getEntry());
-//            }
-//        }
-
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-//            updatePrefSummary(findPreference(key));
-//            if(key.equals(KEY_PREF_RESET)) {
-//
-//            }
-//            if(key.equals(KEY_PREF_MEDICATION)) {
-//
-//            }
             if (key.equals(KEY_PREF_REMINDER)) {
                 boolean enabled = sharedPreferences.getBoolean(KEY_PREF_REMINDER, false);
                 if(enabled) {

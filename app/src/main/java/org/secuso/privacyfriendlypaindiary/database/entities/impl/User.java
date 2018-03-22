@@ -22,7 +22,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import java.util.Date;
 
 /**
- * An instances of this class represents a user, i.e. a person that is using the app.
+ * An instance of this class represents a user, i.e. a person that is using the app.
  * A user is characterized by his first and last name, date of birth and gender.
  * However, none of that information is required (fields might be <code>null</code>).
  *

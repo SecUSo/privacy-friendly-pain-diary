@@ -47,15 +47,6 @@ import java.util.Iterator;
  */
 public class Helper {
 
-//    public static Bitmap overlay(Bitmap[] images) {
-//        Bitmap overlay = Bitmap.createBitmap(images[0].getWidth(), images[0].getHeight(), images[0].getConfig());
-//        Canvas canvas = new Canvas(overlay);
-//        for(int i = 0; i < images.length; i++) {
-//            canvas.drawBitmap(images[i], 0, 0, null);
-//        }
-//        return overlay;
-//    }
-
     public static Bitmap overlay(Context context, EnumSet<BodyRegion> bodyRegions) {
         Bitmap overlay = null;
         Iterator<BodyRegion> it = bodyRegions.iterator();
@@ -115,12 +106,10 @@ public class Helper {
                 }
             }
             if(!bodyRegionsFront.isEmpty()) {
-//                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsFront);
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsFront));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
             if(!bodyRegionsBack.isEmpty()) {
-//                Bitmap[] images = getBitmapArrayForBodyRegions(context, bodyRegionsBack);
                 ((ImageView) view.findViewById(R.id.bodyregion_back_value)).setImageBitmap(Helper.overlay(context, bodyRegionsBack));
                 view.findViewById(R.id.bodyregion_back_value).setVisibility(View.VISIBLE);
             }
@@ -150,16 +139,6 @@ public class Helper {
 
         return view;
     }
-
-//    public static Bitmap[] getBitmapArrayForBodyRegions(Context context, EnumSet<BodyRegion> bodyRegions) {
-//        Bitmap[] images = new Bitmap[bodyRegions.size()];
-//        int i = 0;
-//        for(BodyRegion region : bodyRegions) {
-//            images[i] = BitmapFactory.decodeResource(context.getResources(), region.getResourceID());
-//            i++;
-//        }
-//        return images;
-//    }
 
     public static String convertPainQualityEnumSetToString(Context context, EnumSet<PainQuality> painQualities) {
         String painQualitiesAsString = "";

@@ -105,7 +105,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         }
 
         dateWrapper = findViewById(R.id.date_of_birth_wrapper);
-//        dateWrapper.getEditText().addTextChangedListener(dateWatcher);
 
         firstNameWrapper = findViewById(R.id.first_name_wrapper);
         firstNameWrapper.getEditText().addTextChangedListener(new TextWatcher() {
@@ -254,7 +253,6 @@ public class UserDetailsActivity extends AppCompatActivity {
                 cal.set(year, month, day);
                 dateOfBirth = cal.getTime();
                 dateWrapper.getEditText().setText(dateFormat.format(dateOfBirth));
-//                dateWrapper.setError(null);
 
             }
         }, year, month, day);
@@ -267,7 +265,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
-        if (firstNameWrapper.getError() == null && lastNameWrapper.getError() == null) { //&& dateWrapper.getError() == null
+        if (firstNameWrapper.getError() == null && lastNameWrapper.getError() == null) {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setDateOfBirth(dateOfBirth);
@@ -360,95 +358,3 @@ public class UserDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-// Text Watcher adapted from <a href="https://stackoverflow.com/questions/16889502/how-to-mask-an-edittext-to-show-the-dd-mm-yyyy-date-format"/>.
-//    private TextWatcher dateWatcher = new TextWatcher() {
-//        private Calendar cal = Calendar.getInstance();
-//        int currentYear = cal.get(Calendar.YEAR);
-//        private String current = "";
-//        private String ddmmyyyy = "DDMMYYYY"; //TODO adapt to different date patterns
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            boolean valid = true;
-//            if (!s.toString().equals("") && !s.toString().equals(current)) {
-//                String clean = s.toString().replaceAll("[^\\d.]", ""); //all non-digits are replaced
-//                clean = clean.replaceAll("\\.", ""); //all periods are replaced
-//                String cleanC = current.replaceAll("[^\\d.]", "");
-//                cleanC = cleanC.replaceAll("\\.", "");
-//
-//                int cl = clean.length();
-//                int sel = cl;
-//                for (int i = 2; i <= cl && i < 6; i += 2) {
-//                    sel++;
-//                }
-//                //fix for pressing delete next to a forward slash
-//                if (clean.equals(cleanC)) sel--;
-//
-//                if (clean.length() < 8) {
-//                    clean = clean + ddmmyyyy.substring(clean.length());
-//                } else {
-//                    //this part makes sure that when we finish entering numbers, the date is correct, fixing it otherwise
-//                    int day = Integer.parseInt(clean.substring(0, 2));
-//                    int mon = Integer.parseInt(clean.substring(2, 4));
-//                    int year = Integer.parseInt(clean.substring(4, 8));
-//
-//                    if (mon > 12) {
-//                        valid = false;
-//                        mon = 12;
-//                    }
-//                    cal.set(Calendar.MONTH, mon - 1);
-//                    if (year < 1900 || year > currentYear) {
-//                        valid = false;
-//                        year = currentYear;
-//                    }
-//                    //first set year for the line below to work correctly with leap years
-//                    cal.set(Calendar.YEAR, year);
-//                    if (day > cal.getActualMaximum(Calendar.DATE)) {
-//                        valid = false;
-//                        day = cal.getActualMaximum(Calendar.DATE);
-//                    }
-//                    clean = String.format("%02d%02d%02d", day, mon, year);
-//                }
-//                clean = String.format("%s.%s.%s", clean.substring(0, 2),
-//                        clean.substring(2, 4),
-//                        clean.substring(4, 8));
-//
-//                sel = sel < 0 ? 0 : sel;
-//                current = clean;
-//                dateWrapper.getEditText().setText(current);
-//                dateWrapper.getEditText().setSelection(sel < current.length() ? sel : current.length());
-//            }
-//            if (!valid) {
-//                dateWrapper.setErrorEnabled(true);
-//                dateWrapper.setError(getString(R.string.date_invalid));
-//            } else {
-//                dateWrapper.setErrorEnabled(false);
-//                dateWrapper.setError(null);
-//            }
-//        }
-//
-//        @Override
-//        public void afterTextChanged(Editable s) {
-//            Editable date = dateWrapper.getEditText().getText();
-//            if (date != null) {
-//                if (date.toString().isEmpty() || date.toString().equals("DD.MM.YYYY")) {
-//                    dateOfBirth = null;
-//                    dateWrapper.setError(null);
-//                    dateWrapper.setErrorEnabled(false);
-//                } else {
-//                    try {
-//                        dateOfBirth = dateFormat.parse(date.toString());
-//                    } catch (ParseException e) {
-//                        dateWrapper.setErrorEnabled(true);
-//                        dateWrapper.setError(getString(R.string.date_invalid));
-//                    }
-//                }
-//            }
-//        }
-//
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//        }
-//
-//    };

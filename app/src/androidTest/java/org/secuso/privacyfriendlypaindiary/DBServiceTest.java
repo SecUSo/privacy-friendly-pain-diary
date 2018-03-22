@@ -54,9 +54,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * This class tests the basic database functionality, i.e. the methods of the class
+ * {@link DBService}.
+ *
  * @author Susanne Felsen
  * @version 20180110
- * @see <a href="http://www.singhajit.com/testing-android-database/"></a>
+ *
+ * <a href="http://www.singhajit.com/testing-android-database/"></a>
  */
 @RunWith(AndroidJUnit4.class)
 public class DBServiceTest {

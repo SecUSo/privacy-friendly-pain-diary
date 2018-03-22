@@ -45,7 +45,7 @@ public class PainDescription extends AbstractPersistentObject implements PainDes
     public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_PAIN_LEVEL + " INTEGER NOT NULL, " +
-            COLUMN_BODY_REGIONS + " INTEGER, " +
+            COLUMN_BODY_REGIONS + " STRING, " +
             COLUMN_PAIN_QUALITIES + " STRING, " +
             COLUMN_TIMES_OF_PAIN + " STRING);";
 
