@@ -1,6 +1,6 @@
 ﻿# Privacy Friendly Pain Diary
 
-Privacy Friendly Pain Diary is an app that allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as additional notes and the medication you take. This app belongs to the group of Privacy Friendly Apps developed by the Technische Universität Darmstadt.
+Privacy Friendly Pain Diary is an app that allows its users to make daily diary entries recording their condition and the intensity, location, nature and time of the pain they feel, as well as the medication they take and additional notes. This app belongs to the group of Privacy Friendly Apps developed at Technische Universität Darmstadt.
 
 ## Motivation
 
