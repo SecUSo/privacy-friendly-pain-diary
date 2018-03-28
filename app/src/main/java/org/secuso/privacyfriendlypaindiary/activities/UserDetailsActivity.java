@@ -258,7 +258,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         }, year, month, day);
         dialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
         Calendar min = Calendar.getInstance();
-        min.set(1970, 0, 0, 0, 0);
+        min.set(1900, 0, 0, 0, 0);
         min.setTimeInMillis(0);
         dialog.getDatePicker().setMinDate(min.getTimeInMillis());
         dialog.show();
