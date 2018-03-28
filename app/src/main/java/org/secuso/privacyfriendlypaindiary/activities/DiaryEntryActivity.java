@@ -254,9 +254,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             initFields(temp);
         } else if(edit) {
             initFields(diaryEntry);
-        }
-
-        if(!edit) {
+        } else {
             boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_MEDICATION, true);
             if(rememberMedication) {
                 long ID = service.getIDOfLatestDiaryEntry();
