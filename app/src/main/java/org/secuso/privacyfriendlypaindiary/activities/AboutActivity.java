@@ -29,6 +29,7 @@ import org.secuso.privacyfriendlypaindiary.R;
 /**
  * Created by yonjuni on 15.06.16.
  */
+
 public class AboutActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
