@@ -1,0 +1,173 @@
+<resources>
+    <string name="app_name">Diario del dolor</string>
+    <string name="app_name_long">Diario del dolor, que respeta la privacidad</string>
+    <string name="app_prefix" translatable="false">Privacy Friendly</string>
+
+    <!-- ### DRAWER ###-->
+    <string name="action_help">Ayuda</string>
+    <string name="action_about">Acerca de</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_main">Principal</string>
+    <string name="action_tutorial">Guía</string>
+
+    <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
+
+    <!-- ### GENERAL ### -->
+    <string name="okay">De acuerdo</string>
+    <string name="back">Atrás</string>
+    <string name="next">Siguiente</string>
+    <string name="skip">Omitir</string>
+    <string name="save">Guardar</string>
+    <string name="save_error">No se ha podido guardar.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="changes_saved">Cambios guardados.</string>
+    <string name="changes_discarded">Cambios descartados.</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="set">Establecer</string>
+
+    <!-- ### MAIN ### -->
+    <string name="welcome_question">¿Cómo se siente hoy?</string>
+
+    <!--### HELP ###-->
+    <string name="help">Ayuda</string>
+
+    <string name="help_whatis">¿Qué es Diario del dolor, que respeta la privacidad?</string>
+    <string name="help_whatis_answer">El Diario del dolor, que respeta la privacidad, es una aplicación que le permite registrar diariamente su estado e intensidad, localización, naturaleza y duración del dolor que siente, así como la medicación que toma y notas adicionales.</string>
+    <string name="help_privacy">¿Qué hace que la aplicación sea respetuosa con la privacidad?</string>
+    <string name="help_privacy_answer">Diario del dolor, que respeta la privacidad, requiere permisos mínimos. No incluye mecanismos de rastreo ni publicidad.</string>
+    <string name="help_permission">¿Qué permisos requiere la aplicación?</string>
+    <string name="help_permission_answer">El Diario del dolor, que respeta la privacidad, requiere permiso de escritura en el almacenamiento de su dispositivo si desea exportar sus entradas del diario a PDF. El resto de características no requieren ningún permiso.</string>
+
+    <string name="help_add_entry">¿Cómo agrego una nueva entrada en el diario?</string>
+    <string name="help_add_entry_answer">Se puede agregar una nueva entrada en el diario seleccionando un día en el calendario. Sin embargo solamente puede haber una entrada por día. Los días que ya tienen entradas están marcados en el calendario.</string>
+    <string name="help_entry_information">¿Qué información se registra en una entrada del diario?</string>
+    <string name="help_entry_information_answer">Las entradas del diario se pueden usar para documentar su estado y la intensidad, localización, naturaleza y duración del dolor que siente. También se puede registrar la medicación que toma y notas adicionales.</string>
+    <string name="help_userdetails">¿Tengo que incluir datos de usuario?</string>
+    <string name="help_userdetails_answer">La aplicación no requiere que incluya ningún dato de usuario. Si lo desea puede introducir su nombre, fecha de nacimiento y género y puede borrar la información que introdujo previamente en cualquier momento. La información que incluya no se comparte ni transmite por ningún medio.</string>
+    <string name="help_pdf_export">¿Cómo puedo exportar mis entradas del diario?</string>
+    <string name="help_pdf_export_answer">Puede exportar todas las entradas del diario realizadas en el periodo que especifique. También tiene la opción de compartir ese PDF. Seleccione el elemento de menú "Exportar PDF" para ello.</string>
+
+    <!--### ABOUT ###-->
+    <string name="about">Acerca de</string>
+    <string name="version_number">Versión</string>
+    <string name="about_author">Autores: </string>
+    <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
+    <string name="about_author_contributors">y contribuidores.</string>
+    <string name="about_affiliation">En afiliación con</string>
+    <string name="privacy_friendly">Esta aplicación pertenece al grupo de Aplicaciones que respetan la privacidad desarrolladas por Technische Universität Darmstadt. Código fuente bajo licencia GPLv3. Derechos de autor de las imágenes TU Darmstadt y Google Inc.</string>
+    <string name="more_info">Se puede encontrar más información en:</string>
+    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Github-Repo</a></string>
+    <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">Sitio web de SECUSO</a></string>
+
+    <!-- ### SETTINGS ### -->
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_reset">Restablecer aplicación</string>
+    <string name="pref_reset_summary">Borrar todas las entradas del diario y detalles de usuario</string>
+    <string name="pref_reset_warning">Todas las entradas del diario y los detalles del usuario se borrarán irremediablemente.\n¿Está seguro/a?</string>
+    <string name="pref_medication">Recordar medicación</string>
+    <string name="pref_medication_summary">La última medicación incluida se agrega automáticamente a las nuevas entradas</string>
+    <string name="pref_header_notifications">Notificaciones</string>
+    <string name="pref_reminder">Recordatorio diario</string>
+    <string name="pref_reminder_time">Hora del recordatorio</string>
+
+    <!-- ### TUTORIAL DIALOG ### -->
+    <string name="slide1_heading">¡Bienvenido/a!</string>
+    <string name="slide1_text">Esta aplicación le permite le permite registrar diariamente su estado e intensidad, localización, naturaleza y duración del dolor que siente, así como la medicación que toma y notas adicionales.</string>
+
+    <string name="slide2_heading">Nueva entrada del diario</string>
+    <string name="slide2_text">La vista principal de esta aplicación es un calendario. Puede agregar una nueva entrada del diario seleccionando un día del calendario. Entonces la aplicación preguntará sobre su estado y el dolor que está sintiendo.</string>
+
+    <string name="slide3_heading">Detalles de usuario</string>
+    <string name="slide3_text">Al final de esta guía se le preguntarán sus detalles de usuario. Este paso es opcional y se puede omitir. Los detalles del usuario también se pueden incluir más tarde.</string>
+
+    <string name="slide4_heading">Github y guía</string>
+    <string name="slide4_text">El código fuente de esta aplicación está disponible en GitHub. Para una explicación más detallada eche un vistazo a la página de ayuda o la Guía de aplicaciones que respetan la privaciad.</string>
+
+    <!-- ### USER DETAILS ### -->
+    <string name="user_details">Detalles de usuario </string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellidos</string>
+    <string name="date_of_birth">Fecha de nacimiento</string>
+    <string name="gender">Género</string>
+    <string name="name_invalid">Por favor introduzca un nombre válido.</string>
+    <string name="date_invalid">Por favor introduzca una fecha válida.</string>
+
+    <!-- ### GENDER ### -->
+    <string name="male">hombre</string>
+    <string name="female">mujer</string>
+    <string name="other">otro</string>
+
+    <!-- ### PAIN DESCRIPTION ### -->
+    <string name="pain_stabbing">latigazo</string>
+    <string name="pain_dull">sordo</string>
+    <string name="pain_shooting">punzada</string>
+    <string name="pain_burning">quemazón</string>
+    <string name="pain_throbbing">palpitante</string>
+
+    <!-- ### DIARY ENTRY ### -->
+    <string name="new_diary_entry">Nueva entrada del diario</string>
+    <string name="edit_diary_entry">Editar entrada del diario</string>
+    <string name="warning_leaving">La información que ha incluido se perderá. ¿Desea continuar?</string>
+    <string name="heading_condition">¿Cómo se siente?</string>
+    <string name="heading_painlevel">¿Qué intensidad tiene su dolor?</string>
+    <string name="subheading_painlevel">(0 = sin dolor, 10 = mucho dolor (al borde del desmayo))</string>
+    <string name="heading_bodyregion">¿Dónde siente el dolor?</string>
+    <string name="body_front">Delante:</string>
+    <string name="body_back">Detrás:</string>
+    <string name="heading_paindescription">¿De qué naturaleza es su dolor?</string>
+    <string name="heading_timeofpain">¿Cuándo siente el dolor?</string>
+    <string name="time_day">durante el día</string>
+    <string name="time_morning">por la mañana</string>
+    <string name="time_afternoon">por la tarde</string>
+    <string name="time_evening">por la tarde-noche</string>
+    <string name="time_night">por la noche</string>
+    <string name="heading_notes">¿Tiene comentarios adicionales?</string>
+    <string name="subheading_notes">(por ej. acerca del ejercicio o la dieta)</string>
+    <string name="heading_medication">¿Qué medicación está tomando?</string>
+    <string name="subheading_medication">Pulse el signo + verde para agregar nuevas medicaciones. Introduzca la cantidad (por ej. número de pastillas) que toma por la mañana, a mediodía, por la tarde y por la noche.</string>
+    <string name="medication">Medicación</string>
+    <string name="medication_name">Nombre</string>
+    <string name="dose">Dosis</string>
+
+    <!-- ### VIEW DIARY ENTRY ### -->
+    <string name="condition">Estado:</string>
+    <string name="painlevel">Intensidad del dolor:</string>
+    <string name="bodyregion">Localización del dolor:</string>
+    <string name="paindescription">Naturaleza del dolor:</string>
+    <string name="unknown">desconocido</string>
+    <string name="timeofpain">Duración del dolor:</string>
+    <string name="notes">Comentarios:</string>
+    <string name="none">ninguno</string>
+    <string name="medication_taken">Medicación tomada:</string>
+    <string name="warning_deleting">¿Está seguro/a de que desea eliminar esta entrada del diario?</string>
+
+    <!-- ### REMINDER ### -->
+    <string name="reminders_channel_title">Recordatorios</string>
+    <string name="notification_title">Recordatorio</string>
+    <string name="notification_text">¡No olvide anotar su entrada del diario sobre el dolor!</string>
+    <string name="snooze">Posponer</string>
+
+    <!-- ### PDF ### -->
+    <string name="export_pdf">Exportar PDF</string>
+    <string name="export">Exportar</string>
+    <string name="share">Compartir</string>
+    <string name="heading_export">Por favor seleccione un rango de fechas para las cuales se exportarán como PDF sus entradas del diario del dolor.</string>
+    <string name="start_date">Fecha de inicio</string>
+    <string name="end_date">Fecha final</string>
+    <string name="start_date_error">Por favor introduzca una fecha inicio.</string>
+    <string name="end_date_error">Por favor introduzca una fecha final.</string>
+    <string name="patient_details">Detalles del paciente</string>
+    <string name="diary_entries">Entradas del diario del dolor</string>
+    <string name="diary_entries_none">No se encontraron entradas.</string>
+    <string name="permission_write_error">Error: No hay permiso de escritura.</string>
+    <string name="permission_write_denied">Permiso denegado. No se pueden exportar las entradas del diario.</string>
+    <string name="permission_write_granted">Permiso concedido. Por favor inténtelo de nuevo ahora.</string>
+    <string name="export_success">Se ha guardado el PDF en la carpeta de Documentos.</string>
+    <string name="export_failure">Error desconocido: no se pudo guardar el PDF.</string>
+    <string name="share_caution">Tenga cuidado al compartir su información médica.</string>
+
+</resources>
