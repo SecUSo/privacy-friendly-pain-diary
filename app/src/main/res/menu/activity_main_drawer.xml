@@ -17,7 +17,7 @@
             android:title="@string/export_pdf" />
         <item
             android:id="@+id/nav_export_csv"
-            android:icon="@drawable/ic_export_pdf"
+            android:icon="@drawable/ic_export_csv"
             android:title="CSV Export" />
         <item
             android:id="@+id/nav_tutorial"

@@ -113,7 +113,7 @@ public class ExportCSVActivity extends AppCompatActivity {
             case R.id.btn_export:
                 File file = exportAsCSV();
                 if(file != null) {
-                    Toast.makeText(this, getString(R.string.export_success), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.export_csv_success), Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.btn_share:
@@ -208,7 +208,7 @@ public class ExportCSVActivity extends AppCompatActivity {
         try {
             csvHelper.writeCsv(file);
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.export_failure), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.export_csv_failure), Toast.LENGTH_LONG).show();
         }
 
         return file;
