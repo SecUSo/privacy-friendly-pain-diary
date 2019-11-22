@@ -35,5 +35,5 @@ dependencies {
         exclude group: "com.android.support"
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
-    implementation 'com.opencsv:opencsv:5.0'
+    implementation 'com.opencsv:opencsv:4.6'
 }
