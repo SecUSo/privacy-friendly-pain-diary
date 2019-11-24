@@ -48,6 +48,15 @@
                 android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
         </activity>
         <activity
+            android:name="org.secuso.privacyfriendlypaindiary.activities.ExportCSVActivity"
+            android:label="@string/export_csv"
+            android:parentActivityName="org.secuso.privacyfriendlypaindiary.activities.MainActivity">
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.secuso.privacyfriendlypaindiary.activities.MainActivity" />
+        </activity>
+        <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
