@@ -17,13 +17,14 @@
 package org.secuso.privacyfriendlypaindiary.helpers;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.opencsv.CSVWriter;
 
+import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
-import org.secuso.privacyfriendlypaindiary.database.entities.impl.PainDescription;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
@@ -35,11 +36,9 @@ import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +51,7 @@ import java.util.Set;
 public class CsvHelper {
 
     private Context context;
-    private SimpleDateFormat dateFormat;
+    private DateFormat dateFormat;
     private Date startDate;
     private Date endDate;
 
@@ -61,7 +60,7 @@ public class CsvHelper {
 
     public CsvHelper(Context context, Date startDate, Date endDate) {
         this.context = context;
-        dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        dateFormat = android.text.format.DateFormat.getDateFormat(context);
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -79,24 +78,41 @@ public class CsvHelper {
     public void writeCsv(File file) throws IOException {
         try (FileWriter fileWriter = new FileWriter(file);
              CSVWriter writer = new CSVWriter(fileWriter)) {
-            String[] headers = new String[]{"Date", "Condition", "Pain Level (0-10)",
-                    "Body Regions", "Pain nature", "Times of pain", "Drug Intakes", "Comment"};
+            String[] headers = new String[] {
+                    "Date",
+                    "Conditions",
+                    "Pain Level (0-10)",
+                    "Body Regions",
+                    "Pain nature",
+                    "Times of pain",
+                    "Drug Intakes",
+                    "Comment"};
             writer.writeNext(headers);
 
             for (Iterator<DiaryEntryInterface> iter = diaryEntries.iterator(); iter.hasNext(); ) {
                 DiaryEntryInterface diaryEntry = iter.next();
                 String[] line = new String[8];
                 line[0] = dateFormat.format(diaryEntry.getDate());
-                line[1] = diaryEntry.getCondition().name();
+                line[1] = diaryEntry.getCondition() == null ? "" : diaryEntry.getCondition().name();
 
                 PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
-                line[2] = "" + painDescription.getPainLevel();
-                line[3] = painDescription.getBodyRegions().toString();
-                line[4] = painDescription.getPainQualities().toString();
-                line[5] = painDescription.getTimesOfPain().toString();
+                if (painDescription == null) {
+                    line[2] = "";
+                    line[3] = "";
+                    line[4] = "";
+                    line[5] = "";
+                } else {
+                    line[2] = "" + painDescription.getPainLevel();
+                    line[3] = painDescription.getBodyRegions() == null ? ""
+                            : painDescription.getBodyRegions().toString();
+                    line[4] = painDescription.getPainQualities() == null ? ""
+                            : painDescription.getPainQualities().toString();
+                    line[5] = painDescription.getTimesOfPain() == null ? ""
+                            : painDescription.getTimesOfPain().toString();
+                }
 
                 line[6] = toString(diaryEntry.getDrugIntakes());
-                line[7] = diaryEntry.getNotes();
+                line[7] = diaryEntry.getNotes() == null ? "" : diaryEntry.getNotes();
                 writer.writeNext(line);
             }
 
@@ -106,11 +122,13 @@ public class CsvHelper {
 
     private String toString(Set<DrugIntakeInterface> drugIntakes) {
         final StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (DrugIntakeInterface drugIntake:drugIntakes) {
-            sb.append(toString(drugIntake)).append(",");
+        if (drugIntakes != null) {
+            sb.append("[");
+            for (DrugIntakeInterface drugIntake : drugIntakes) {
+                sb.append(toString(drugIntake)).append(",");
+            }
+            sb.append("]");
         }
-        sb.append("]");
         return sb.toString();
     }
 
