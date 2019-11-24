@@ -170,5 +170,5 @@
     <string name="heading_export_csv">Bitte wählen Sie einen Zeitraum aus, für den Ihre Schmerztagebucheinträge als CSV exportiert werden sollen.</string>
     <string name="export_csv_success">CSV wurde im Dokumenten-Ordner gespeichert.</string>
     <string name="export_csv_failure">Unbekannter Fehler: CSV konnte nicht gespeichert werden.</string>
-
+    <string name="entry_date">Datum</string>
 </resources>

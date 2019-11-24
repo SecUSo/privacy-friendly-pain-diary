@@ -79,14 +79,14 @@ public class CsvHelper {
         try (FileWriter fileWriter = new FileWriter(file);
              CSVWriter writer = new CSVWriter(fileWriter)) {
             String[] headers = new String[] {
-                    "Date",
-                    "Conditions",
-                    "Pain Level (0-10)",
-                    "Body Regions",
-                    "Pain nature",
-                    "Times of pain",
-                    "Drug Intakes",
-                    "Comment"};
+                    context.getString(R.string.entry_date),
+                    context.getString(R.string.condition),
+                    context.getString(R.string.painlevel) + " (0-10)",
+                    context.getString(R.string.bodyregion),
+                    context.getString(R.string.paindescription),
+                    context.getString(R.string.timeofpain),
+                    context.getString(R.string.medication_taken),
+                    context.getString(R.string.notes)};
             writer.writeNext(headers);
 
             for (Iterator<DiaryEntryInterface> iter = diaryEntries.iterator(); iter.hasNext(); ) {

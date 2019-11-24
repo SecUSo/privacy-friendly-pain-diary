@@ -175,5 +175,5 @@
     <string name="heading_export_csv">Please select a range of dates for which your pain diary entries should be exported as CSV.</string>
     <string name="export_csv_success">CSV was saved to documents folder.</string>
     <string name="export_csv_failure">Unknown Error: CSV could not be saved.</string>
-
+    <string name="entry_date">Date</string>
 </resources>
