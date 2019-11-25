@@ -1,0 +1,19 @@
+Privacy Friendly Pain Diary can help you track pain. It allows you to make daily diary entries recording your condition and the intensity, location, nature and time of the pain you feel, as well as the medication you take and additional notes. Records of your pain can help health professionals gain an insight into the pain you are experiencing.
+
+The main view of the app is a calendar. A new diary entry can be added and existing diary entries can be viewed by selecting a day in this calendar. Diary entries can be exported to PDF. You have to specify a period of time for which the entries are to be exported. You also have the option to share that PDF.
+
+Privacy Friendly Pain Diary has a daily reminder function. If enabled, it displays a notification reminding you to make a diary entry if you have not made one yet. You can set the time at which you want to be reminded in the settings.
+
+How does Privacy Friendly Pain Diary differ from other similar apps?
+1) Minimal permissions
+Privacy Friendly Pain Diary requires write access to your device’s storage if you wish to
+export your diary entries to PDF. All other features do not require any permissions.
+
+2) Protection of privacy
+User data is not recorded, nor sent to any third party. The data you enter is only locally
+stored on your device.
+
+3) No advertisements or tracking mechanisms
+Privacy Friendly Pain Diary distinguishes itself from many other applications in the way that it does not include any advertisements or tracking mechanisms. Advertisements can shorten battery life or consume mobile data, while tracking mechanisms can compromise privacy.
+
+Privacy Friendly Pain Diary belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Technische Universität Darmstadt. Privacy Friendly Apps are Android applications which are optimized regarding privacy. Further information can be found here: https://secuso.org/pfa.
