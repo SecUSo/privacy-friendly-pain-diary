@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Pijndagboek</string>
     <string name="app_name_long">Privacy-vriendelijk Pijndagboek</string>
-    <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
     <!-- ### DRAWER ###-->
     <string name="action_help">Hulp</string>
@@ -29,7 +28,7 @@
     <string name="set">Instellen</string>
 
     <!-- ### MAIN ### -->
-    <string name="welcome_question">How do you feel today?</string>
+    <string name="welcome_question">Hoe voel je je vandaag?</string>
 
     <!--### HELP ###-->
     <string name="help">Hulp</string>
@@ -54,13 +53,10 @@
     <string name="about">Over</string>
     <string name="version_number">Versie</string>
     <string name="about_author">Auteurs: </string>
-    <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
     <string name="about_author_contributors">en bijdragers.</string>
     <string name="about_affiliation">Betrekking met</string>
-    <string name="privacy_friendly">Deze applicatie is onderdeel van de groep met Privacy-vriendelijke apps, ontwikkeld door de Technische Universität Darmstadt. De broncode wordt verspreid onder de GPLv3-licentie. Het auteursrecht/copyright behoort toe aan de TU Darmstadt en Google Inc.</string>
+    <string name="privacy_friendly">Deze applicatie is onderdeel van de groep met Privacy-vriendelijke apps, ontwikkeld door de researchgroep SECUSO. De broncode wordt verspreid onder de GPLv3-licentie. Het auteursrecht/copyright behoort SECUSO en Google Inc.</string>
     <string name="more_info">Meer informatie is te vinden op:</string>
-    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Github-pagina</a></string>
-    <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-website</a></string>
 
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Instellingen</string>
@@ -104,7 +100,7 @@
     <!-- ### PAIN DESCRIPTION ### -->
     <string name="pain_stabbing">stekend</string>
     <string name="pain_dull">dof</string>
-    <string name="pain_shooting">prikkend</string>
+    <string name="pain_shooting">pijnscheut</string>
     <string name="pain_burning">brandend</string>
     <string name="pain_throbbing">kloppend</string>
 
@@ -118,17 +114,17 @@
     <string name="heading_bodyregion">Waar voel je de pijn?</string>
     <string name="body_front">Voorkant:</string>
     <string name="body_back">Achterkant:</string>
-    <string name="heading_paindescription">Waar komt de pijn vandaan?</string>
+    <string name="heading_paindescription">Wat is de aard van je pijn?</string>
     <string name="heading_timeofpain">Wanneer voel je de pijn?</string>
     <string name="time_day">gedurende de dag</string>
-    <string name="time_morning">'s ochtends</string>
-    <string name="time_afternoon">'s middags</string>
-    <string name="time_evening">'s avonds</string>
-    <string name="time_night">'s nachts</string>
+    <string name="time_morning">\'s ochtends</string>
+    <string name="time_afternoon">\'s middags</string>
+    <string name="time_evening">\'s avonds</string>
+    <string name="time_night">\'s nachts</string>
     <string name="heading_notes">Heb je verder nog opmerkingen?</string>
     <string name="subheading_notes">(bijv. over oefeningen of je dieet)</string>
     <string name="heading_medication">Welke medicatie neem je?</string>
-    <string name="subheading_medication">Druk op de groene plus-knop om nieuwe medicatie toe te voegen. Voer de dosering in (bijv. het aantal pillen) die je 's ochtends, 's middags, 's avonds en 's nachts neemt.</string>
+    <string name="subheading_medication">Druk op de groene plus-knop om nieuwe medicatie toe te voegen. Voer de dosering in (bijv. het aantal pillen) die je \'s ochtends, \'s middags, \'s avonds en \'s nachts neemt.</string>
     <string name="medication">Medicatie</string>
     <string name="medication_name">Naam</string>
     <string name="dose">Dosering</string>
@@ -137,7 +133,7 @@
     <string name="condition">Toestand:</string>
     <string name="painlevel">Pijnintensiteit:</string>
     <string name="bodyregion">Pijnlocatie:</string>
-    <string name="paindescription">Oorzaak van de pijn:</string>
+    <string name="paindescription">Aard van de pijn:</string>
     <string name="unknown">onbekend</string>
     <string name="timeofpain">Tijdstip van de pijn:</string>
     <string name="notes">Opmerkingen:</string>
@@ -146,7 +142,7 @@
     <string name="warning_deleting">Weet je zeker dat je deze dagboeknotitie wilt verwijderen?</string>
 
     <!-- ### REMINDER ### -->
-    <string name="reminders_channel_title">Herinneringen/string>
+    <string name="reminders_channel_title">Herinneringen</string>
     <string name="notification_title">Herinnering</string>
     <string name="notification_text">Vergeet niet om de dagelijkse dagboeknotitie over je pijn te maken!</string>
     <string name="snooze">Uitstellen</string>
