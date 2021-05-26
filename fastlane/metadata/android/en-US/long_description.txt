@@ -16,4 +16,4 @@ stored on your device.
 3) No advertisements or tracking mechanisms
 Privacy Friendly Pain Diary distinguishes itself from many other applications in the way that it does not include any advertisements or tracking mechanisms. Advertisements can shorten battery life or consume mobile data, while tracking mechanisms can compromise privacy.
 
-Privacy Friendly Pain Diary belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Technische Universität Darmstadt. Privacy Friendly Apps are Android applications which are optimized regarding privacy. Further information can be found here: https://secuso.org/pfa.
+Privacy Friendly Pain Diary belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institue of Technology. Privacy Friendly Apps are Android applications which are optimized regarding privacy. Further information can be found here: https://secuso.org/pfa.
