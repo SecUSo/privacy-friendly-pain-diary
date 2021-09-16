@@ -1,1 +1,1 @@
-Record condition, intensity, location, nature and time of your pain.
+(SECUSO) Record condition, intensity, location, nature and time of your pain.
