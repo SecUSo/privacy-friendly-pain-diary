@@ -17,10 +17,11 @@
 package org.secuso.privacyfriendlypaindiary.helpers;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 public class MyViewPagerAdapter extends PagerAdapter {
 

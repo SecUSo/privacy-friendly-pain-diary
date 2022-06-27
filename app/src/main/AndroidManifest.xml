@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,7 +98,8 @@
 
         </service>
 
-        <receiver android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver">
+        <receiver android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.secuso.privacyfriendlypaindiary.action.SNOOZE"/>
             </intent-filter>

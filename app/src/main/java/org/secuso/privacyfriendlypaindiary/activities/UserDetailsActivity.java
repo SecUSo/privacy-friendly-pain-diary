@@ -19,9 +19,6 @@ package org.secuso.privacyfriendlypaindiary.activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -32,6 +29,11 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.DBService;
