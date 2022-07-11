@@ -21,14 +21,16 @@ data class DrugIntake(
         morning: Int,
         noon: Int,
         evening: Int,
-        night: Int
+        night: Int,
+        drug_id: Long,
+        diaryEntry_id: Long
     ) : this(
         morning = morning,
         noon = noon,
         evening = evening,
         night = night,
-        drug_id = 0,
-        diaryEntry_id = 0,
+        drug_id = drug_id,
+        diaryEntry_id = diaryEntry_id,
         _id = 0
     )
 }

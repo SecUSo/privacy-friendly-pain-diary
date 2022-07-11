@@ -38,6 +38,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInta
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
+import static org.secuso.privacyfriendlypaindiary.database.utils.Utils.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -513,85 +514,6 @@ public class DBService extends SQLiteOpenHelper implements DBServiceInterface {
         values.put(PainDescription.COLUMN_TIMES_OF_PAIN, convertTimeEnumSetToString(painDescription.getTimesOfPain()));
         db.update(PainDescription.TABLE_NAME, values, Drug.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(painDescription.getObjectID())});
-    }
-
-    private String convertBodyRegionEnumSetToString(EnumSet<BodyRegion> bodyRegions) {
-        String bodyRegionsAsString = "";
-        for(BodyRegion region : bodyRegions) {
-            bodyRegionsAsString += region.getValue() + ",";
-        }
-        if(!bodyRegionsAsString.isEmpty()) {
-            bodyRegionsAsString = bodyRegionsAsString.substring(0, bodyRegionsAsString.length() - 1);
-        } else {
-            bodyRegionsAsString = null;
-        }
-        return bodyRegionsAsString;
-    }
-
-    private EnumSet<BodyRegion> convertStringToBodyRegionEnumSet(String bodyRegionsAsString) {
-        EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
-        if(bodyRegionsAsString != null && !bodyRegionsAsString.isEmpty()) {
-            String[] regions = bodyRegionsAsString.split(",");
-            for (String bodyRegion : regions) {
-                try {
-                    BodyRegion r = BodyRegion.valueOf(Integer.parseInt(bodyRegion));
-                    bodyRegions.add(r);
-                } catch (IllegalArgumentException e) {
-                    Log.d(TAG, "Error parsing body region.");
-                }
-            }
-        }
-        return bodyRegions;
-    }
-
-    private String convertPainQualityEnumSetToString(EnumSet<PainQuality> painQualities) {
-        String painQualitiesAsString = "";
-        for(PainQuality quality : painQualities) {
-            painQualitiesAsString += quality.toString() + ",";
-        }
-        if(!painQualitiesAsString.isEmpty()) {
-            painQualitiesAsString = painQualitiesAsString.substring(0, painQualitiesAsString.length() - 1);
-        } else {
-            painQualitiesAsString = null;
-        }
-        return painQualitiesAsString;
-    }
-
-    private EnumSet<PainQuality> convertStringToPainQualityEnumSet(String painQualitiesAsString) {
-        EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
-        if(painQualitiesAsString != null && !painQualitiesAsString.isEmpty()) {
-            String[] qualities = painQualitiesAsString.split(",");
-            for (String quality : qualities) {
-                PainQuality q = PainQuality.fromString(quality);
-                if (q != null) painQualities.add(q);
-            }
-        }
-        return painQualities;
-    }
-
-    private String convertTimeEnumSetToString(EnumSet<Time> times) {
-        String timesAsString = "";
-        for(Time time : times) {
-            timesAsString += time.toString() + ",";
-        }
-        if(!timesAsString.isEmpty()) {
-            timesAsString = timesAsString.substring(0, timesAsString.length() - 1);
-        } else {
-            timesAsString = null;
-        }
-        return timesAsString;
-    }
-
-    private EnumSet<Time> convertStringToTimeEnumSet(String timesAsString) {
-        EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
-        if(timesAsString != null && !timesAsString.isEmpty()) {
-            String[] times = timesAsString.split(",");
-            for (String time : times) {
-                Time t = Time.fromString(time);
-                if (t != null) timesOfPain.add(t);
-            }
-        }
-        return timesOfPain;
     }
 
     private void deletePainDescription(PainDescriptionInterface painDescription) {

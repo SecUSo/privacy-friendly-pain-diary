@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.secuso.privacyfriendlypaindiary.database.dao.*
 import org.secuso.privacyfriendlypaindiary.database.model.*
+import org.secuso.privacyfriendlypaindiary.database.utils.Converters
 
 @Database(
     entities = [PainDescription::class, Drug::class, DrugIntake::class, DiaryEntry::class, User::class],
     version = 2
 )
+@TypeConverters(Converters::class)
 abstract class PainDiaryDatabase : RoomDatabase() {
     abstract fun painDescriptionDao(): PainDescriptionDao
     abstract fun drugDao(): DrugDao
@@ -24,7 +27,7 @@ abstract class PainDiaryDatabase : RoomDatabase() {
         private var instance: PainDiaryDatabase? = null
 
         @Synchronized
-        open fun getInstance(context: Context): PainDiaryDatabase? {
+        fun getInstance(context: Context): PainDiaryDatabase {
             if (instance == null) {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -34,7 +37,7 @@ abstract class PainDiaryDatabase : RoomDatabase() {
                     .addCallback(roomCallback)
                     .build()
             }
-            return instance
+            return instance!!
         }
 
         private val roomCallback: Callback = object : Callback() {
