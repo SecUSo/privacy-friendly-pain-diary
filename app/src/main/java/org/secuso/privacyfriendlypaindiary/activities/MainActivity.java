@@ -23,6 +23,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -30,17 +32,17 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
+import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -57,17 +59,21 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int COLOR_MIDDLEBLUE = Color.parseColor("#8aa5ce");
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
 
     private MaterialCalendarView calendar;
     private EventDecorator decorator;
 
     private AlertDialog alertDialog;
 
+    private DatabaseViewModel database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        database = new ViewModelProvider(this).get(DatabaseViewModel.class);
 
         String dateAsString = getIntent().getStringExtra("DATE_TO_DISPLAY");
         if (dateAsString == null) {
@@ -93,7 +99,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 //checks whether there is already an entry on this date, creates one if there is not
-                if(!decorator.shouldDecorate(date)) {
+                if (!decorator.shouldDecorate(date)) {
                     createDiaryEntry(date.getDate());
                 } else {
                     viewDiaryEntry(date.getDate());
@@ -117,15 +123,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(alertDialog != null) {
+        if (alertDialog != null) {
             alertDialog.dismiss();
             alertDialog = null;
         }
     }
 
     private void getDiaryEntryDates(int month, int year) {
-        DBServiceInterface service = DBService.getInstance(this);
-
         Calendar c = Calendar.getInstance();
         if (month > 0) {
             c.set(Calendar.YEAR, year);
@@ -145,13 +149,15 @@ public class MainActivity extends BaseActivity {
         }
         c.set(Calendar.DAY_OF_MONTH, 7);
         Date endDate = c.getTime();
-        Set<Date> dates = service.getDiaryEntryDatesByTimeSpan(startDate, endDate);
-        Set<CalendarDay> calendarDates = new HashSet<>();
-        for (Date date : dates) {
-            calendarDates.add(CalendarDay.from(date));
-        }
-        decorator.setDates(calendarDates);
-        calendar.invalidateDecorators();
+        LiveData<Set<Date>> datesLive = database.getDiaryEntryDatesByTimeSpan(startDate, endDate);
+        datesLive.observe(this, dates -> {
+            Set<CalendarDay> calendarDates = new HashSet<>();
+            for (Date date : dates) {
+                calendarDates.add(CalendarDay.from(date));
+            }
+            decorator.setDates(calendarDates);
+            calendar.invalidateDecorators();
+        });
     }
 
     /**
@@ -173,43 +179,45 @@ public class MainActivity extends BaseActivity {
 
     private void viewDiaryEntry(final Date date) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        DBServiceInterface service = DBService.getInstance(this);
-        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
-        alertDialogBuilder.setView(Helper.getDiaryEntrySummary(this, diaryEntry));
-        alertDialogBuilder.setPositiveButton("OK", null);
-        alertDialogBuilder.setNegativeButton(getString(R.string.edit),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        editDiaryEntry(date);
-                    }
-                });
-        alertDialogBuilder.setNeutralButton(getString(R.string.delete),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setMessage(getString(R.string.warning_deleting))
-                                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deleteDiaryEntry(date);
-                                        Calendar cal = Calendar.getInstance();
-                                        cal.setTime(date);
-                                        getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
-                                        calendar.invalidate();
-                                        dialog.cancel();
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        viewDiaryEntry(date);
-                                    }
-                                })
-                                .show();
-                    }
-                });
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        LiveData<DiaryEntryInterface> diaryEntryLive = database.getDiaryEntryByDate(date);
+
+        diaryEntryLive.observe(this, diaryEntry -> {
+            alertDialogBuilder.setView(Helper.getDiaryEntrySummary(this, diaryEntry));
+            alertDialogBuilder.setPositiveButton("OK", null);
+            alertDialogBuilder.setNegativeButton(getString(R.string.edit),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            editDiaryEntry(date);
+                        }
+                    });
+            alertDialogBuilder.setNeutralButton(getString(R.string.delete),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setMessage(getString(R.string.warning_deleting))
+                                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteDiaryEntry(date);
+                                            Calendar cal = Calendar.getInstance();
+                                            cal.setTime(date);
+                                            getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+                                            calendar.invalidate();
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            viewDiaryEntry(date);
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        });
     }
 
     private void editDiaryEntry(Date date) {
@@ -221,9 +229,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void deleteDiaryEntry(Date date) {
-        DBServiceInterface service = DBService.getInstance(this);
-        DiaryEntryInterface diaryEntry = service.getDiaryEntryByDate(date);
-        service.deleteDiaryEntryAndAssociatedObjects(diaryEntry);
+        LiveData<DiaryEntryInterface> diaryEntryLive = database.getDiaryEntryByDate(date);
+        diaryEntryLive.observe(this, diaryEntryInterface -> {
+            LiveData<Boolean> deletionComplete = database.deleteDiaryEntryAndAssociatedObjects(diaryEntryInterface);
+            deletionComplete.observe(this, aBoolean -> getDiaryEntryDates(calendar.getCurrentDate().getMonth(), calendar.getCurrentDate().getYear()));
+        });
     }
-
 }

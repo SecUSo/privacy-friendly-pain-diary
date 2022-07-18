@@ -32,11 +32,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
@@ -44,11 +45,13 @@ import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PersistentObject;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
+import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -77,14 +80,18 @@ public class UserDetailsActivity extends AppCompatActivity {
     private TextInputLayout lastNameWrapper;
     private TextInputLayout dateWrapper;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
 
     private String pattern = "^[a-zA-Z\\- ]{0,35}$";
+
+    private DatabaseViewModel database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userdetails);
+
+        database = new ViewModelProvider(this).get(DatabaseViewModel.class);
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -94,16 +101,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         tutorial = getIntent().getBooleanExtra("TUTORIAL", false);
         if (tutorial) {
             ((Button) findViewById(R.id.btn_cancel)).setText(getString(R.string.skip));
-        }
-
-        prefManager = new PrefManager(this);
-        long userID = prefManager.getUserID();
-        if (userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
-            user = new User();
-        } else {
-            DBServiceInterface service = DBService.getInstance(this);
-            user = service.getUserByID(userID);
-            if (user == null) user = new User(); //this is an error case
         }
 
         dateWrapper = findViewById(R.id.date_of_birth_wrapper);
@@ -173,7 +170,20 @@ public class UserDetailsActivity extends AppCompatActivity {
 //        genderLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, editText.getTextSize())
         genderLabel.setTextColor(editText.getHintTextColors().getDefaultColor());
         genderLabel.setPadding(editText.getPaddingLeft(), 0, editText.getPaddingRight(), 0);
-        initFields();
+
+        prefManager = new PrefManager(this);
+        long userID = prefManager.getUserID();
+        if (userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
+            user = new User();
+            initFields();
+        } else {
+            LiveData<UserInterface> userLive = database.getUserByID(userID);
+            userLive.observe(this, userInterface -> {
+                user = userInterface;
+                if (user == null) user = new User(); //this is an error case
+                initFields();
+            });
+        }
     }
 
     @Override
@@ -271,22 +281,29 @@ public class UserDetailsActivity extends AppCompatActivity {
             user.setLastName(lastName);
             user.setDateOfBirth(dateOfBirth);
             user.setGender(gender);
-            DBServiceInterface service = DBService.getInstance(this);
-            long userID;
             if (user.getObjectID() == PersistentObject.INVALID_OBJECT_ID) {
-                userID = service.storeUser(user);
-                prefManager.setUserID(userID);
+                LiveData<Long> userIDLive = database.storeUser(user);
+                userIDLive.observe(this, userID -> {
+                    prefManager.setUserID(userID);
+                    onChangesSaved(userID);
+                });
             } else {
-                service.updateUser(user);
-                userID = user.getObjectID();
+                database.updateUser(user);
+                onChangesSaved(user.getObjectID());
             }
-            user = service.getUserByID(userID);
-            initFields();
-            Toast.makeText(getApplicationContext(), getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
-            launchHomeScreen();
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.save_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void onChangesSaved(long userID) {
+        LiveData<UserInterface> userLive = database.getUserByID(userID);
+        userLive.observe(this, userInterface -> {
+            user = userInterface;
+            initFields();
+            Toast.makeText(getApplicationContext(), getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
+            launchHomeScreen();
+        });
     }
 
     private void cancel() {

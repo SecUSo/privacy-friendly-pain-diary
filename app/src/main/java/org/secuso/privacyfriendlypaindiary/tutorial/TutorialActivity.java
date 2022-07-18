@@ -29,14 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
 import org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
+import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
 /**
  * This activity corresponds to the application's tutorial. It is automatically
@@ -76,8 +77,7 @@ public class TutorialActivity extends AppCompatActivity {
             return;
         } else {
             //initialize database on first time launch
-            DBServiceInterface service = DBService.getInstance(this);
-            service.initializeDatabase();
+            new ViewModelProvider(this).get(DatabaseViewModel.class).initializeDatabase();
         }
 
         // Making notification bar transparent

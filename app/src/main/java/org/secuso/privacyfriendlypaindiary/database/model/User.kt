@@ -32,7 +32,7 @@ data class User(
                 userInterface.objectID,
                 userInterface.firstName,
                 userInterface.lastName,
-                userInterface.gender.value,
+                userInterface.gender?.value,
                 userInterface.dateOfBirth
             )
         }

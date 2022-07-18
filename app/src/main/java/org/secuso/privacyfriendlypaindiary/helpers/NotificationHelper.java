@@ -78,7 +78,7 @@ public class NotificationHelper extends ContextWrapper {
 
         Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
 //        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         return notificationBuilder
                 .setSmallIcon(R.drawable.ic_local_hospital)

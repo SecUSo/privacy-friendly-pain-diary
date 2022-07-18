@@ -10,13 +10,14 @@ import org.secuso.privacyfriendlypaindiary.database.model.*
 import java.util.*
 
 class PainDiaryDatabaseService private constructor(context: Context) : DBServiceInterface {
-    private val database: PainDiaryDatabase
+    private var database: PainDiaryDatabase
 
     companion object {
         const val TAG = "PainDiaryDBService"
         private var instance: PainDiaryDatabaseService? = null
 
         @Synchronized
+        @JvmStatic
         fun getInstance(context: Context): PainDiaryDatabaseService {
             if (instance == null) {
                 instance = PainDiaryDatabaseService(context)
@@ -32,7 +33,9 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
     override fun initializeDatabase() {
     }
 
-    override fun reinitializeDatabase() {
+    override fun reinitializeDatabase(context: Context) {
+        PainDiaryDatabase.resetDatabase(context)
+        database = PainDiaryDatabase.getInstance(context)
     }
 
     override fun storeUser(user: UserInterface): Long {
@@ -113,7 +116,9 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
         val entry = database.diaryEntryDao().loadDiaryEntryByID(id) ?: return null
         val date = entry.date
         val condition = entry.condition?.let { Condition.valueOf(it) }
-        val painDescription = database.painDescriptionDao().loadPainDescriptionByID(entry.painDescription_id)?.toPainDescriptionInterface()
+        val painDescription =
+            database.painDescriptionDao().loadPainDescriptionByID(entry.painDescription_id)
+                ?.toPainDescriptionInterface()
         val notes = entry.notes
         val intakes = getDrugIntakesForDiaryEntry(entry._id)
 
@@ -126,7 +131,13 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
     }
 
     override fun getIDOfLatestDiaryEntry(): Long {
-        return database.diaryEntryDao().getIDOfLatestDiaryEntry()
+        var id = database.diaryEntryDao().getIDOfLatestDiaryEntry()
+        id = if (id == 0L) {
+            -1
+        } else {
+            id
+        }
+        return id
     }
 
     override fun getDiaryEntryByDate(date: Date): DiaryEntryInterface? {
@@ -149,9 +160,9 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
         startDate: Date,
         endDate: Date
     ): MutableList<DiaryEntryInterface> {
-        val diaryEntries = database.diaryEntryDao().loadDiaryEntriesByDateRange(startDate,endDate)
+        val diaryEntries = database.diaryEntryDao().loadDiaryEntriesByDateRange(startDate, endDate)
         val diaryEntryInterfaces: MutableList<DiaryEntryInterface> = ArrayList()
-        for (entry : DiaryEntry in diaryEntries) {
+        for (entry: DiaryEntry in diaryEntries) {
             getDiaryEntryByID(entry._id)?.let { diaryEntryInterfaces.add(it) }
         }
         return diaryEntryInterfaces
@@ -170,8 +181,8 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
 
     override fun getDiaryEntryDatesByTimeSpan(startDate: Date, endDate: Date): MutableSet<Date> {
         val dateSet: MutableSet<Date> = HashSet()
-        val dates = database.diaryEntryDao().getDatesByDateRange(startDate,endDate)
-        for (date : Date in dates) {
+        val dates = database.diaryEntryDao().getDatesByDateRange(startDate, endDate)
+        for (date: Date in dates) {
             dateSet.add(date)
         }
         return dateSet

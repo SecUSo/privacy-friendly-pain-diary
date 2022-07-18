@@ -16,6 +16,8 @@
 */
 package org.secuso.privacyfriendlypaindiary.database;
 
+import android.content.Context;
+
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface;
@@ -39,7 +41,7 @@ public interface DBServiceInterface {
     /**
      * Reinitializes the database. All data will be lost.
      */
-    void reinitializeDatabase();
+    void reinitializeDatabase(Context context);
 
     long storeUser(UserInterface user);
 

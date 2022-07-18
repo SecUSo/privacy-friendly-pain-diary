@@ -1,12 +1,9 @@
 package org.secuso.privacyfriendlypaindiary.database.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import org.secuso.privacyfriendlypaindiary.database.DBService
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface
-import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(tableName = "diaryentries")

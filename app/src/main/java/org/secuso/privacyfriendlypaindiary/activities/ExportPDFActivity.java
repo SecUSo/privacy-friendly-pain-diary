@@ -18,6 +18,7 @@ package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.pdf.PdfDocument;
@@ -29,6 +30,11 @@ import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
@@ -36,7 +42,13 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.secuso.privacyfriendlypaindiary.R;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.PdfCreator;
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
+import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +56,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * This activity allows to export and/or share a pdf document of the diary entries made
@@ -61,14 +75,19 @@ public class ExportPDFActivity extends AppCompatActivity {
     private TextInputLayout startDateWrapper;
     private TextInputLayout endDateWrapper;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
     private Date startDate;
     private Date endDate;
+
+    private DatabaseViewModel database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_pdf);
+
+        database = new ViewModelProvider(this).get(DatabaseViewModel.class);
+
         startDateWrapper = findViewById(R.id.start_date_wrapper);
         endDateWrapper = findViewById(R.id.end_date_wrapper);
     }
@@ -76,10 +95,10 @@ public class ExportPDFActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(startDate != null) {
+        if (startDate != null) {
             outState.putString("startDate", dateFormat.format(startDate));
         }
-        if(endDate != null) {
+        if (endDate != null) {
             outState.putString("endDate", dateFormat.format(endDate));
         }
     }
@@ -88,14 +107,14 @@ public class ExportPDFActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         String startDateAsString = savedInstanceState.getString("startDate");
-        if(startDateAsString != null) {
+        if (startDateAsString != null) {
             try {
                 startDate = dateFormat.parse(startDateAsString);
             } catch (ParseException e) {
             }
         }
         String endDateAsString = savedInstanceState.getString("endDate");
-        if(endDateAsString != null) {
+        if (endDateAsString != null) {
             try {
                 endDate = dateFormat.parse(endDateAsString);
             } catch (ParseException e) {
@@ -114,10 +133,17 @@ public class ExportPDFActivity extends AppCompatActivity {
                 showDatePickerDialog(R.id.end_date, dateText);
                 break;
             case R.id.btn_export:
-                File file = exportAsPDF();
-                if(file != null) {
-                    Toast.makeText(this, getString(R.string.export_success), Toast.LENGTH_LONG).show();
-                }
+                LiveData<File> fileLive = exportAsPDF();
+                final ExportPDFActivity activity = this;
+                fileLive.observe(this, new Observer<File>() {
+                    @Override
+                    public void onChanged(File file) {
+                        if (file != null) {
+                            Toast.makeText(activity, getString(R.string.export_success), Toast.LENGTH_LONG).show();
+                        }
+                        fileLive.removeObserver(this);
+                    }
+                });
                 break;
             case R.id.btn_share:
                 exportAndShare();
@@ -164,38 +190,49 @@ public class ExportPDFActivity extends AppCompatActivity {
         dialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
         if (callerID == R.id.start_date && endDate != null) {
             dialog.getDatePicker().setMaxDate(endDate.getTime());
-        } else if(callerID == R.id.end_date && startDate != null) {
+        } else if (callerID == R.id.end_date && startDate != null) {
             dialog.getDatePicker().setMinDate(startDate.getTime());
         }
         dialog.show();
     }
 
-    private File exportAsPDF() {
-        File file = null;
+    private LiveData<File> exportAsPDF() {
+        final MutableLiveData<File>[] file = new MutableLiveData[]{new MutableLiveData<>()};
         if (startDate == null) {
             startDateWrapper.setError(getString(R.string.start_date_error));
         } else if (endDate == null) {
             endDateWrapper.setError(getString(R.string.end_date_error));
         } else if (startDate.compareTo(endDate) <= 0) {
-            file = exportAsPDF(new PdfCreator(this, startDate, endDate).createPdfDocument());
+            LiveData<List<DiaryEntryInterface>> diaryEntriesLive = database.getDiaryEntriesByTimeSpan(startDate, endDate);
+            diaryEntriesLive.observe(this, diaryEntryInterfaces -> {
+                long userID = new PrefManager(this).getUserID();
+                if (userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
+                    file[0].setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, new User()).createPdfDocument()));
+                } else {
+                    LiveData<UserInterface> userLive = database.getUserByID(userID);
+                    userLive.observe(this, userInterface -> {
+                        file[0].setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, userInterface).createPdfDocument()));
+                    });
+                }
+            });
         }
-        return file;
+        return file[0];
     }
 
-    private File exportAsPDF(PdfDocument doc){
+    private File exportAsPDF(PdfDocument doc) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(ExportPDFActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(ExportPDFActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
                 return null;
-              }
+            }
         }
 
         File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), getString(R.string.app_name));
-        if(!directory.exists()) {
-            if(!directory.mkdirs()) {
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
                 Toast.makeText(this, getString(R.string.export_failure), Toast.LENGTH_LONG).show();
                 return null;
             }
@@ -222,22 +259,28 @@ public class ExportPDFActivity extends AppCompatActivity {
     }
 
     private void exportAndShare() {
-        File file = exportAsPDF();
-        if(file != null) {
-            Uri attachment = Uri.fromFile(file);
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_STREAM, attachment);
-            sendIntent.setType("application/pdf");
-            startActivity(Intent.createChooser(sendIntent, getString(R.string.share_caution)));
-        }
+        LiveData<File> fileLive = exportAsPDF();
+        fileLive.observe(this, new Observer<File>() {
+            @Override
+            public void onChanged(File file) {
+                if (file != null) {
+                    Uri attachment = Uri.fromFile(file);
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, attachment);
+                    sendIntent.setType("application/pdf");
+                    startActivity(Intent.createChooser(sendIntent, getString(R.string.share_caution)));
+                }
+                fileLive.removeObserver(this);
+            }
+        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, getString(R.string.permission_write_granted), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, getString(R.string.permission_write_denied), Toast.LENGTH_LONG).show();

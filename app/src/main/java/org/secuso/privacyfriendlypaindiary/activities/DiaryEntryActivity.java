@@ -51,6 +51,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -58,7 +60,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
@@ -76,6 +77,7 @@ import org.secuso.privacyfriendlypaindiary.helpers.AutocompleteAdapter;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 import org.secuso.privacyfriendlypaindiary.helpers.RetainedFragment;
+import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,6 +86,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -97,7 +100,6 @@ import java.util.Set;
  *
  * <a href="https://blahti.wordpress.com/2012/06/26/images-with-clickable-areas/">Click here</a>
  * for a tutorial for making parts of images clickable.
- *
  */
 public class DiaryEntryActivity extends AppCompatActivity {
 
@@ -138,11 +140,14 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private Bitmap front;
     private Bitmap back;
 
+    private DatabaseViewModel database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diaryentry);
 
+        database = new ViewModelProvider(this).get(DatabaseViewModel.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -224,7 +229,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             }
         });
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         dateAsString = getIntent().getStringExtra("DATE_OF_ENTRY");
         if (dateAsString == null) {
             dateAsString = dateFormat.format(Calendar.getInstance().getTime());
@@ -236,7 +241,6 @@ public class DiaryEntryActivity extends AppCompatActivity {
             date = Calendar.getInstance().getTime();
         }
         edit = getIntent().getBooleanExtra("EDIT", false);
-        DBServiceInterface service = DBService.getInstance(this);
 
         // find the retained fragment on activity restarts
         FragmentManager fm = getFragmentManager();
@@ -244,31 +248,45 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
         if (!edit) {
             diaryEntry = new DiaryEntry(date);
+            initDataFromDiaryEntry(savedInstanceState, date);
         } else {
             setTitle(getString(R.string.edit_diary_entry));
-            diaryEntry = service.getDiaryEntryByDate(date);
+            LiveData<DiaryEntryInterface> diaryEntryLive = database.getDiaryEntryByDate(date);
+            Date finalDate = date;
+            diaryEntryLive.observe(this, diaryEntryInterface -> {
+                diaryEntry = diaryEntryInterface;
+                initDataFromDiaryEntry(savedInstanceState, finalDate);
+            });
         }
+
+    }
+
+    private void initDataFromDiaryEntry(Bundle savedInstanceState, Date date) {
         if (diaryEntry == null) diaryEntry = new DiaryEntry(date); //this is an error case
 
         if (retainedFragment != null) {
             DiaryEntryInterface temp = retainedFragment.getDiaryEntry();
             initFields(temp);
-        } else if(edit) {
+        } else if (edit) {
             initFields(diaryEntry);
         } else {
             boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_MEDICATION, true);
-            if(rememberMedication) {
-                long ID = service.getIDOfLatestDiaryEntry();
-                if (ID != -1) {
-                    Set<DrugIntakeInterface> intakes = service.getDrugIntakesForDiaryEntry(ID);
-                    for (DrugIntakeInterface intake : intakes) {
-                        drugIntakes.add(new DrugIntake(intake));
+            if (rememberMedication) {
+                LiveData<Long> IDLive = database.getIDOfLatestDiaryEntry();
+                IDLive.observe(this, ID -> {
+                    if (ID != -1) {
+                        LiveData<Set<DrugIntakeInterface>> intakesLive = database.getDrugIntakesForDiaryEntry(ID);
+                        intakesLive.observe(this, intakes -> {
+                            for (DrugIntakeInterface intake : intakes) {
+                                drugIntakes.add(new DrugIntake(intake));
+                            }
+                        });
                     }
-                }
+                });
             }
         }
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
@@ -277,14 +295,15 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 }
             });
         }
-        drugs = service.getAllDrugs();
+        LiveData<List<DrugInterface>> drugsLive = database.getAllDrugs();
+        drugsLive.observe(this, drugInterfaces -> drugs = drugInterfaces);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        if(isFinishing() && retainedFragment != null) {
+        if (isFinishing() && retainedFragment != null) {
             getFragmentManager().beginTransaction().remove(retainedFragment).commit();
         }
     }
@@ -293,7 +312,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("current", viewPager.getCurrentItem());
 
-        if(retainedFragment == null) {
+        if (retainedFragment == null) {
             retainedFragment = new RetainedFragment();
             getFragmentManager().beginTransaction().add(retainedFragment, TAG_RETAINED_FRAGMENT).commit();
         }
@@ -338,17 +357,17 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void initFields(DiaryEntryInterface diaryEntry) {
-        if(diaryEntry != null) {
+        if (diaryEntry != null) {
             condition = diaryEntry.getCondition();
             notes = diaryEntry.getNotes();
             drugIntakes.addAll(diaryEntry.getDrugIntakes());
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
-            if(painDescription != null) {
+            if (painDescription != null) {
                 painLevel = painDescription.getPainLevel();
                 EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
                 // body regions are split up into two separate sets (front and back)
-                for(BodyRegion region : bodyRegions) {
-                    if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+                for (BodyRegion region : bodyRegions) {
+                    if (region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
                         bodyRegionsFront.add(region);
                     } else {
                         bodyRegionsBack.add(region);
@@ -361,7 +380,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide1() {
-        if(findViewById(R.id.diaryentry_slide1) != null) {
+        if (findViewById(R.id.diaryentry_slide1) != null) {
             TextView date = findViewById(R.id.date);
             date.setText(dateAsString);
 
@@ -382,7 +401,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide2() {
-        if(findViewById(R.id.diaryentry_slide2) != null) {
+        if (findViewById(R.id.diaryentry_slide2) != null) {
             SeekBar seekBar = findViewById(R.id.painlevel_seekbar);
 //            TextView label = findViewById(R.id.label);
 //            seekBar.setPaddingRelative(label.getWidth() / 2, 0, label.getWidth() / 2, 0);
@@ -406,26 +425,25 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide3() {
-        if(findViewById(R.id.diaryentry_slide3) != null) {
+        if (findViewById(R.id.diaryentry_slide3) != null) {
             initClickableBodyRegions(bodyRegionsFront, R.id.person, R.id.person_coloured, R.id.bodyregion_value, true);
             initClickableBodyRegions(bodyRegionsBack, R.id.person_back, R.id.person_back_coloured, R.id.bodyregion_back_value, false);
         }
     }
 
     /**
-     *
      * @param bodyRegions
-     * @param personID resource ID of ImageView displaying the person
+     * @param personID         resource ID of ImageView displaying the person
      * @param personColouredID resource ID of (invisible) ImageView displaying the coloured person
-     * @param valueID resource ID of Image View displaying the selected body parts
-     * @param isFront indicates whether this concerns the body regions on the front of the body or on the back
+     * @param valueID          resource ID of Image View displaying the selected body parts
+     * @param isFront          indicates whether this concerns the body regions on the front of the body or on the back
      */
     private void initClickableBodyRegions(final EnumSet<BodyRegion> bodyRegions, int personID, final int personColouredID, final int valueID, final boolean isFront) {
         ImageView person = findViewById(personID);
-        if(!bodyRegions.isEmpty()) {
+        if (!bodyRegions.isEmpty()) {
 //            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
             ImageView img = findViewById(valueID);
-            if(isFront) {
+            if (isFront) {
                 this.front = Helper.overlay(this, bodyRegions);
                 img.setImageBitmap(this.front);
             } else {
@@ -435,7 +453,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             img.setVisibility(View.VISIBLE);
         }
 
-        if(person != null) {
+        if (person != null) {
             person.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -444,44 +462,44 @@ public class DiaryEntryActivity extends AppCompatActivity {
                         final float y = event.getY();
                         ImageView img = findViewById(personColouredID);
                         Glide.with(DiaryEntryActivity.this)
-                            .asBitmap()
-                            .load(R.drawable.paindiary_person_fullbody_coloured)
-                            .into(new SimpleTarget<Bitmap>(img.getWidth(),img.getHeight()) {
-                                @Override
-                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                    int touchColor = resource.getPixel(Math.round(x), Math.round(y));
-                                    BodyRegion bodyPart = getBodyRegion(touchColor, isFront);
+                                .asBitmap()
+                                .load(R.drawable.paindiary_person_fullbody_coloured)
+                                .into(new SimpleTarget<Bitmap>(img.getWidth(), img.getHeight()) {
+                                    @Override
+                                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                        int touchColor = resource.getPixel(Math.round(x), Math.round(y));
+                                        BodyRegion bodyPart = getBodyRegion(touchColor, isFront);
 
-                                    if (bodyPart != null) {
-                                        ImageView img = findViewById(valueID);
-                                        if (!bodyRegions.contains(bodyPart)) {
-                                            bodyRegions.add(bodyPart);
-                                            changesMade = true;
+                                        if (bodyPart != null) {
+                                            ImageView img = findViewById(valueID);
+                                            if (!bodyRegions.contains(bodyPart)) {
+                                                bodyRegions.add(bodyPart);
+                                                changesMade = true;
 
 //                                            Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
 //                                            ((ImageView) findViewById(valueID)).setImageBitmap(Helper.overlay(images));
-                                            Bitmap bitmapToAdd = BitmapFactory.decodeResource(getResources(), bodyPart.getResourceID());
-                                            Bitmap value;
-                                            if(isFront) {
-                                                if (getFront() == null) {
-                                                    value = bitmapToAdd;
+                                                Bitmap bitmapToAdd = BitmapFactory.decodeResource(getResources(), bodyPart.getResourceID());
+                                                Bitmap value;
+                                                if (isFront) {
+                                                    if (getFront() == null) {
+                                                        value = bitmapToAdd;
+                                                    } else {
+                                                        value = Helper.overlay(getFront(), bitmapToAdd);
+                                                    }
+                                                    setFront(value);
                                                 } else {
-                                                    value = Helper.overlay(getFront(), bitmapToAdd);
+                                                    if (getBack() == null) {
+                                                        value = bitmapToAdd;
+                                                    } else {
+                                                        value = Helper.overlay(getBack(), bitmapToAdd);
+                                                    }
+                                                    setBack(value);
                                                 }
-                                                setFront(value);
-                                            } else {
-                                                if (getBack() == null) {
-                                                    value = bitmapToAdd;
-                                                } else {
-                                                    value = Helper.overlay(getBack(), bitmapToAdd);
-                                                }
-                                                setBack(value);
-                                            }
-                                            img.setImageBitmap(value);
-                                            img.setVisibility(View.VISIBLE);
-                                        } else { //already selected >> deselect
-                                            bodyRegions.remove(bodyPart);
-                                            changesMade = true;
+                                                img.setImageBitmap(value);
+                                                img.setVisibility(View.VISIBLE);
+                                            } else { //already selected >> deselect
+                                                bodyRegions.remove(bodyPart);
+                                                changesMade = true;
 
 //                                            if (!bodyRegions.isEmpty()) {
 //                                                Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
@@ -490,33 +508,33 @@ public class DiaryEntryActivity extends AppCompatActivity {
 //                                            } else {
 //                                                findViewById(valueID).setVisibility(View.GONE);
 //                                            }
-                                            if(isFront) {
-                                                if (bodyRegions.isEmpty() || getFront() == null) {
-                                                    setFront(null);
-                                                    img.setVisibility(View.GONE);
-                                                } else {
+                                                if (isFront) {
+                                                    if (bodyRegions.isEmpty() || getFront() == null) {
+                                                        setFront(null);
+                                                        img.setVisibility(View.GONE);
+                                                    } else {
 //                                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                                                    Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
-                                                    setFront(value);
-                                                    img.setImageBitmap(value);
-                                                    img.setVisibility(View.VISIBLE);
-                                                }
-                                            } else {
-                                                if (bodyRegions.isEmpty() || getBack() == null) {
-                                                    setBack(null);
-                                                    img.setVisibility(View.GONE);
+                                                        Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
+                                                        setFront(value);
+                                                        img.setImageBitmap(value);
+                                                        img.setVisibility(View.VISIBLE);
+                                                    }
                                                 } else {
+                                                    if (bodyRegions.isEmpty() || getBack() == null) {
+                                                        setBack(null);
+                                                        img.setVisibility(View.GONE);
+                                                    } else {
 //                                                    Bitmap[] images = getBitmapArrayForBodyRegions(bodyRegions);
-                                                    Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
-                                                    setBack(value);
-                                                    img.setImageBitmap(value);
-                                                    img.setVisibility(View.VISIBLE);
+                                                        Bitmap value = Helper.overlay(DiaryEntryActivity.this, bodyRegions);
+                                                        setBack(value);
+                                                        img.setImageBitmap(value);
+                                                        img.setVisibility(View.VISIBLE);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            });
+                                });
                     }
                     return false;
                 }
@@ -543,7 +561,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private Bitmap[] getBitmapArrayForBodyRegions(EnumSet<BodyRegion> bodyRegions) {
         Bitmap[] images = new Bitmap[bodyRegions.size()];
         int i = 0;
-        for(BodyRegion region : bodyRegions) {
+        for (BodyRegion region : bodyRegions) {
             images[i] = BitmapFactory.decodeResource(getResources(), region.getResourceID());
             i++;
         }
@@ -551,7 +569,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide4() {
-        if(findViewById(R.id.diaryentry_slide4) != null) {
+        if (findViewById(R.id.diaryentry_slide4) != null) {
             if (painQualities.contains(PainQuality.STABBING)) {
                 ((CheckBox) findViewById(R.id.pain_stabbing)).setChecked(true);
             }
@@ -571,7 +589,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide5() {
-        if(findViewById(R.id.diaryentry_slide5) != null) {
+        if (findViewById(R.id.diaryentry_slide5) != null) {
             if (timesOfPain.contains(Time.ALL_DAY)) {
                 ((CheckBox) findViewById(R.id.time_all_day)).setChecked(true);
             }
@@ -591,7 +609,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide6() {
-        if(findViewById(R.id.diaryentry_slide6) != null) {
+        if (findViewById(R.id.diaryentry_slide6) != null) {
             LinearLayout layout = findViewById(R.id.medication_container);
             layout.removeAllViews();
             for (DrugIntakeInterface drugIntake : drugIntakes) {
@@ -601,7 +619,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
     private void setDataOnSlide7() {
-        if(findViewById(R.id.diaryentry_slide7) != null) {
+        if (findViewById(R.id.diaryentry_slide7) != null) {
             final EditText notesEditText = findViewById(R.id.notes_text);
             notesEditText.setText(notes);
             notesEditText.addTextChangedListener(new TextWatcher() {
@@ -662,7 +680,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         for (int i = 0; i < conditions.length; i++) {
             if (conditions[i].isChecked()) {
                 //condition will be deselected if it is already selected
-                if(condition == Condition.valueOf(i)) {
+                if (condition == Condition.valueOf(i)) {
                     conditions[i].setBackgroundColor(Color.TRANSPARENT);
                     ((RadioGroup) findViewById(R.id.condition_group)).clearCheck();
                     condition = null;
@@ -736,12 +754,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
         }
     }
 
-    private boolean closeMatch (int color1, int color2, int tolerance) {
-        if (Math.abs (Color.red (color1) - Color.red (color2)) > tolerance )
+    private boolean closeMatch(int color1, int color2, int tolerance) {
+        if (Math.abs(Color.red(color1) - Color.red(color2)) > tolerance)
             return false;
-        if (Math.abs (Color.green (color1) - Color.green (color2)) > tolerance )
+        if (Math.abs(Color.green(color1) - Color.green(color2)) > tolerance)
             return false;
-        if (Math.abs (Color.blue (color1) - Color.blue (color2)) > tolerance )
+        if (Math.abs(Color.blue(color1) - Color.blue(color2)) > tolerance)
             return false;
         return true;
     }
@@ -749,133 +767,133 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private BodyRegion getBodyRegion(int touchColor, boolean front) {
         int tolerance = 25;
         BodyRegion bodyPart = null;
-        if (closeMatch (Color.parseColor("#0000ff"), touchColor, tolerance)) {
+        if (closeMatch(Color.parseColor("#0000ff"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.ABDOMEN_LEFT;
             } else {
                 bodyPart = BodyRegion.ABDOMEN_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#ff00ff"), touchColor, tolerance)) {
-            if(front) {
+        } else if (closeMatch(Color.parseColor("#ff00ff"), touchColor, tolerance)) {
+            if (front) {
                 bodyPart = BodyRegion.ABDOMEN_RIGHT;
             } else {
                 bodyPart = BodyRegion.ABDOMEN_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#ffff00"), touchColor, tolerance)) {
-            if(front) {
+        } else if (closeMatch(Color.parseColor("#ffff00"), touchColor, tolerance)) {
+            if (front) {
                 bodyPart = BodyRegion.GROIN_LEFT;
             } else {
                 bodyPart = BodyRegion.GROIN_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#00ff00"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#00ff00"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.GROIN_RIGHT;
             } else {
                 bodyPart = BodyRegion.GROIN_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#ff7e00"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#ff7e00"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.THIGH_LEFT;
             } else {
                 bodyPart = BodyRegion.THIGH_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#a774d2"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#a774d2"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.THIGH_RIGHT;
             } else {
                 bodyPart = BodyRegion.THIGH_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#147914"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#147914"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.KNEE_LEFT;
             } else {
                 bodyPart = BodyRegion.KNEE_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#775205"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#775205"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.KNEE_RIGHT;
             } else {
                 bodyPart = BodyRegion.KNEE_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#ff007e"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#ff007e"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.LOWER_LEG_LEFT;
             } else {
                 bodyPart = BodyRegion.LOWER_LEG_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#00ffff"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#00ffff"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.LOWER_LEG_RIGHT;
             } else {
                 bodyPart = BodyRegion.LOWER_LEG_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#7ec8ff"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#7ec8ff"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.FOOT_LEFT;
             } else {
                 bodyPart = BodyRegion.FOOT_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#173081"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#173081"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.FOOT_RIGHT;
             } else {
                 bodyPart = BodyRegion.FOOT_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#007ba9"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#007ba9"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.CHEST_LEFT;
             } else {
                 bodyPart = BodyRegion.CHEST_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#00ffb4"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#00ffb4"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.CHEST_RIGHT;
             } else {
                 bodyPart = BodyRegion.CHEST_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#042c3a"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#042c3a"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.NECK;
             } else {
                 bodyPart = BodyRegion.NECK_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#ff0000"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#ff0000"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.HEAD;
             } else {
                 bodyPart = BodyRegion.HEAD_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#81173d"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#81173d"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.UPPER_ARM_LEFT;
             } else {
                 bodyPart = BodyRegion.UPPER_ARM_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#bc3b13"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#bc3b13"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.UPPER_ARM_RIGHT;
             } else {
                 bodyPart = BodyRegion.UPPER_ARM_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#7e007e"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#7e007e"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.LOWER_ARM_LEFT;
             } else {
                 bodyPart = BodyRegion.LOWER_ARM_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#7e7e00"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#7e7e00"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.LOWER_ARM_RIGHT;
             } else {
                 bodyPart = BodyRegion.LOWER_ARM_RIGHT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#7e7e7e"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#7e7e7e"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.HAND_LEFT;
             } else {
                 bodyPart = BodyRegion.HAND_LEFT_BACK;
             }
-        } else if (closeMatch (Color.parseColor("#7e7eff"), touchColor, tolerance)) {
+        } else if (closeMatch(Color.parseColor("#7e7eff"), touchColor, tolerance)) {
             if (front) {
                 bodyPart = BodyRegion.HAND_RIGHT;
             } else {
@@ -901,7 +919,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 parent.removeView(newView);
                 drugIntakes.remove(drugIntake);
-                if(edit && drugIntake.isPersistent()) {
+                if (edit && drugIntake.isPersistent()) {
                     diaryEntry.removeDrugIntake(diaryEntry.getDrugIntakeByID(drugIntake.getObjectID()));
                 }
             }
@@ -916,7 +934,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String dose = doseEditText.getText().toString().trim();
-                if(dose.isEmpty()) {
+                if (dose.isEmpty()) {
                     dose = null;
                 }
                 drugIntake.getDrug().setDose(dose);
@@ -948,13 +966,13 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String name = nameEditText.getText().toString().trim();
-                if(name.isEmpty()) {
+                if (name.isEmpty()) {
                     name = null;
                 }
                 drugIntake.getDrug().setName(name);
                 changesMade = true;
 
-                if(adapter.isItemClicked()) {
+                if (adapter.isItemClicked()) {
                     String dose = adapter.getDose();
                     if (dose != null) {
                         doseEditText.setText(dose);
@@ -979,7 +997,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String quantity = quantityMorningEditText.getText().toString().trim();
-                if(!quantity.isEmpty()) {
+                if (!quantity.isEmpty()) {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityMorning(i);
@@ -1005,7 +1023,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String quantity = quantityNoonEditText.getText().toString().trim();
-                if(!quantity.isEmpty()) {
+                if (!quantity.isEmpty()) {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityNoon(i);
@@ -1031,7 +1049,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String quantity = quantityEveningEditText.getText().toString().trim();
-                if(!quantity.isEmpty()) {
+                if (!quantity.isEmpty()) {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityEvening(i);
@@ -1057,7 +1075,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String quantity = quantityNightEditText.getText().toString().trim();
-                if(!quantity.isEmpty()) {
+                if (!quantity.isEmpty()) {
                     try {
                         int i = Integer.parseInt(quantity);
                         drugIntake.setQuantityNight(i);
@@ -1079,8 +1097,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
         diaryEntry.setCondition(condition);
         diaryEntry.setNotes(notes);
 
-        for(DrugIntakeInterface drugIntake : drugIntakes) {
-            if(!drugIntake.isPersistent() && drugIntake.getDrug().getName() != null) {
+        for (DrugIntakeInterface drugIntake : drugIntakes) {
+            if (!drugIntake.isPersistent() && drugIntake.getDrug().getName() != null) {
                 diaryEntry.addDrugIntake(drugIntake);
             }
         }
@@ -1088,7 +1106,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
         bodyRegions.addAll(bodyRegionsFront);
         bodyRegions.addAll(bodyRegionsBack);
-        if(edit && diaryEntry.getPainDescription() != null) {
+        if (edit && diaryEntry.getPainDescription() != null) {
             PainDescriptionInterface painDescription = diaryEntry.getPainDescription();
             painDescription.setPainLevel(painLevel);
             painDescription.setBodyRegions(bodyRegions);
@@ -1102,11 +1120,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     public void save() {
         setFields(diaryEntry);
-        DBServiceInterface service = DBService.getInstance(this);
-        if(!edit) {
-            service.storeDiaryEntryAndAssociatedObjects(diaryEntry);
+        if (!edit) {
+            database.storeDiaryEntryAndAssociatedObjects(diaryEntry);
         } else {
-            service.updateDiaryEntryAndAssociatedObjects(diaryEntry);
+            database.updateDiaryEntryAndAssociatedObjects(diaryEntry);
         }
     }
 
@@ -1135,7 +1152,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(changesMade) {
+        if (changesMade) {
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.warning_leaving))
                     .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {

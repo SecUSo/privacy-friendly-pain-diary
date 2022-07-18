@@ -2,13 +2,13 @@ package org.secuso.privacyfriendlypaindiary.database.utils
 
 import android.util.Log
 import androidx.room.TypeConverter
-import org.secuso.privacyfriendlypaindiary.database.DBService
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 object Converters {
-    private val formatter = SimpleDateFormat(DBService.DATE_PATTERN, Locale.ENGLISH)
+    private const val DB_DATE_PATTERN = "yyyy-MM-dd"
+    private val formatter = SimpleDateFormat(DB_DATE_PATTERN, Locale.ENGLISH)
 
     @TypeConverter
     @JvmStatic
