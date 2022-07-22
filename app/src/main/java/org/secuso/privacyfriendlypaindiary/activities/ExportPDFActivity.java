@@ -30,6 +30,7 @@ import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -260,15 +261,16 @@ public class ExportPDFActivity extends AppCompatActivity {
 
     private void exportAndShare() {
         LiveData<File> fileLive = exportAsPDF();
+        final ExportPDFActivity activity = this;
         fileLive.observe(this, new Observer<File>() {
             @Override
             public void onChanged(File file) {
                 if (file != null) {
-                    Uri attachment = Uri.fromFile(file);
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
+                    Uri attachment = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_STREAM, attachment);
                     sendIntent.setType("application/pdf");
+                    sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(sendIntent, getString(R.string.share_caution)));
                 }
                 fileLive.removeObserver(this);
@@ -278,6 +280,7 @@ public class ExportPDFActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
