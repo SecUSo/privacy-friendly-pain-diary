@@ -64,7 +64,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="date"
                         android:hint="@string/date_of_birth"
-                        android:onClick="onClick"
                         android:focusable="false" />
 
                 </com.google.android.material.textfield.TextInputLayout>

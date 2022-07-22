@@ -17,24 +17,20 @@
 package org.secuso.privacyfriendlypaindiary.activities
 
 import android.app.AlertDialog
-import org.secuso.privacyfriendlypaindiary.activities.BaseActivity
-import android.os.Bundle
-import org.secuso.privacyfriendlypaindiary.R
-import android.preference.PreferenceFragment
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.preference.Preference
-import org.secuso.privacyfriendlypaindiary.activities.SettingsActivity
-import android.preference.Preference.OnPreferenceClickListener
-import android.content.DialogInterface
 import android.content.SharedPreferences
-import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Bundle
+import android.preference.Preference.OnPreferenceClickListener
+import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.secuso.privacyfriendlypaindiary.R
 import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService
-import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject
+import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager
 
 /**
  * This activity provides methods to enable or disable certain features such as

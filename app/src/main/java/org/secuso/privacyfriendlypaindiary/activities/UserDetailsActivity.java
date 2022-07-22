@@ -105,6 +105,8 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         dateWrapper = findViewById(R.id.date_of_birth_wrapper);
 
+        findViewById(R.id.date_of_birth).setOnClickListener(this::onClick);
+
         firstNameWrapper = findViewById(R.id.first_name_wrapper);
         firstNameWrapper.getEditText().addTextChangedListener(new TextWatcher() {
 
