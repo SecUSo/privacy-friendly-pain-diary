@@ -14,6 +14,8 @@
     <color name="red">#B71C1C</color>
     <color name="green">#388E3C</color>
 
+    <color name="colorBackgroundLauncher">#3680BB</color>
+
     <!-- dots inactive colors -->
     <color name="dot_dark_screen">#026499</color>
 
