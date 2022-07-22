@@ -15,6 +15,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.system.exitProcess
 
 class BackupRestorer : IBackupRestorer {
 
@@ -79,7 +80,7 @@ class BackupRestorer : IBackupRestorer {
                 }
             }
             reader.endObject()
-            true
+            exitProcess(0)
         } catch (e: Exception) {
             false
         }
