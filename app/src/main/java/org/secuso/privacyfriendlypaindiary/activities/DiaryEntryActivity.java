@@ -137,6 +137,8 @@ public class DiaryEntryActivity extends AppCompatActivity {
     private ArrayList<DrugIntakeInterface> drugIntakes = new ArrayList<>();
     private DiaryEntryInterface diaryEntry;
 
+    private int currentPage = 0;
+
     private Bitmap front;
     private Bitmap back;
 
@@ -146,6 +148,10 @@ public class DiaryEntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diaryentry);
+
+        if(savedInstanceState != null) {
+            currentPage = savedInstanceState.getInt("current");
+        }
 
         database = new ViewModelProvider(this).get(DatabaseViewModel.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -376,6 +382,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 painQualities = painDescription.getPainQualities();
                 timesOfPain = painDescription.getTimesOfPain();
             }
+            initPage(currentPage);
         }
     }
 
