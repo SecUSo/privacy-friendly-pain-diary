@@ -28,32 +28,34 @@ Privacy Friendly Pain Diary can help users track and share their pain. Systemati
 
 ## Information
 
-Further development requires Android Studio, we recommend to use at least version 3.1.0
+Further development requires Android Studio, we recommend to use the least version.
  
 ### API Reference
 
 Mininum SDK: 21<br/>
-Target SDK: 26 
+Target SDK: 31 
 
 ## License
 
 Privacy Friendly Pain Diary is licensed under the GPLv3.<br/>
-Copyright (C) 2017-2018 Karola Marky, Susanne Felsen, Rybien Sinjari
+Copyright (C) 2017-2018 Karola Marky, Susanne Felsen, Rybien Sinjari<br/>
+Copyright (C) 2019-2021 Christopher Beckmann<br/>
+Copyright (C) 2022 Tobias Länge<br/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+(at your option) any later version.<br/>
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+GNU General Public License for more details.<br/>
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see <http://www.gnu.org/licenses/>.<br/>
 
-The icons used in the navigation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Karlsruhe Institute of Technology](https://kit.edu) (2016-2018).
+The icons used in the navigation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo and the app logo) copyright [Karlsruhe Institute of Technology](https://kit.edu) (2016-2022).
 
 ## Contributors
 
