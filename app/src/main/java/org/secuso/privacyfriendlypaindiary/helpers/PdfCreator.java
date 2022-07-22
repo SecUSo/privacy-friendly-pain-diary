@@ -24,7 +24,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
 import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
@@ -52,6 +51,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Responsible for creating a pdf document containing all diary entries made
@@ -82,9 +82,9 @@ public class PdfCreator {
     private List<DiaryEntryInterface> diaryEntries;
     private UserInterface user;
 
-    public PdfCreator(Context context, Date startDate, Date endDate) {
+    public PdfCreator(Context context, Date startDate, Date endDate, List<DiaryEntryInterface> diaryEntries, UserInterface user) {
         this.context = context;
-        dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -97,15 +97,8 @@ public class PdfCreator {
         accentedTextPaint.setColor(context.getResources().getColor(R.color.colorAccent));
         accentedTextPaint.setFakeBoldText(true);
 
-        DBServiceInterface service = DBService.getInstance(context);
-        diaryEntries = service.getDiaryEntriesByTimeSpan(startDate, endDate);
-
-        long userID = new PrefManager(context).getUserID();
-        if(userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
-            user = new User();
-        } else {
-            user = service.getUserByID(userID);
-        }
+        this.diaryEntries = diaryEntries;
+        this.user = user;
     }
 
     public PdfDocument createPdfDocument() {

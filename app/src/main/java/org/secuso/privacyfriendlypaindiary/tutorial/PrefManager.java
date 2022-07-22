@@ -37,10 +37,10 @@ public class PrefManager {
     private SharedPreferences.Editor editor;
 
     // shared pref mode
-    private int PRIVATE_MODE = 0;
+    public static final int PRIVATE_MODE = Context.MODE_PRIVATE;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "privacy_friendly_apps";
+    public static final String PREF_NAME = "privacy_friendly_apps";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static final String USER_ID = "userID";

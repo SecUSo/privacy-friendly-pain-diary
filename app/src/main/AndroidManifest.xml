@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.secuso.privacyfriendlypaindiary">
 
     <supports-screens
@@ -15,11 +16,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".PFAPainDiaryApplication"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
+
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -92,16 +101,39 @@
         </activity>
 
         <service
+            android:name=".backup.PFABackupService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":backup"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action
+                    android:name="org.secuso.privacyfriendlybackup.api.pfa.PFAAuthService" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".helpers.NotificationJobService"
             android:permission="android.permission.BIND_JOB_SERVICE">
 
         </service>
 
-        <receiver android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver">
+        <receiver android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.secuso.privacyfriendlypaindiary.action.SNOOZE"/>
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
     </application>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
