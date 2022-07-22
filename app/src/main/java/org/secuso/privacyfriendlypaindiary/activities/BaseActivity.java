@@ -166,6 +166,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 intent = new Intent(this, ExportPDFActivity.class);
                 createBackStack(intent);
                 break;
+            case R.id.nav_export_csv:
+                intent = new Intent(this, ExportCSVActivity.class);
+                createBackStack(intent);
+                break;
             case R.id.nav_tutorial:
                 intent = new Intent(this, TutorialActivity.class);
                 intent.setAction(TutorialActivity.ACTION_SHOW_ANYWAYS);

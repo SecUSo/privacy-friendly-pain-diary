@@ -170,4 +170,10 @@
     <string name="export_failure">Unknown Error: PDF could not be saved.</string>
     <string name="share_caution">Be careful who you share your medical information with.</string>
 
+    <!-- ### CSV ### -->
+    <string name="export_csv">CSV Export</string>
+    <string name="heading_export_csv">Please select a range of dates for which your pain diary entries should be exported as CSV.</string>
+    <string name="export_csv_success">CSV was saved to documents folder.</string>
+    <string name="export_csv_failure">Unknown Error: CSV could not be saved.</string>
+    <string name="entry_date">Date</string>
 </resources>

@@ -165,5 +165,10 @@
     <string name="export_failure">Unbekannter Fehler: PDF konnte nicht gespeichert werden.</string>
     <string name="share_caution">Seien Sie vorsichtig, mit wem Sie Ihre medizinischen Informationen teilen.</string>
 
-
+    <!-- ### CSV ### -->
+    <string name="export_csv">CSV Export</string>
+    <string name="heading_export_csv">Bitte wählen Sie einen Zeitraum aus, für den Ihre Schmerztagebucheinträge als CSV exportiert werden sollen.</string>
+    <string name="export_csv_success">CSV wurde im Dokumenten-Ordner gespeichert.</string>
+    <string name="export_csv_failure">Unbekannter Fehler: CSV konnte nicht gespeichert werden.</string>
+    <string name="entry_date">Datum</string>
 </resources>
