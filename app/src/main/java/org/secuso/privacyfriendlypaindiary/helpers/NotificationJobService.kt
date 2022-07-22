@@ -30,14 +30,9 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.secuso.privacyfriendlypaindiary.R
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface
-import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService
 import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService.Companion.getInstance
-import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService
 import java.util.*
 
 /**
@@ -51,53 +46,64 @@ import java.util.*
  * [Link 2](https://blog.klinkerapps.com/android-o-background-services/).
  */
 class NotificationJobService : JobService() {
+    private val scope = CoroutineScope(Job() + Dispatchers.IO)
+
     //for background work start an AsyncTask, Thread or IntentService -> return true
     override fun onStartJob(params: JobParameters): Boolean {
         val notificationJobService = this
-        runBlocking {
-            launch(Dispatchers.IO) {
-                val service = getInstance(notificationJobService)
-                val entry = service.getDiaryEntryByDate(Calendar.getInstance().time)
-                if (entry == null) { //no entry has been made yet
-                    val notificationHelper = NotificationHelper(notificationJobService)
-                    val notificationBuilder = notificationHelper.getNotificationBuilder(
-                        getString(R.string.notification_title),
-                        getString(R.string.notification_text)
+        scope.launch {
+            val service = getInstance(notificationJobService)
+            val entry = service.getDiaryEntryByDate(Calendar.getInstance().time)
+            if (entry == null) { //no entry has been made yet
+                val notificationHelper = NotificationHelper(notificationJobService)
+                val notificationBuilder = notificationHelper.getNotificationBuilder(
+                    getString(R.string.notification_title),
+                    getString(R.string.notification_text)
+                )
+                val intent = Intent(notificationJobService, NotificationReceiver::class.java)
+                intent.putExtra(NOTIFICATION_ID, NOTIFICATION_ID_VALUE)
+                intent.action = ACTION_SNOOZE
+                val pendingIntent =
+                    PendingIntent.getBroadcast(
+                        notificationJobService,
+                        1,
+                        intent,
+                        PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
                     )
-                    val intent = Intent(notificationJobService, NotificationReceiver::class.java)
-                    intent.putExtra(NOTIFICATION_ID, NOTIFICATION_ID_VALUE)
-                    intent.action = ACTION_SNOOZE
-                    val pendingIntent =
-                        PendingIntent.getBroadcast(notificationJobService, 1, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
-                    val action: Notification.Action
-                    action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        Notification.Action.Builder(
-                            Icon.createWithResource(
-                                notificationJobService,
-                                R.drawable.ic_snooze
-                            ), getString(R.string.snooze) + " (1h)", pendingIntent
-                        ).build()
-                    } else {
-                        Notification.Action.Builder(
-                            R.drawable.ic_snooze,
-                            getString(R.string.snooze) + " (1h)",
-                            pendingIntent
-                        ).build()
-                    }
-                    notificationBuilder.addAction(action).build()
-                    notificationHelper.notify(NOTIFICATION_ID_VALUE, notificationBuilder)
+                val action: Notification.Action
+                action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Notification.Action.Builder(
+                        Icon.createWithResource(
+                            notificationJobService,
+                            R.drawable.ic_snooze
+                        ), getString(R.string.snooze) + " (1h)", pendingIntent
+                    ).build()
+                } else {
+                    Notification.Action.Builder(
+                        R.drawable.ic_snooze,
+                        getString(R.string.snooze) + " (1h)",
+                        pendingIntent
+                    ).build()
                 }
-                jobFinished(params, false)
-                if (params.jobId == PERIODIC_JOB_ID) {
-                    scheduleJob(notificationJobService)
-                }
+                notificationBuilder.addAction(action).build()
+                notificationHelper.notify(NOTIFICATION_ID_VALUE, notificationBuilder)
+            }
+            jobFinished(params, false)
+            if (params.jobId == PERIODIC_JOB_ID) {
+                scheduleJob(notificationJobService)
             }
         }
         return false
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
+        scope.cancel()
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 
     class NotificationReceiver : BroadcastReceiver() {

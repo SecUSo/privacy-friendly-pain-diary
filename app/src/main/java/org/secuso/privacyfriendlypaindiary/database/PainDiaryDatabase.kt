@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil
 import org.secuso.privacyfriendlypaindiary.database.dao.*
 import org.secuso.privacyfriendlypaindiary.database.model.*
 import org.secuso.privacyfriendlypaindiary.database.utils.Converters
@@ -38,8 +39,8 @@ abstract class PainDiaryDatabase : RoomDatabase() {
 
         fun resetDatabase(context: Context) {
             synchronized(DATABASE_NAME) {
-                context.deleteDatabase(DATABASE_NAME)
-                instance = createDatabase(context)
+                DatabaseUtil.deleteRoomDatabase(context, DATABASE_NAME)
+                instance = null
             }
         }
 
