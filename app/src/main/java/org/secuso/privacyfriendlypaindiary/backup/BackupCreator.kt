@@ -10,6 +10,7 @@ import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.writeDatabase
 import org.secuso.privacyfriendlybackup.api.backup.PreferenceUtil.writePreferences
 import org.secuso.privacyfriendlybackup.api.pfa.IBackupCreator
 import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabase
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 import kotlin.text.Charsets.UTF_8
@@ -37,6 +38,10 @@ class BackupCreator : IBackupCreator {
             val pref: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
             writePreferences(writer, pref)
+            writer.name("preferences2")
+            val prefTutorialActivity : SharedPreferences =
+                context.getSharedPreferences(PrefManager.PREF_NAME, PrefManager.PRIVATE_MODE)
+            writePreferences(writer, prefTutorialActivity)
             Log.d("PFA BackupCreator", "Writing files")
             writer.endObject()
             writer.close()

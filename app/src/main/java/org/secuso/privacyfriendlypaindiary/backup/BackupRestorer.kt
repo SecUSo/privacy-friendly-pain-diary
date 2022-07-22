@@ -11,6 +11,7 @@ import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.readDatabaseContent
 import org.secuso.privacyfriendlybackup.api.backup.FileUtil
 import org.secuso.privacyfriendlybackup.api.pfa.IBackupRestorer
+import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -49,15 +50,19 @@ class BackupRestorer : IBackupRestorer {
     }
 
     @Throws(IOException::class)
-    private fun readPreferences(@NonNull reader: JsonReader, @NonNull context: Context) {
+    private fun readPreferences(
+        @NonNull reader: JsonReader,
+        @NonNull prefEdit: SharedPreferences.Editor
+    ) {
         reader.beginObject()
-        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         while (reader.hasNext()) {
             val name: String = reader.nextName()
             when (name) {
-                "pref_medication", "pref_reminder" -> pref.edit()
-                    .putBoolean(name, reader.nextBoolean()).apply()
-                "pref_reminder_time" -> pref.edit().putLong(name, reader.nextLong()).apply()
+                "pref_medication", "pref_reminder", "IsFirstTimeLaunch" -> prefEdit.putBoolean(
+                    name,
+                    reader.nextBoolean()
+                )
+                "pref_reminder_time", "userID" -> prefEdit.putLong(name, reader.nextLong())
                 else -> throw RuntimeException("Unknown preference $name")
             }
         }
@@ -68,6 +73,9 @@ class BackupRestorer : IBackupRestorer {
         return try {
             val isReader = InputStreamReader(restoreData)
             val reader = JsonReader(isReader)
+            val pref = PreferenceManager.getDefaultSharedPreferences(context).edit()
+            val pref2 =
+                context.getSharedPreferences(PrefManager.PREF_NAME, PrefManager.PRIVATE_MODE).edit()
 
             // START
             reader.beginObject()
@@ -75,12 +83,24 @@ class BackupRestorer : IBackupRestorer {
                 val type: String = reader.nextName()
                 when (type) {
                     "database" -> readDatabase(reader, context)
-                    "preferences" -> readPreferences(reader, context)
+                    "preferences" -> readPreferences(
+                        reader,
+                        pref
+                    )
+                    "preferences2" -> readPreferences(
+                        reader,
+                        pref2
+                    )
                     else -> throw RuntimeException("Can not parse type $type")
                 }
             }
             reader.endObject()
+
+            pref.commit()
+            pref2.commit()
+
             exitProcess(0)
+            true
         } catch (e: Exception) {
             false
         }
