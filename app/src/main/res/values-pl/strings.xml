@@ -15,7 +15,7 @@
     <string name="navigation_drawer_close">Zamknij menu boczne</string>
 
     <!-- ### GENERAL ### -->
-    <string name="okay">Okej</string>
+    <string name="okay">OK</string>
     <string name="back">Wróć</string>
     <string name="next">Dalej</string>
     <string name="skip">Pomiń</string>
@@ -58,7 +58,7 @@
     <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
     <string name="about_author_contributors">oraz współautorzy.</string>
     <string name="about_affiliation">We współpracy z</string>
-    <string name="privacy_friendly">Aplikacja jest częścią grupy Privacy Friendly Apps stworzonych przez Technische Universität Darmstadt. Kod źródłowy jest objęty licencją GPLv3. Prawa autorskie obrazów: TU Darmstadt oraz Google Inc.</string>
+    <string name="privacy_friendly">Aplikacja jest częścią grupy Privacy Friendly Apps stworzonych przez Technische Universität Darmstadt. Kod źródłowy jest objęty licencją GPLv3. Posiadaczami praw autorskich do obrazów są TU Darmstadt oraz Google Inc.</string>
     <string name="more_info">Więcej informacji:</string>
     <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Github-Repo</a></string>
     <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
