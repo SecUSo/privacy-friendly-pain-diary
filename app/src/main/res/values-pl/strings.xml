@@ -38,7 +38,7 @@
     <string name="help_whatis">Czym jest Privacy Friendly Dziennik Bólu</string>
     <string name="help_whatis_answer">Privacy Friendly Dziennik Bólu jest szanującą prywatność użytkownika aplikacją pozwalającą na sporządzanie wpisów dotyczących samopoczucia oraz natężenia, miejsca, typu i czasu występowania odczuwanego bólu, jak również branych leków. Istnieje również opcja wpisania dodatkowych komentarzy. </string>
     <string name="help_privacy">W jaki sposób aplikacja szanuje moją prywatność?</string>
-    <string name="help_privacy_answer">Aplikacja wymaga najmniejszej możliwej ilości uprawnień.  Ponadto nie zawiera elementów śledzących ani reklam. </string>
+    <string name="help_privacy_answer">Aplikacja wymaga najmniejszej możliwej liczby uprawnień.  Ponadto nie zawiera elementów śledzących ani reklam. </string>
     <string name="help_permission">Jakie uprawnienia są wymagane przez aplikację?</string>
     <string name="help_permission_answer">Jeśli użytkownik chce wyeksportować wpisy z dziennika do pliku PDF musi udzielić aplikacji uprawnienia pamięci. Wszystkie inne funkcje nie wymagają żadnych uprawnień.</string>
 
