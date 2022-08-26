@@ -144,7 +144,7 @@
     <string name="notes">Komentarz:</string>
     <string name="none">brak</string>
     <string name="medication_taken">Brane leki:</string>
-    <string name="warning_deleting">Czy napewno chcesz usunąć ten wpis?</string>
+    <string name="warning_deleting">Czy na pewno chcesz usunąć ten wpis?</string>
 
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Powiadomienia</string>
