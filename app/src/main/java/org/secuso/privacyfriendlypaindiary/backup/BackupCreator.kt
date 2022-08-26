@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.preference.PreferenceManager
 import android.util.JsonWriter
 import android.util.Log
+import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.getSupportSQLiteOpenHelper
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.writeDatabase
 import org.secuso.privacyfriendlybackup.api.backup.PreferenceUtil.writePreferences
 import org.secuso.privacyfriendlybackup.api.pfa.IBackupCreator
@@ -24,11 +25,7 @@ class BackupCreator : IBackupCreator {
 
         try {
             writer.beginObject()
-            val dataBase: SQLiteDatabase = SQLiteDatabase.openDatabase(
-                context.getDatabasePath(PainDiaryDatabase.DATABASE_NAME).path,
-                null,
-                SQLiteDatabase.OPEN_READONLY
-            )
+            val dataBase = getSupportSQLiteOpenHelper(context, PainDiaryDatabase.DATABASE_NAME, PainDiaryDatabase.VERSION).readableDatabase
             Log.d("PFA BackupCreator", "Writing database")
             writer.name("database")
             writeDatabase(writer, dataBase)

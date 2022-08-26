@@ -14,7 +14,7 @@ import org.secuso.privacyfriendlypaindiary.database.utils.Converters
 
 @Database(
     entities = [PainDescription::class, Drug::class, DrugIntake::class, DiaryEntry::class, User::class],
-    version = 2
+    version = PainDiaryDatabase.VERSION
 )
 @TypeConverters(Converters::class)
 abstract class PainDiaryDatabase : RoomDatabase() {
@@ -26,6 +26,7 @@ abstract class PainDiaryDatabase : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "paindiary"
+        const val VERSION = 2
         private var instance: PainDiaryDatabase? = null
 
         fun getInstance(context: Context): PainDiaryDatabase {

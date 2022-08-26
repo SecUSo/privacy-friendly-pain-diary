@@ -2,15 +2,14 @@ package org.secuso.privacyfriendlypaindiary.backup
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.preference.PreferenceManager
 import android.util.JsonReader
 import androidx.annotation.NonNull
-import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabase.Companion.DATABASE_NAME
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil
 import org.secuso.privacyfriendlybackup.api.backup.DatabaseUtil.readDatabaseContent
 import org.secuso.privacyfriendlybackup.api.backup.FileUtil
 import org.secuso.privacyfriendlybackup.api.pfa.IBackupRestorer
+import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabase.Companion.DATABASE_NAME
 import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager
 import java.io.File
 import java.io.IOException
@@ -32,8 +31,12 @@ class BackupRestorer : IBackupRestorer {
         if (n2 != "content") {
             throw RuntimeException("Unknown value $n2")
         }
-        val db: SQLiteDatabase =
-            SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath("restoreDatabase"), null)
+        val restoreDatabaseName = "restoreDatabase"
+        val db = DatabaseUtil.getSupportSQLiteOpenHelper(
+            context,
+            restoreDatabaseName,
+            version
+        ).writableDatabase
         db.beginTransaction()
         db.setVersion(version)
         readDatabaseContent(reader, db)
@@ -43,7 +46,7 @@ class BackupRestorer : IBackupRestorer {
         reader.endObject()
 
         // copy file to correct location
-        val databaseFile: File = context.getDatabasePath("restoreDatabase")
+        val databaseFile: File = context.getDatabasePath(restoreDatabaseName)
         DatabaseUtil.deleteRoomDatabase(context, DATABASE_NAME)
         FileUtil.copyFile(databaseFile, context.getDatabasePath(DATABASE_NAME))
         databaseFile.delete()
