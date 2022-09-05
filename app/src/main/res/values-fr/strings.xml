@@ -149,7 +149,7 @@
     <string name="reminders_channel_title">Rappels</string>
     <string name="notification_title">Rappel</string>
     <string name="notification_text">N\'oubliez pas de compléter votre journal !</string>
-    <string name="snooze">Arrêt</string>
+    <string name="snooze">Rappelez plus tard</string>
 
     <!-- ### PDF ### -->
     <string name="export_pdf">Export PDF</string>
