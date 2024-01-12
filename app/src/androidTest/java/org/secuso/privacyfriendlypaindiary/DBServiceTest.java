@@ -16,14 +16,19 @@
 */
 package org.secuso.privacyfriendlypaindiary;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.secuso.privacyfriendlypaindiary.database.DBService;
+import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
@@ -47,15 +52,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  * This class tests the basic database functionality, i.e. the methods of the class
- * {@link DBService}.
+ * {@link PainDiaryDatabaseService}.
  *
  * @author Susanne Felsen
  * @version 20180110
@@ -65,17 +64,17 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class DBServiceTest {
 
-    DBService service;
+    PainDiaryDatabaseService service;
 
     @Before
     public void setUp() {
-        service = DBService.getInstance(InstrumentationRegistry.getTargetContext());
-        service.reinitializeDatabase();
+        service = PainDiaryDatabaseService.getInstance(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        service.reinitializeDatabase(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
     @After
     public void tearDown() throws Exception {
-        service.close();
+        //service.close();
     }
 
     @Test
@@ -169,7 +168,7 @@ public class DBServiceTest {
         assertEquals("Times of Pain were incorrect.", timesOfPain, painDescription.getTimesOfPain());
 
         Set<DrugIntakeInterface> intakes = entry.getDrugIntakes();
-        assertEquals("Number of Drug Intakes was incorrect.", 1,  intakes.size());
+        assertEquals("Number of Drug Intakes was incorrect.", 1, intakes.size());
         drugIntake = intakes.iterator().next();
         assertEquals("Quantity Morning was incorrect.", quantityMorning, drugIntake.getQuantityMorning());
         assertEquals("Quantity Noon was incorrect.", quantityNoon, drugIntake.getQuantityNoon());
