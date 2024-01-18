@@ -38,7 +38,7 @@ class BackupRestorer : IBackupRestorer {
             version
         ).writableDatabase
         db.beginTransaction()
-        db.setVersion(version)
+        db.version = version
         readDatabaseContent(reader, db)
         db.setTransactionSuccessful()
         db.endTransaction()
@@ -65,6 +65,7 @@ class BackupRestorer : IBackupRestorer {
                     name,
                     reader.nextBoolean()
                 )
+
                 "pref_reminder_time", "userID" -> prefEdit.putLong(name, reader.nextLong())
                 else -> throw RuntimeException("Unknown preference $name")
             }
@@ -90,10 +91,12 @@ class BackupRestorer : IBackupRestorer {
                         reader,
                         pref
                     )
+
                     "preferences2" -> readPreferences(
                         reader,
                         pref2
                     )
+
                     else -> throw RuntimeException("Can not parse type $type")
                 }
             }
