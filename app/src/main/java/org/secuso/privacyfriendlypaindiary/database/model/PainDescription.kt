@@ -3,7 +3,6 @@ package org.secuso.privacyfriendlypaindiary.database.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface
 import org.secuso.privacyfriendlypaindiary.database.utils.Utils
 

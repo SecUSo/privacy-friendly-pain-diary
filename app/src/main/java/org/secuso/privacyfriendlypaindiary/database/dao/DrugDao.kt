@@ -6,7 +6,7 @@ import org.secuso.privacyfriendlypaindiary.database.model.Drug
 @Dao
 interface DrugDao {
     @Insert
-    fun insert(drug: Drug) : Long
+    fun insert(drug: Drug): Long
 
     @Update
     fun update(drug: Drug)

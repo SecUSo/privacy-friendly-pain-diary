@@ -25,9 +25,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
-import java.util.Calendar;
-
 import org.secuso.privacyfriendlypaindiary.R;
+
+import java.util.Calendar;
 
 /**
  * Preference dialog that allows the user to pick a time in hour:minute format. The value is stored

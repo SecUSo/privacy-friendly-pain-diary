@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +32,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.view.MenuItem;
-import android.view.View;
-
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -94,7 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     protected boolean goToNavigationItem(final int itemId) {
 
-        if(itemId == getNavigationDrawerID()) {
+        if (itemId == getNavigationDrawerID()) {
             // just close drawer because we are already in this activity
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -122,7 +120,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     // set active navigation item
     private void selectNavigationItem(int itemId) {
-        for(int i = 0 ; i < mNavigationView.getMenu().size(); i++) {
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
             boolean b = itemId == mNavigationView.getMenu().getItem(i).getItemId();
             mNavigationView.getMenu().getItem(i).setChecked(b);
         }
@@ -131,6 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     /**
      * Enables back navigation for activities that are launched from the NavBar. See
      * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
+     *
      * @param intent
      */
     private void createBackStack(Intent intent) {
@@ -147,13 +146,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     /**
      * This method manages the behaviour of the navigation drawer
      * Add your menu items (ids) to res/menu/activity_main_drawer.xml
+     *
      * @param itemId Item that has been clicked by the user
      */
     private void callDrawerItem(final int itemId) {
 
         Intent intent;
 
-        switch(itemId) {
+        switch (itemId) {
             case R.id.nav_main:
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -183,8 +183,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 break;
             case R.id.nav_settings:
                 intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-                intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true );
+                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+                intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
                 createBackStack(intent);
                 break;
             default:
@@ -196,7 +196,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         super.onPostCreate(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(getSupportActionBar() == null) {
+        if (getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
         }
 

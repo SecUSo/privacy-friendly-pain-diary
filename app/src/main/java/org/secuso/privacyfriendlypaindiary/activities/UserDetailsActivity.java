@@ -38,7 +38,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;

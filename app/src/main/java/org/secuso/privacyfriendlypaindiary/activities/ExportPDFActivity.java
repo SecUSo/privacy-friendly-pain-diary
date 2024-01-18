@@ -18,7 +18,6 @@ package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.pdf.PdfDocument;
@@ -26,6 +25,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -35,10 +37,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 

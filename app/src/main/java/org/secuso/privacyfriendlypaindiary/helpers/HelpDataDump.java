@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Karola Marky, Susanne Felsen, Rybien Sinjari
  * @version 20171016
- *
+ * <p>
  * Class structure taken from <a href="http://www.journaldev.com/9942/android-expandablelistview-example-tutorial">this tutorial</a>
  * (last access 27th October 2016).
  */

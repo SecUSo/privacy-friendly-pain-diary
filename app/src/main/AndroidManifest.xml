@@ -8,15 +8,15 @@
         android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="true" />
 
     <application
+        android:name=".PFAPainDiaryApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:name=".PFAPainDiaryApplication"
         android:largeHeap="true"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <provider
@@ -26,17 +26,17 @@
 
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.secuso.privacyfriendlypaindiary.tutorial.TutorialActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name="org.secuso.privacyfriendlypaindiary.tutorial.TutorialActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity"
             android:label="@string/user_details"
@@ -58,8 +58,7 @@
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name="org.secuso.privacyfriendlypaindiary.activities.AboutActivity"
             android:label="@string/about"
@@ -106,8 +105,7 @@
             android:process=":backup"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action
-                    android:name="org.secuso.privacyfriendlybackup.api.pfa.PFAAuthService" />
+                <action android:name="org.secuso.privacyfriendlybackup.api.pfa.PFAAuthService" />
             </intent-filter>
         </service>
 
@@ -117,10 +115,11 @@
 
         </service>
 
-        <receiver android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver"
+        <receiver
+            android:name="org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService$NotificationReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="org.secuso.privacyfriendlypaindiary.action.SNOOZE"/>
+                <action android:name="org.secuso.privacyfriendlypaindiary.action.SNOOZE" />
             </intent-filter>
         </receiver>
 
@@ -135,8 +134,9 @@
         </provider>
 
     </application>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
 </manifest>

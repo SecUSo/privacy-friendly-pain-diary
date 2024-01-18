@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "users")
 data class User(

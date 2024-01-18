@@ -35,7 +35,6 @@ import androidx.viewpager.widget.ViewPager;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
 import org.secuso.privacyfriendlypaindiary.activities.UserDetailsActivity;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.MyViewPagerAdapter;
 import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
 
@@ -47,7 +46,7 @@ import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
  *
  * @author Karola Marky, Susanne Felsen
  * @version 20180228
- *
+ * <p>
  * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  */
 
@@ -108,17 +107,13 @@ public class TutorialActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchHomeScreen();
             }
         });
-        btnNext.setOnClickListener(new View.OnClickListener()
-
-        {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // checking for last page; if last page user detail screen will be launched

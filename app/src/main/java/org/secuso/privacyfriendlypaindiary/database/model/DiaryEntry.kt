@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "diaryentries")
 data class DiaryEntry(
@@ -29,9 +29,9 @@ data class DiaryEntry(
         _id = 0
     )
 
-    companion object{
+    companion object {
         @JvmStatic
-        fun fromDiaryEntryInterface(diaryEntryInterface: DiaryEntryInterface) :DiaryEntry {
+        fun fromDiaryEntryInterface(diaryEntryInterface: DiaryEntryInterface): DiaryEntry {
             return DiaryEntry(
                 diaryEntryInterface.objectID,
                 diaryEntryInterface.date,

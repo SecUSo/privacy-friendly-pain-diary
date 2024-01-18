@@ -18,7 +18,6 @@ package org.secuso.privacyfriendlypaindiary.database.entities.enums;
 
 import org.secuso.privacyfriendlypaindiary.R;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 

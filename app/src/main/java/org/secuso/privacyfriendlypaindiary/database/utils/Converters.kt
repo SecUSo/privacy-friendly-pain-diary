@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.room.TypeConverter
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 object Converters {
     private const val DB_DATE_PATTERN = "yyyy-MM-dd"

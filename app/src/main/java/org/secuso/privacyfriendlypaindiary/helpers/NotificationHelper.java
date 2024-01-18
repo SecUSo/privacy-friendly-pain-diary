@@ -36,7 +36,7 @@ import org.secuso.privacyfriendlypaindiary.activities.MainActivity;
  *
  * @author Susanne Felsen
  * @version 20180130
- *
+ * <p>
  * Inspiration from: <a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html">Link 1</a>
  * <a href="https://www.androidauthority.com/android-8-0-oreo-app-implementing-notification-channels-801097/">Link 2</a>.
  */
@@ -78,7 +78,7 @@ public class NotificationHelper extends ContextWrapper {
 
         Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
 //        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         return notificationBuilder
                 .setSmallIcon(R.drawable.ic_local_hospital)

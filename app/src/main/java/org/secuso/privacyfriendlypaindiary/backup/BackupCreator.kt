@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlypaindiary.backup
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.preference.PreferenceManager
 import android.util.JsonWriter
 import android.util.Log
@@ -36,7 +35,7 @@ class BackupCreator : IBackupCreator {
                 PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
             writePreferences(writer, pref)
             writer.name("preferences2")
-            val prefTutorialActivity : SharedPreferences =
+            val prefTutorialActivity: SharedPreferences =
                 context.getSharedPreferences(PrefManager.PREF_NAME, PrefManager.PRIVATE_MODE)
             writePreferences(writer, prefTutorialActivity)
             Log.d("PFA BackupCreator", "Writing files")

@@ -50,10 +50,10 @@ public class Helper {
     public static Bitmap overlay(Context context, EnumSet<BodyRegion> bodyRegions) {
         Bitmap overlay = null;
         Iterator<BodyRegion> it = bodyRegions.iterator();
-        if(it.hasNext()) {
+        if (it.hasNext()) {
             Bitmap img = BitmapFactory.decodeResource(context.getResources(), it.next().getResourceID());
             overlay = Bitmap.createBitmap(img.getWidth(), img.getHeight(), img.getConfig());
-            if(overlay != null) {
+            if (overlay != null) {
                 Canvas canvas = new Canvas(overlay);
                 canvas.drawBitmap(img, 0, 0, null);
                 img.recycle();
@@ -86,54 +86,54 @@ public class Helper {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         ((TextView) view.findViewById(R.id.date)).setText(dateFormat.format(diaryEntry.getDate()));
-        if(diaryEntry.getNotes() != null) {
+        if (diaryEntry.getNotes() != null) {
             ((TextView) view.findViewById(R.id.notes_value)).setText(diaryEntry.getNotes());
         }
-        if(diaryEntry.getCondition() != null) {
+        if (diaryEntry.getCondition() != null) {
             ((ImageView) view.findViewById(R.id.condition_icon)).setImageResource(diaryEntry.getCondition().getResourceID());
         }
-        if(painDescription != null) {
+        if (painDescription != null) {
             ((TextView) view.findViewById(R.id.painlevel_value)).setText(Integer.toString(painDescription.getPainLevel()));
             EnumSet<BodyRegion> bodyRegions = painDescription.getBodyRegions();
             EnumSet<BodyRegion> bodyRegionsFront = EnumSet.noneOf(BodyRegion.class);
             EnumSet<BodyRegion> bodyRegionsBack = EnumSet.noneOf(BodyRegion.class);
             // body regions are split up into two separate sets (front and back)
-            for(BodyRegion region : bodyRegions) {
-                if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+            for (BodyRegion region : bodyRegions) {
+                if (region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
                     bodyRegionsFront.add(region);
                 } else {
                     bodyRegionsBack.add(region);
                 }
             }
-            if(!bodyRegionsFront.isEmpty()) {
+            if (!bodyRegionsFront.isEmpty()) {
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsFront));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
             }
-            if(!bodyRegionsBack.isEmpty()) {
+            if (!bodyRegionsBack.isEmpty()) {
                 ((ImageView) view.findViewById(R.id.bodyregion_back_value)).setImageBitmap(Helper.overlay(context, bodyRegionsBack));
                 view.findViewById(R.id.bodyregion_back_value).setVisibility(View.VISIBLE);
             }
             String painQualities = convertPainQualityEnumSetToString(context, painDescription.getPainQualities());
-            if(painQualities != null) {
+            if (painQualities != null) {
                 ((TextView) view.findViewById(R.id.painquality_value)).setText(painQualities);
             }
             String timesOfPain = convertTimeEnumSetToString(context, painDescription.getTimesOfPain());
-            if(timesOfPain != null) {
+            if (timesOfPain != null) {
                 ((TextView) view.findViewById(R.id.timeofpain_value)).setText(timesOfPain);
             }
         }
         String medication = "";
-        for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
-            if(drugIntake.getDrug().getName() != null) {
+        for (DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
+            if (drugIntake.getDrug().getName() != null) {
                 medication += drugIntake.getDrug().getName();
             }
-            if(drugIntake.getDrug().getDose() != null) {
+            if (drugIntake.getDrug().getDose() != null) {
                 medication += " (" + drugIntake.getDrug().getDose() + ") ";
             }
             medication += ": " + drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() +
-                        System.getProperty("line.separator");
+                    System.getProperty("line.separator");
         }
-        if(!medication.isEmpty()) {
+        if (!medication.isEmpty()) {
             ((TextView) view.findViewById(R.id.medication_value)).setText(medication);
         }
 
@@ -142,10 +142,10 @@ public class Helper {
 
     public static String convertPainQualityEnumSetToString(Context context, EnumSet<PainQuality> painQualities) {
         String painQualitiesAsString = "";
-        for(PainQuality quality : painQualities) {
+        for (PainQuality quality : painQualities) {
             painQualitiesAsString += context.getString(quality.getResourceID()) + ", ";
         }
-        if(!painQualitiesAsString.isEmpty()) {
+        if (!painQualitiesAsString.isEmpty()) {
             painQualitiesAsString = painQualitiesAsString.substring(0, painQualitiesAsString.length() - 2);
         } else {
             painQualitiesAsString = null;
@@ -155,10 +155,10 @@ public class Helper {
 
     public static String convertTimeEnumSetToString(Context context, EnumSet<Time> times) {
         String timesAsString = "";
-        for(Time time : times) {
+        for (Time time : times) {
             timesAsString += context.getString(time.getResourceID()) + ", ";
         }
-        if(!timesAsString.isEmpty()) {
+        if (!timesAsString.isEmpty()) {
             timesAsString = timesAsString.substring(0, timesAsString.length() - 2);
         } else {
             timesAsString = null;

@@ -24,7 +24,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -34,17 +33,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
-import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
-import org.secuso.privacyfriendlypaindiary.database.entities.impl.User;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
-import org.secuso.privacyfriendlypaindiary.tutorial.PrefManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -132,7 +129,7 @@ public class PdfCreator {
         canvas.restore();
 
         int numberOfEntries = 0;
-        if(diaryEntries.isEmpty()) {
+        if (diaryEntries.isEmpty()) {
             canvas.save();
             canvas.translate(0, height);
             sb.setLength(0);
@@ -156,7 +153,7 @@ public class PdfCreator {
             canvas.restore();
 
             numberOfEntries += 1;
-            if(numberOfEntries == 2 && iter.hasNext()) {
+            if (numberOfEntries == 2 && iter.hasNext()) {
                 document.finishPage(page);
                 pageNumber += 1;
                 pageInfo = new PdfDocument.PageInfo.Builder(WIDTH_A4, HEIGHT_A4, pageNumber).create();
@@ -184,21 +181,21 @@ public class PdfCreator {
 
         sb.setLength(0);
         sb.append(context.getResources().getString(R.string.first_name)).append(": ");
-        if(user.getFirstName() != null) {
+        if (user.getFirstName() != null) {
             sb.append(user.getFirstName());
         }
         sb.append("\n").append(context.getResources().getString(R.string.last_name)).append(": ");
-        if(user.getLastName() != null) {
+        if (user.getLastName() != null) {
             sb.append(user.getLastName());
         }
         sb.append("\n").append(context.getResources().getString(R.string.date_of_birth)).append(": ");
-        if(user.getDateOfBirth() != null) {
+        if (user.getDateOfBirth() != null) {
             sb.append(dateFormat.format(user.getDateOfBirth()));
         }
         sb.append("\n").append(context.getResources().getString(R.string.gender)).append(": ");
-        if(user.getGender() != null) {
+        if (user.getGender() != null) {
             String gender = context.getResources().getString(R.string.female);
-            if(user.getGender() == Gender.MALE) {
+            if (user.getGender() == Gender.MALE) {
                 gender = context.getResources().getString(R.string.male);
             }
             sb.append(gender);
@@ -233,7 +230,7 @@ public class PdfCreator {
         canvas.save();
         canvas.translate(0, totalHeight + height);
         int resourceID = R.drawable.ic_menu_help;
-        if(diaryEntry.getCondition() != null) {
+        if (diaryEntry.getCondition() != null) {
             resourceID = diaryEntry.getCondition().getResourceID();
         }
         Drawable drawable = ContextCompat.getDrawable(context, resourceID);
@@ -250,7 +247,7 @@ public class PdfCreator {
         canvas.translate(0, totalHeight + height);
         sb.setLength(0);
         sb.append(context.getResources().getString(R.string.painlevel)).append(" ");
-        if(painDescription != null) {
+        if (painDescription != null) {
             sb.append(painDescription.getPainLevel()).append("/10");
         }
         sb.append("\n");
@@ -281,39 +278,39 @@ public class PdfCreator {
         height += layout.getHeight() + 5;
         sb.setLength(0);
         sb.append(context.getResources().getString(R.string.timeofpain)).append(" ");
-        if(painDescription != null) {
+        if (painDescription != null) {
             String timesOfPain = Helper.convertTimeEnumSetToString(context, painDescription.getTimesOfPain());
-            if(timesOfPain == null) {
+            if (timesOfPain == null) {
                 timesOfPain = context.getResources().getString(R.string.none);
             }
             sb.append(timesOfPain).append("\n");
         }
         sb.append(context.getResources().getString(R.string.paindescription)).append(" ");
-        if(painDescription != null) {
+        if (painDescription != null) {
             String painQualities = Helper.convertPainQualityEnumSetToString(context, painDescription.getPainQualities());
-            if(painQualities == null) {
+            if (painQualities == null) {
                 painQualities = context.getResources().getString(R.string.none);
             }
             sb.append(painQualities).append("\n");
         }
         sb.append(context.getResources().getString(R.string.notes)).append(" ");
         String notes = diaryEntry.getNotes();
-        if(notes == null) {
+        if (notes == null) {
             notes = context.getResources().getString(R.string.none);
         }
         sb.append(notes).append("\n");
         String medication = "";
         sb.append(context.getResources().getString(R.string.medication_taken)).append("\n");
-        for(DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
-            if(drugIntake.getDrug().getName() != null) {
+        for (DrugIntakeInterface drugIntake : diaryEntry.getDrugIntakes()) {
+            if (drugIntake.getDrug().getName() != null) {
                 medication += Html.fromHtml("&#8226;") + " " + drugIntake.getDrug().getName();
             }
-            if(drugIntake.getDrug().getDose() != null) {
+            if (drugIntake.getDrug().getDose() != null) {
                 medication += " (" + drugIntake.getDrug().getDose() + ") ";
             }
             medication += ": " + drugIntake.getQuantityMorning() + " " + drugIntake.getQuantityNoon() + " " + drugIntake.getQuantityEvening() + " " + drugIntake.getQuantityNight() + "\n";
         }
-        if(medication.isEmpty()) {
+        if (medication.isEmpty()) {
             medication = context.getResources().getString(R.string.none);
         }
         sb.append(medication);
@@ -321,7 +318,7 @@ public class PdfCreator {
         layout.draw(canvas);
         canvas.restore();
 
-        if(painDescription != null) {
+        if (painDescription != null) {
             canvas.save();
             canvas.translate(0, totalHeight + height);
 
@@ -331,14 +328,14 @@ public class PdfCreator {
             EnumSet<BodyRegion> bodyRegionsFront = EnumSet.noneOf(BodyRegion.class);
             EnumSet<BodyRegion> bodyRegionsBack = EnumSet.noneOf(BodyRegion.class);
             // body regions are split up into two separate sets (front and back)
-            for(BodyRegion region : bodyRegions) {
-                if(region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
+            for (BodyRegion region : bodyRegions) {
+                if (region.getValue() < BodyRegion.LOWEST_BACK_INDEX) {
                     bodyRegionsFront.add(region);
                 } else {
                     bodyRegionsBack.add(region);
                 }
             }
-            if(!bodyRegionsFront.isEmpty()) {
+            if (!bodyRegionsFront.isEmpty()) {
 //                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsFront);
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsFront));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);
@@ -353,7 +350,7 @@ public class PdfCreator {
 
             canvas.save();
             canvas.translate(PERSON_WIDTH + 10, totalHeight + height);
-            if(!bodyRegionsBack.isEmpty()) {
+            if (!bodyRegionsBack.isEmpty()) {
 //                Bitmap[] images = Helper.getBitmapArrayForBodyRegions(context, bodyRegionsBack);
                 ((ImageView) view.findViewById(R.id.bodyregion_value)).setImageBitmap(Helper.overlay(context, bodyRegionsBack));
                 view.findViewById(R.id.bodyregion_value).setVisibility(View.VISIBLE);

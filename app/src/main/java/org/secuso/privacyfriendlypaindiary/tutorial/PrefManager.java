@@ -29,7 +29,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersis
  *
  * @author Karola Marky, Susanne Felsen
  * @version 20180228
- *
+ * <p>
  * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  */
 public class PrefManager {

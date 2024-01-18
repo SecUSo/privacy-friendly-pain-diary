@@ -6,8 +6,13 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEnt
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface
-import org.secuso.privacyfriendlypaindiary.database.model.*
-import java.util.*
+import org.secuso.privacyfriendlypaindiary.database.model.DiaryEntry
+import org.secuso.privacyfriendlypaindiary.database.model.Drug
+import org.secuso.privacyfriendlypaindiary.database.model.DrugIntake
+import org.secuso.privacyfriendlypaindiary.database.model.PainDescription
+import org.secuso.privacyfriendlypaindiary.database.model.User
+import java.util.Calendar
+import java.util.Date
 
 class PainDiaryDatabaseService private constructor(context: Context) : DBServiceInterface {
     private var database: PainDiaryDatabase

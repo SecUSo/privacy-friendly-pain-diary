@@ -12,7 +12,7 @@ import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEnt
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface
-import java.util.*
+import java.util.Date
 
 class DatabaseViewModel(application: Application) : AndroidViewModel(application) {
     val service = PainDiaryDatabaseService.getInstance(application)
