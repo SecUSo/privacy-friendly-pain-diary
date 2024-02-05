@@ -38,7 +38,7 @@ class BackupRestorer : IBackupRestorer {
             version
         ).writableDatabase
         db.beginTransaction()
-        db.setVersion(version)
+        db.version = version
         readDatabaseContent(reader, db)
         db.setTransactionSuccessful()
         db.endTransaction()

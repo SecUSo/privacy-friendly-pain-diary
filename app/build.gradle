@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "org.secuso.privacyfriendlypaindiary"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode 5
         versionName "1.3.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -51,7 +51,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
 
-    def room_version = "2.4.2"
+    def room_version = "2.6.1"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -64,6 +64,15 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     androidTestImplementation "androidx.work:work-testing:$work_version"
+
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
 }
 repositories {
     mavenCentral()
