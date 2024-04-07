@@ -49,6 +49,8 @@
     <string name="help_userdetails_answer">The app does not require you to enter any user details. You are free to enter your name, date of birth and gender and you can delete information you previously entered at any time. The information you enter is not shared or transmitted in any way.</string>
     <string name="help_pdf_export">How can I export my diary entries?</string>
     <string name="help_pdf_export_answer">You can export all diary entries made within a period of time that you specify. You also have the option to share that PDF. Select the menu item "PDF Export" to do so.</string>
+    <string name="help_data_backup">How do I backup my data?</string>
+    <string name="help_data_backup_answer">You can use the separate Privacy Friendly Backup app to backup and restore this application\'s data. This can also be used to migrate your data to a new phone.</string>
 
     <!--### ABOUT ###-->
     <string name="about">About</string>
