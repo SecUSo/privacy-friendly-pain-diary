@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/diaryentry"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -170,9 +170,9 @@
                         android:layout_width="90dp"
                         android:layout_height="220dp"
                         android:scaleType="centerCrop"
-                        android:tint="@color/yellow"
                         app:srcCompat="@drawable/paindiary_person_fullbody"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        app:tint="@color/yellow" />
 
                 </RelativeLayout>
 
@@ -193,9 +193,9 @@
                         android:layout_width="90dp"
                         android:layout_height="220dp"
                         android:scaleType="centerCrop"
-                        android:tint="@color/yellow"
                         app:srcCompat="@drawable/paindiary_person_fullbody"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        app:tint="@color/yellow" />
                 </RelativeLayout>
 
             </LinearLayout>

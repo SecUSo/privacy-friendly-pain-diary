@@ -23,7 +23,7 @@ android {
     }
     namespace 'org.secuso.privacyfriendlypaindiary'
     lint {
-        abortOnError false
+        lintConfig = file("lint.xml")
     }
 
     compileOptions {
