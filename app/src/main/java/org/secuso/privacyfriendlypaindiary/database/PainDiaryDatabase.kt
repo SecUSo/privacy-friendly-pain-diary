@@ -55,11 +55,13 @@ abstract class PainDiaryDatabase : RoomDatabase() {
                 .build()
         }
 
-        private val roomCallback: Callback = object : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-            }
-        }
+        private val roomCallback: Callback = object: Callback() {}
+
+//            object : Callback() {
+//            override fun onCreate(db: SupportSQLiteDatabase) {
+//                super.onCreate(db)
+//            }
+//        }
 
 
         val MIGRATION_1_2 = object : Migration(1, 2) {
