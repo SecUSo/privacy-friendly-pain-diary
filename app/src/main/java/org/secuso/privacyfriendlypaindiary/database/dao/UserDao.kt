@@ -1,13 +1,12 @@
 package org.secuso.privacyfriendlypaindiary.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.secuso.privacyfriendlypaindiary.database.model.User
 
 @Dao
 interface UserDao {
     @Insert
-    fun insert(user: User) : Long
+    fun insert(user: User): Long
 
     @Update
     fun update(user: User)

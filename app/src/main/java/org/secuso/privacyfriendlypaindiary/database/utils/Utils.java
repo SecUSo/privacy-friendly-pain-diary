@@ -13,10 +13,10 @@ public class Utils {
 
     public static String convertBodyRegionEnumSetToString(EnumSet<BodyRegion> bodyRegions) {
         String bodyRegionsAsString = "";
-        for(BodyRegion region : bodyRegions) {
+        for (BodyRegion region : bodyRegions) {
             bodyRegionsAsString += region.getValue() + ",";
         }
-        if(!bodyRegionsAsString.isEmpty()) {
+        if (!bodyRegionsAsString.isEmpty()) {
             bodyRegionsAsString = bodyRegionsAsString.substring(0, bodyRegionsAsString.length() - 1);
         } else {
             bodyRegionsAsString = null;
@@ -26,7 +26,7 @@ public class Utils {
 
     public static EnumSet<BodyRegion> convertStringToBodyRegionEnumSet(String bodyRegionsAsString) {
         EnumSet<BodyRegion> bodyRegions = EnumSet.noneOf(BodyRegion.class);
-        if(bodyRegionsAsString != null && !bodyRegionsAsString.isEmpty()) {
+        if (bodyRegionsAsString != null && !bodyRegionsAsString.isEmpty()) {
             String[] regions = bodyRegionsAsString.split(",");
             for (String bodyRegion : regions) {
                 try {
@@ -42,10 +42,10 @@ public class Utils {
 
     public static String convertPainQualityEnumSetToString(EnumSet<PainQuality> painQualities) {
         String painQualitiesAsString = "";
-        for(PainQuality quality : painQualities) {
+        for (PainQuality quality : painQualities) {
             painQualitiesAsString += quality.toString() + ",";
         }
-        if(!painQualitiesAsString.isEmpty()) {
+        if (!painQualitiesAsString.isEmpty()) {
             painQualitiesAsString = painQualitiesAsString.substring(0, painQualitiesAsString.length() - 1);
         } else {
             painQualitiesAsString = null;
@@ -55,7 +55,7 @@ public class Utils {
 
     public static EnumSet<PainQuality> convertStringToPainQualityEnumSet(String painQualitiesAsString) {
         EnumSet<PainQuality> painQualities = EnumSet.noneOf(PainQuality.class);
-        if(painQualitiesAsString != null && !painQualitiesAsString.isEmpty()) {
+        if (painQualitiesAsString != null && !painQualitiesAsString.isEmpty()) {
             String[] qualities = painQualitiesAsString.split(",");
             for (String quality : qualities) {
                 PainQuality q = PainQuality.fromString(quality);
@@ -67,10 +67,10 @@ public class Utils {
 
     public static String convertTimeEnumSetToString(EnumSet<Time> times) {
         String timesAsString = "";
-        for(Time time : times) {
+        for (Time time : times) {
             timesAsString += time.toString() + ",";
         }
-        if(!timesAsString.isEmpty()) {
+        if (!timesAsString.isEmpty()) {
             timesAsString = timesAsString.substring(0, timesAsString.length() - 1);
         } else {
             timesAsString = null;
@@ -80,7 +80,7 @@ public class Utils {
 
     public static EnumSet<Time> convertStringToTimeEnumSet(String timesAsString) {
         EnumSet<Time> timesOfPain = EnumSet.noneOf(Time.class);
-        if(timesAsString != null && !timesAsString.isEmpty()) {
+        if (timesAsString != null && !timesAsString.isEmpty()) {
             String[] times = timesAsString.split(",");
             for (String time : times) {
                 Time t = Time.fromString(time);

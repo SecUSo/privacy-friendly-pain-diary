@@ -16,8 +16,8 @@
 */
 package org.secuso.privacyfriendlypaindiary.database.entities.impl;
 
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface;
 
 import java.util.Date;
 

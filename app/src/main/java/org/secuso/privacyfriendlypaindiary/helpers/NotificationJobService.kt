@@ -30,10 +30,14 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.preference.PreferenceManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import org.secuso.privacyfriendlypaindiary.R
 import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService.Companion.getInstance
-import java.util.*
+import java.util.Calendar
 
 /**
  * Responsible for scheduling and displaying snoozable daily reminder notifications

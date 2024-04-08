@@ -26,7 +26,7 @@ data class Drug(
         }
     }
 
-    fun toDrugInterface() : DrugInterface {
+    fun toDrugInterface(): DrugInterface {
         val drugInterface = org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug(
             name,
             dose

@@ -2,13 +2,12 @@ package org.secuso.privacyfriendlypaindiary.database.dao
 
 import androidx.room.*
 import org.secuso.privacyfriendlypaindiary.database.model.DiaryEntry
-import org.secuso.privacyfriendlypaindiary.database.model.Drug
 import java.util.*
 
 @Dao
 interface DiaryEntryDao {
     @Insert
-    fun insert(diaryEntry: DiaryEntry) : Long
+    fun insert(diaryEntry: DiaryEntry): Long
 
     @Update
     fun update(diaryEntry: DiaryEntry)
@@ -29,7 +28,7 @@ interface DiaryEntryDao {
     fun deleteDiaryEntryByID(id: Long)
 
     @Query("SELECT MAX(_id) FROM diaryentries")
-    fun getIDOfLatestDiaryEntry() : Long
+    fun getIDOfLatestDiaryEntry(): Long
 
     @Query("SELECT date FROM diaryentries WHERE date >= :startDate AND date <= :endDate ORDER BY DATE(date) asc")
     fun getDatesByDateRange(startDate: Date, endDate: Date): Array<Date>

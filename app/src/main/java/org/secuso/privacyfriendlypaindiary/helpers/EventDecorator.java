@@ -29,7 +29,7 @@ import java.util.Set;
  *
  * @author Susanne Felsen
  * @version 20171205
- *
+ * <p>
  * Adapted from <a href="https://github.com/prolificinteractive/material-calendarview/blob/master/docs/DECORATORS.md">here</a>.
  */
 public class EventDecorator implements DayViewDecorator {

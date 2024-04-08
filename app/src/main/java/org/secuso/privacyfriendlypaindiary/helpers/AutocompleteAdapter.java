@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author Susanne Felsen
  * @version 20180105
- *
+ * <p>
  * Example found <a href="https://stackoverflow.com/questions/33047156/how-to-create-custom-baseadapter-for-autocompletetextview">here</a>.
  */
 public class AutocompleteAdapter extends ArrayAdapter<DrugInterface> {
@@ -74,9 +74,9 @@ public class AutocompleteAdapter extends ArrayAdapter<DrugInterface> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         final View view;
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             view = inflater.inflate(mResourceId, parent, false);
         } else {
@@ -84,13 +84,13 @@ public class AutocompleteAdapter extends ArrayAdapter<DrugInterface> {
         }
 
         final DrugInterface drug = getItem(position);
-        if(drug != null) {
+        if (drug != null) {
             String nameToDisplay = drug.getName();
-            if(drug.getDose() != null) {
+            if (drug.getDose() != null) {
                 nameToDisplay += " (" + drug.getDose() + ")";
             }
 
-            if(view instanceof TextView) {
+            if (view instanceof TextView) {
                 ((TextView) view).setText(nameToDisplay);
             }
         }

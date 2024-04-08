@@ -16,8 +16,8 @@
 */
 package org.secuso.privacyfriendlypaindiary.database.entities.impl;
 
-import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
+import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugIntakeInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface;
 
@@ -72,8 +72,8 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
         this.condition = condition;
         this.painDescription = painDescription;
         this.notes = notes;
-        if(intakes != null) {
-            for(DrugIntakeInterface intake : intakes) {
+        if (intakes != null) {
+            for (DrugIntakeInterface intake : intakes) {
                 addDrugIntake(intake);
             }
         }
@@ -138,8 +138,8 @@ public class DiaryEntry extends AbstractPersistentObject implements DiaryEntryIn
 
     @Override
     public DrugIntakeInterface getDrugIntakeByID(long id) {
-        for(DrugIntakeInterface intake : intakes) {
-            if(intake.getObjectID() == id) {
+        for (DrugIntakeInterface intake : intakes) {
+            if (intake.getObjectID() == id) {
                 return intake;
             }
         }

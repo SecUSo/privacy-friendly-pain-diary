@@ -1,13 +1,12 @@
 package org.secuso.privacyfriendlypaindiary.database.dao
 
 import androidx.room.*
-import org.secuso.privacyfriendlypaindiary.database.model.DiaryEntry
 import org.secuso.privacyfriendlypaindiary.database.model.PainDescription
 
 @Dao
 interface PainDescriptionDao {
     @Insert
-    fun insert(painDescription: PainDescription) : Long
+    fun insert(painDescription: PainDescription): Long
 
     @Update
     fun update(painDescription: PainDescription)

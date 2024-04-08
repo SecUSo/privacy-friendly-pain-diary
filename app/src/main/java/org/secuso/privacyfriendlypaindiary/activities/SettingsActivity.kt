@@ -16,13 +16,18 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.preference.Preference.OnPreferenceClickListener
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -56,6 +61,10 @@ class SettingsActivity : BaseActivity() {
     }
 
     class GeneralPreferenceFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
+        companion object {
+            const val REQUEST_CODE_POST_NOTIFICATION = 3
+        }
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             initPreferences()
@@ -87,6 +96,7 @@ class SettingsActivity : BaseActivity() {
         }
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+            checkPermission()
             if (key == KEY_PREF_REMINDER) {
                 val enabled = sharedPreferences.getBoolean(KEY_PREF_REMINDER, false)
                 if (enabled) {
@@ -101,6 +111,25 @@ class SettingsActivity : BaseActivity() {
                     NotificationJobService.scheduleJob(activity.applicationContext)
                 }
             }
+        }
+
+        private fun checkPermission(): Boolean {
+            //Check for notification permission and exact alarm permission
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                        && ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+            ) {
+                AlertDialog.Builder(this.context)
+                    .setMessage(R.string.dialog_need_permission_for_notifications)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        ActivityCompat.requestPermissions(this.activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_CODE_POST_NOTIFICATION)
+                    }
+                    .setTitle(R.string.dialog_need_permission_for_notifications_title)
+                    .setCancelable(true)
+                    .create()
+                    .show()
+                return false
+            }
+            return true
         }
 
         private fun resetApp() {

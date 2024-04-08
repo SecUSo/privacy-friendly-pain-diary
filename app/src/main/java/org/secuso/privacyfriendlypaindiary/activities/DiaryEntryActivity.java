@@ -16,6 +16,7 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -60,7 +61,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.secuso.privacyfriendlypaindiary.R;
-import org.secuso.privacyfriendlypaindiary.database.DBServiceInterface;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
@@ -149,7 +149,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diaryentry);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             currentPage = savedInstanceState.getInt("current");
         }
 
@@ -1157,6 +1157,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         if (changesMade) {
