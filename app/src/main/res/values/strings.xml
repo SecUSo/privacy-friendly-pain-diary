@@ -169,5 +169,7 @@
     <string name="export_success">PDF was saved to documents folder.</string>
     <string name="export_failure">Unknown Error: PDF could not be saved.</string>
     <string name="share_caution">Be careful who you share your medical information with.</string>
+    <string name="dialog_need_permission_for_notifications">Permission to send notifications is needed for this feature.</string>
+    <string name="dialog_need_permission_for_notifications_title">Enable notifications</string>
 
 </resources>

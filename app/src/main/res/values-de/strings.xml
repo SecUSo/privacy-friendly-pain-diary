@@ -164,6 +164,8 @@
     <string name="export_success">PDF wurde im Dokumenten-Ordner gespeichert.</string>
     <string name="export_failure">Unbekannter Fehler: PDF konnte nicht gespeichert werden.</string>
     <string name="share_caution">Seien Sie vorsichtig, mit wem Sie Ihre medizinischen Informationen teilen.</string>
+    <string name="dialog_need_permission_for_notifications">Für diese Funktion ist die Berechtigung zum Senden von Benachrichtigungen erforderlich.</string>
+    <string name="dialog_need_permission_for_notifications_title">Benachrichtigungen aktivieren</string>
 
 
 </resources>
