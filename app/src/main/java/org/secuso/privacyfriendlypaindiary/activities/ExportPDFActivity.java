@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -74,7 +75,7 @@ public class ExportPDFActivity extends AppCompatActivity {
     private TextInputLayout startDateWrapper;
     private TextInputLayout endDateWrapper;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
     private Date startDate;
     private Date endDate;
 
@@ -134,7 +135,7 @@ public class ExportPDFActivity extends AppCompatActivity {
             case R.id.btn_export:
                 LiveData<File> fileLive = exportAsPDF();
                 final ExportPDFActivity activity = this;
-                fileLive.observe(this, new Observer<File>() {
+                fileLive.observe(this, new Observer<>() {
                     @Override
                     public void onChanged(File file) {
                         if (file != null) {
@@ -196,7 +197,7 @@ public class ExportPDFActivity extends AppCompatActivity {
     }
 
     private LiveData<File> exportAsPDF() {
-        final MutableLiveData<File>[] file = new MutableLiveData[]{new MutableLiveData<>()};
+        final MutableLiveData<File> file = new MutableLiveData<>();
         if (startDate == null) {
             startDateWrapper.setError(getString(R.string.start_date_error));
         } else if (endDate == null) {
@@ -206,25 +207,22 @@ public class ExportPDFActivity extends AppCompatActivity {
             diaryEntriesLive.observe(this, diaryEntryInterfaces -> {
                 long userID = new PrefManager(this).getUserID();
                 if (userID == AbstractPersistentObject.INVALID_OBJECT_ID) {
-                    file[0].setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, new User()).createPdfDocument()));
+                    file.setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, new User()).createPdfDocument()));
                 } else {
                     LiveData<UserInterface> userLive = database.getUserByID(userID);
                     userLive.observe(this, userInterface -> {
-                        file[0].setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, userInterface).createPdfDocument()));
+                        file.setValue(exportAsPDF(new PdfCreator(this, startDate, endDate, diaryEntryInterfaces, userInterface).createPdfDocument()));
                     });
                 }
             });
         }
-        return file[0];
+        return file;
     }
 
     private File exportAsPDF(PdfDocument doc) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(ExportPDFActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(ExportPDFActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
                 return null;
             }
         }
@@ -237,7 +235,7 @@ public class ExportPDFActivity extends AppCompatActivity {
             }
         }
 
-        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat s = new SimpleDateFormat("ddMMyyyy", Locale.getDefault());
         String filename = s.format(startDate) + "-" + s.format(endDate);
         File file = new File(directory, filename + ".pdf");
         if (file.exists()) {
@@ -277,17 +275,15 @@ public class ExportPDFActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, getString(R.string.permission_write_granted), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.permission_write_denied), Toast.LENGTH_LONG).show();
-                }
-                return;
+        if (requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, getString(R.string.permission_write_granted), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, getString(R.string.permission_write_denied), Toast.LENGTH_LONG).show();
             }
+            return;
         }
     }
 
