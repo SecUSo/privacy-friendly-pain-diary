@@ -1,5 +1,20 @@
 # Changelog
 
+<a name="v1.3.2"></a>
+## [Pain Diary (Privacy Friendly) v1.3.2](https://github.com/SecUSo/privacy-friendly-pain-diary/releases/tag/v1.3.2) - 08 Apr 2024
+
+## What's Changed
+* Update dependencies by [@udenr](https://github.com/udenr) in https://github.com/SecUSo/privacy-friendly-pain-diary/pull/38
+* Fix storage permission for pdf export by [@udenr](https://github.com/udenr) in https://github.com/SecUSo/privacy-friendly-pain-diary/pull/43
+* Fix some lint errors by [@udenr](https://github.com/udenr) in https://github.com/SecUSo/privacy-friendly-pain-diary/pull/44
+* Update to version 1.3.2 by [@udenr](https://github.com/udenr) in https://github.com/SecUSo/privacy-friendly-pain-diary/pull/45
+
+
+**Full Changelog**: https://github.com/SecUSo/privacy-friendly-pain-diary/compare/v1.3.1...v1.3.2
+
+[Changes][v1.3.2]
+
+
 <a name="v1.3.1"></a>
 ## [Pain Diary (Privacy Friendly) v1.3.1](https://github.com/SecUSo/privacy-friendly-pain-diary/releases/tag/v1.3.1) - 12 Mar 2024
 
@@ -69,6 +84,7 @@ https://secuso.org/pfa.
 [Changes][v1.0]
 
 
+[v1.3.2]: https://github.com/SecUSo/privacy-friendly-pain-diary/compare/v1.3.1...v1.3.2
 [v1.3.1]: https://github.com/SecUSo/privacy-friendly-pain-diary/compare/v1.3.0...v1.3.1
 [v1.3.0]: https://github.com/SecUSo/privacy-friendly-pain-diary/compare/v1.2...v1.3.0
 [v1.2]: https://github.com/SecUSo/privacy-friendly-pain-diary/compare/v1.0...v1.2
