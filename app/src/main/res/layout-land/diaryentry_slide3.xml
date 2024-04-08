@@ -78,9 +78,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:tint="@color/yellow"
                     app:srcCompat="@drawable/paindiary_person_fullbody"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:tint="@color/yellow" />
 
             </RelativeLayout>
 
@@ -109,9 +109,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:tint="@color/yellow"
                     app:srcCompat="@drawable/paindiary_person_fullbody"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:tint="@color/yellow" />
 
             </RelativeLayout>
 

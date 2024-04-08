@@ -16,6 +16,7 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -1156,6 +1157,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         if (changesMade) {
