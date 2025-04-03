@@ -11,6 +11,9 @@ import org.secuso.privacyfriendlypaindiary.database.model.Drug
 import org.secuso.privacyfriendlypaindiary.database.model.DrugIntake
 import org.secuso.privacyfriendlypaindiary.database.model.PainDescription
 import org.secuso.privacyfriendlypaindiary.database.model.User
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug as ImplDrug
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.DrugIntake as ImplDrugIntake
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry as ImplDiaryEntry
 import java.util.Calendar
 import java.util.Date
 
@@ -126,9 +129,7 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
                 ?.toPainDescriptionInterface()
         val notes = entry.notes
         val intakes = getDrugIntakesForDiaryEntry(entry._id)
-
-        val diaryEntryInterface =
-            org.secuso.privacyfriendlypaindiary.database.entities.impl.DiaryEntry(
+        val diaryEntryInterface = ImplDiaryEntry(
                 date, condition, painDescription, notes, intakes
             )
         diaryEntryInterface.objectID = entry._id
@@ -232,8 +233,7 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
         if (drug == null) {
             return null
         }
-        val drugInterface: DrugInterface =
-            org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug(drug.name, drug.dose)
+        val drugInterface: DrugInterface = ImplDrug(drug.name, drug.dose)
         drugInterface.objectID = drug._id
         return drugInterface
     }
@@ -293,11 +293,9 @@ class PainDiaryDatabaseService private constructor(context: Context) : DBService
     private fun getDrugIntakeByID(id: Long): DrugIntakeInterface? {
         val drugIntake = database.drugIntakeDao().loadDrugIntakeByID(id) ?: return null
         val drug = database.drugDao().loadDrugByID(drugIntake.drug_id) ?: return null
-        val drugInterface =
-            org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug(drug.name, drug.dose)
+        val drugInterface = ImplDrug(drug.name, drug.dose)
         drugInterface.objectID = drug._id
-        val drugIntakeInterface =
-            org.secuso.privacyfriendlypaindiary.database.entities.impl.DrugIntake(
+        val drugIntakeInterface = ImplDrugIntake(
                 drugInterface,
                 drugIntake.morning, drugIntake.noon, drugIntake.evening, drugIntake.night
             )

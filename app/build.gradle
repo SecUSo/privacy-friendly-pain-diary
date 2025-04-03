@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'com.google.devtools.ksp'
 }
 
 android {
+    namespace "org.secuso.privacyfriendlypaindiary"
     defaultConfig {
         applicationId "org.secuso.privacyfriendlypaindiary"
         minSdkVersion 21

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DrugInterface
-
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug as ImplDrug
 @Entity(tableName = "drugs")
 data class Drug(
     @PrimaryKey(autoGenerate = true)
@@ -27,7 +27,7 @@ data class Drug(
     }
 
     fun toDrugInterface(): DrugInterface {
-        val drugInterface = org.secuso.privacyfriendlypaindiary.database.entities.impl.Drug(
+        val drugInterface = ImplDrug(
             name,
             dose
         )
