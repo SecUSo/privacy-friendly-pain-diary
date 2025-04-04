@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.PainDescriptionInterface
 import org.secuso.privacyfriendlypaindiary.database.utils.Utils
-
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.PainDescription as ImplPainDescription
 @Entity(tableName = "paindescriptions")
 data class PainDescription(
     @PrimaryKey(autoGenerate = true)
@@ -43,8 +43,7 @@ data class PainDescription(
     }
 
     fun toPainDescriptionInterface(): PainDescriptionInterface {
-        val painDescription =
-            org.secuso.privacyfriendlypaindiary.database.entities.impl.PainDescription(
+        val painDescription = ImplPainDescription(
                 painLevel,
                 Utils.convertStringToBodyRegionEnumSet(bodyRegions),
                 Utils.convertStringToPainQualityEnumSet(painQualities),

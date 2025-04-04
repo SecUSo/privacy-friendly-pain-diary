@@ -19,6 +19,6 @@ Privacy Friendly Pain Diary distinguishes itself from many other applications in
 Privacy Friendly Pain Diary belongs to the group of Privacy Friendly Apps developed by the SECUSO research group at Karlsruhe Institue of Technology. Privacy Friendly Apps are Android applications which are optimized regarding privacy. Further information can be found here: https://secuso.org/pfa.
 
 You can reach us via
-Twitter - @SECUSOResearch https://twitter.com/secusoresearch
+Bluesky - @secusoresearch.bsky.social https://bsky.app/profile/secusoresearch.bsky.social
 Mastodon - @SECUSO_Research@bawü.social https://xn--baw-joa.social/@SECUSO_Research/
-Job opening - https://secuso.aifb.kit.edu/english/Job_Offers_1557.php
+Job opening - https://secuso.aifb.kit.edu/english/Job_Offers.php

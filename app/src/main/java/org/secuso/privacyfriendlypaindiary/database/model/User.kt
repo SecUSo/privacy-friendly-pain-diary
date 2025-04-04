@@ -5,6 +5,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Gender
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.UserInterface
+import org.secuso.privacyfriendlypaindiary.database.entities.impl.User as ImplUser
 import java.util.Date
 
 @Entity(tableName = "users")
@@ -39,7 +40,7 @@ data class User(
     }
 
     fun toUserInterface(): UserInterface {
-        val userInterface = org.secuso.privacyfriendlypaindiary.database.entities.impl.User(
+        val userInterface = ImplUser(
             firstname,
             lastname,
             gender?.let { Gender.valueOf(it) },
