@@ -1,0 +1,173 @@
+<resources>
+    <string name="app_name">Pain Diary</string>
+    <string name="app_name_long">Journal intime et privé des douleurs</string>
+    <string name="app_prefix" translatable="false">Respectueux de la Vie Privée</string>
+
+    <!-- ### DRAWER ###-->
+    <string name="action_help">Aide</string>
+    <string name="action_about">À propos</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_main">Accueil</string>
+    <string name="action_tutorial">Tutoriel</string>
+
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+
+    <!-- ### GENERAL ### -->
+    <string name="okay">Ok</string>
+    <string name="back">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="skip">Passer</string>
+    <string name="save">Sauver</string>
+    <string name="save_error">Sauvegarde impossible.</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
+    <string name="changes_saved">Changements sauvegardés.</string>
+    <string name="changes_discarded">Changements annulés.</string>
+    <string name="edit">Éditer</string>
+    <string name="delete">Supprimer</string>
+    <string name="set">Définir</string>
+
+    <!-- ### MAIN ### -->
+    <string name="welcome_question">Comment vous sentez-vous aujourd\'hui ?</string>
+
+    <!--### HELP ###-->
+    <string name="help">Aide</string>
+
+    <string name="help_whatis">Qu\'est-ce que Pain Diary ?</string>
+    <string name="help_whatis_answer">Pain Diary est une application qui vous permet de tenir un journal quotidien dans lequel vous consignez votre état de santé, l\'intensité, le lieu, la nature et l\'heure de la douleur que vous ressentez, ainsi que les médicaments que vous prenez et des notes supplémentaires.</string>
+    <string name="help_privacy">Qu\'est-ce qui rend l\'application respectueuse de la vie privée ?</string>
+    <string name="help_privacy_answer">Privacy Friendly Pain Diary requiert des autorisations minimales. Il n\'inclut pas de mécanismes de suivi, ni de publicité.</string>
+    <string name="help_permission">Quelles sont les autorisations requises pour l\'application ?</string>
+    <string name="help_permission_answer">Pain Diary nécessite un accès en écriture au stockage de votre appareil si vous souhaitez exporter les entrées de votre journal au format PDF. Toutes les autres fonctionnalités ne nécessitent aucune autorisation.</string>
+
+    <string name="help_add_entry">Comment ajouter une nouvelle entrée dans le journal ?</string>
+    <string name="help_add_entry_answer">Une nouvelle entrée dans le journal peut être ajoutée en sélectionnant un jour dans le calendrier. Il ne peut toutefois y avoir qu\'une seule entrée par jour. Les jours pour lesquels des entrées existent déjà sont marqués dans le calendrier.</string>
+    <string name="help_entry_information">Quelles informations sont enregistrées dans une entrée de journal ?</string>
+    <string name="help_entry_information_answer">Les entrées du journal peuvent être utilisées pour documenter votre état et l\'intensité, la localisation, la nature et le moment de la douleur que vous ressentez. Les médicaments que vous prenez et des notes supplémentaires peuvent également être enregistrés.</string>
+    <string name="help_userdetails">Dois-je entrer les détails de l\'utilisateur ?</string>
+    <string name="help_userdetails_answer">L\'application ne vous demande pas de saisir des données d\'utilisateur. Vous êtes libre de saisir votre nom, votre date de naissance et votre sexe et vous pouvez supprimer à tout moment les informations que vous avez précédemment saisies. Les informations que vous saisissez ne sont ni partagées ni transmises de quelque manière que ce soit.</string>
+    <string name="help_pdf_export">Comment puis-je exporter mes entrées de mon journal ?</string>
+    <string name="help_pdf_export_answer">Vous pouvez exporter toutes les entrées de journal effectuées au cours d\'une période que vous spécifiez. Vous avez également la possibilité de partager ce PDF. Pour ce faire, sélectionnez l\'élément de menu "Exportation PDF".</string>
+
+    <!--### ABOUT ###-->
+    <string name="about">À propos</string>
+    <string name="version_number">Version</string>
+    <string name="about_author">Auteurs : </string>
+    <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
+    <string name="about_author_contributors">et les contributeurs.</string>
+    <string name="about_affiliation">En collaboration avec</string>
+    <string name="privacy_friendly">Cette application appartient au groupe des applications respectueuses de la vie privée développées par la Technische Universität Darmstadt. Code source sous licence GPLv3. Images copyright TU Darmstadt et Google Inc.</string>
+    <string name="more_info">Vous trouverez de plus amples informations sur :</string>
+    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Dépôt Github</a></string>
+    <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">Site web SECUSO</a></string>
+
+    <!-- ### SETTINGS ### -->
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="pref_header_general">Général</string>
+    <string name="pref_reset">Réinitialiser l\'application</string>
+    <string name="pref_reset_summary">Supprimer toutes les entrées du journal et les détails de l\'utilisateur</string>
+    <string name="pref_reset_warning">Toutes les entrées du journal et les détails de l\'utilisateur seront irrévocablement effacés. Êtes-vous sûr ?</string>
+    <string name="pref_medication">Mémoriser les médicaments</string>
+    <string name="pref_medication_summary">Le dernier médicament saisi est automatiquement ajouté aux nouvelles saisies.</string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_reminder">Rappel quotidien</string>
+    <string name="pref_reminder_time">Heure de rappel</string>
+
+    <!-- ### TUTORIAL DIALOG ### -->
+    <string name="slide1_heading">Bienvenue !</string>
+    <string name="slide1_text">Cette application vous permet de tenir un journal quotidien dans lequel vous consignez votre état et l\'intensité, le lieu, la nature et l\'heure de la douleur que vous ressentez, ainsi que les médicaments que vous prenez et des notes supplémentaires.</string>
+
+    <string name="slide2_heading">Nouvelle entrée dans le journal</string>
+    <string name="slide2_text">The main view of this app is a calendar. You can add a new diary entry by selecting a day in this calendar. You will then be asked to answer questions regarding your condition and the pain you are experiencing.</string>
+
+    <string name="slide3_heading">Détails de l\'utilisateur</string>
+    <string name="slide3_text">At the end of this tutorial you will be asked to enter your user details. This step is optional and can be skipped. User details can also be entered or deleted at a later point.</string>
+
+    <string name="slide4_heading">Github et Guide</string>
+    <string name="slide4_text">Le code source de cette application est disponible sur GitHub. Pour plus d\'explications, consultez la page d\'aide ou le guide des applications respectueuses de la vie privée.</string>
+
+    <!-- ### USER DETAILS ### -->
+    <string name="user_details">Détails de l\'utilisateur </string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="date_of_birth">Date de naissance</string>
+    <string name="gender">Genre</string>
+    <string name="name_invalid">Veuillez entrer un nom valide.</string>
+    <string name="date_invalid">Veuillez entrer une date valide.</string>
+
+    <!-- ### GENDER ### -->
+    <string name="male">Homme</string>
+    <string name="female">Femme</string>
+    <string name="other">Autre</string>
+
+    <!-- ### PAIN DESCRIPTION ### -->
+    <string name="pain_stabbing">coup de couteau</string>
+    <string name="pain_dull">ennuyeux</string>
+    <string name="pain_shooting">tirant</string>
+    <string name="pain_burning">brûlure</string>
+    <string name="pain_throbbing">palpitant</string>
+
+    <!-- ### DIARY ENTRY ### -->
+    <string name="new_diary_entry">Nouvelle entrée de journal</string>
+    <string name="edit_diary_entry">Modifier l\'entrée du journal</string>
+    <string name="warning_leaving">Les informations que vous avez saisies seront perdues. Voulez-vous continuer ?</string>
+    <string name="heading_condition">Comment vous sentez-vous ?</string>
+    <string name="heading_painlevel">Quelle est l\'intensité de votre douleur ?</string>
+    <string name="subheading_painlevel">(0 = pas de douleur, 10 = douleur très forte (au bord de l\'évanouissement))</string>
+    <string name="heading_bodyregion">Où ressentez-vous la douleur ?</string>
+    <string name="body_front">Devant :</string>
+    <string name="body_back">Derrière :</string>
+    <string name="heading_paindescription">Quelle est la nature de votre douleur ?</string>
+    <string name="heading_timeofpain">Quand ressentez-vous la douleur ??</string>
+    <string name="time_day">pendant la journée</string>
+    <string name="time_morning">le matin</string>
+    <string name="time_afternoon">l\'après-midi</string>
+    <string name="time_evening">le soir</string>
+    <string name="time_night">durant la nuit</string>
+    <string name="heading_notes">Avez-vous des commentaires supplémentaires ?</string>
+    <string name="subheading_notes">(par exemple, concernant l\'exercice physique ou le régime alimentaire)</string>
+    <string name="heading_medication">Quels médicaments prenez-vous ?</string>
+    <string name="subheading_medication">Appuyez sur le + vert pour ajouter de nouveaux médicaments. Entrez la quantité (par exemple le nombre de comprimés) que vous prenez le matin, à midi, le soir et la nuit.</string>
+    <string name="medication">Médicaments</string>
+    <string name="medication_name">Nom</string>
+    <string name="dose">Dosage</string>
+
+    <!-- ### VIEW DIARY ENTRY ### -->
+    <string name="condition">Condition :</string>
+    <string name="painlevel">Intensité de la douleur :</string>
+    <string name="bodyregion">Localisation de la douleur :</string>
+    <string name="paindescription">Nature de la douleur :</string>
+    <string name="unknown">inconnu</string>
+    <string name="timeofpain">Moment de la douleur :</string>
+    <string name="notes">Commentaires :</string>
+    <string name="none">aucun</string>
+    <string name="medication_taken">Médicaments pris :</string>
+    <string name="warning_deleting">Êtes-vous sûr de vouloir supprimer cette entrée du journal ?</string>
+
+    <!-- ### REMINDER ### -->
+    <string name="reminders_channel_title">Rappels</string>
+    <string name="notification_title">Rappel</string>
+    <string name="notification_text">N\'oubliez pas de compléter votre journal !</string>
+    <string name="snooze">Rappeler plus tard</string>
+
+    <!-- ### PDF ### -->
+    <string name="export_pdf">Export PDF</string>
+    <string name="export">Exporter</string>
+    <string name="share">Partager</string>
+    <string name="heading_export">Veuillez sélectionner une série de dates pour lesquelles les entrées de votre journal de la douleur doivent être exportées au format PDF.</string>
+    <string name="start_date">Date de début</string>
+    <string name="end_date">Date de fin</string>
+    <string name="start_date_error">Merci d\'entrer une date de début.</string>
+    <string name="end_date_error">Merci d\'entrer une date de fin.</string>
+    <string name="patient_details">Détails du patient</string>
+    <string name="diary_entries">Entrées du journal</string>
+    <string name="diary_entries_none">Pas d\'entrées trouvées.</string>
+    <string name="permission_write_error">Erreur : Vous n\'avez pas la permission d\'écrire</string>
+    <string name="permission_write_denied">Permission refusée. Impossible d\'exporter les entrées du journal.</string>
+    <string name="permission_write_granted">Permission accordée. Veuillez réessayer.</string>
+    <string name="export_success">Le fichier PDF a été enregistré dans le dossier des documents.</string>
+    <string name="export_failure">Erreur inconnue : Le fichier PDF n\'a pas pu être enregistré.</string>
+    <string name="share_caution">Faites attention à qui vous partagez vos informations médicales.</string>
+
+</resources>
