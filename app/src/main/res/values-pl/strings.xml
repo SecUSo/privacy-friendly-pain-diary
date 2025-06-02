@@ -1,21 +1,18 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dziennik Bólu</string>
     <string name="app_name_long">Privacy Friendly Dziennik Bólu</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
-
     <!-- ### DRAWER ###-->
     <string name="action_help">Pomoc</string>
-    <string name="action_about">O aplikacji</string>
+    <string name="action_about">O</string>
     <string name="action_settings">Ustawienia</string>
-    <string name="action_main">Ekran główny</string>
+    <string name="action_main">Główny</string>
     <string name="action_tutorial">Samouczek</string>
-
-    <string name="navigation_drawer_open">Otwórz menu boczne</string>
-    <string name="navigation_drawer_close">Zamknij menu boczne</string>
-
+    <string name="navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
+    <string name="navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
     <!-- ### GENERAL ### -->
-    <string name="okay">OK</string>
+    <string name="okay">Ok</string>
     <string name="back">Wróć</string>
     <string name="next">Dalej</string>
     <string name="skip">Pomiń</string>
@@ -28,20 +25,16 @@
     <string name="edit">Edytuj</string>
     <string name="delete">Usuń</string>
     <string name="set">Ustaw</string>
-
     <!-- ### MAIN ### -->
     <string name="welcome_question">Jak się dziś czujesz?</string>
-
     <!--### HELP ###-->
     <string name="help">Pomoc</string>
-
     <string name="help_whatis">Czym jest Privacy Friendly Dziennik Bólu</string>
     <string name="help_whatis_answer">Privacy Friendly Dziennik Bólu jest szanującą prywatność użytkownika aplikacją pozwalającą na sporządzanie wpisów dotyczących samopoczucia oraz natężenia, miejsca, typu i czasu występowania odczuwanego bólu, jak również branych leków. Istnieje również opcja wpisania dodatkowych komentarzy. </string>
-    <string name="help_privacy">W jaki sposób aplikacja szanuje moją prywatność?</string>
+    <string name="help_privacy">Co sprawia, że aplikacja jest przyjazna dla prywatności?</string>
     <string name="help_privacy_answer">Aplikacja wymaga najmniejszej możliwej liczby uprawnień.  Ponadto nie zawiera elementów śledzących ani reklam. </string>
     <string name="help_permission">Jakie uprawnienia są wymagane przez aplikację?</string>
     <string name="help_permission_answer">Jeśli użytkownik chce wyeksportować wpisy z dziennika do pliku PDF musi udzielić aplikacji uprawnienia pamięci. Wszystkie inne funkcje nie wymagają żadnych uprawnień.</string>
-
     <string name="help_add_entry">Jak dodać nowy wpis?</string>
     <string name="help_add_entry_answer">Aby utworzyć nowy wpis należy wybrać dzień w kalendarzu. Obowiązuje limit jednego wpisu na dzień. Dni, w których wpis już występuje są oznaczone w kalendarzu.</string>
     <string name="help_entry_information">Jakie informacje mogą być zapisane we wpisie w dzienniku?</string>
@@ -49,20 +42,18 @@
     <string name="help_userdetails">Czy muszę podawać swoje dane?</string>
     <string name="help_userdetails_answer">Użytkownik nie musi wprowadzać żadnych informacji osobistych. Podanie swojego imienia, daty urodzenia oraz płci jest całkowicie dobrowolne. Powyższe informacje przechowywane są na urządzeniu i nie są w żaden sposób udostępniane bądź przekazywane oraz mogą zostać usunięte w dowolnym momencie.</string>
     <string name="help_pdf_export">W jaki sposób mogę wyeksportować moje wpisy?</string>
-    <string name="help_pdf_export_answer">Wyeksportować można wpisy ze wskazanego przez użytkownika okresu. Plik PDF można również udostępnić z poziomu aplikacji. W celu wyeksportowania wybierz opcję &quot;Eksport do PDF&quot; w bocznym menu.</string>
-
+    <string name="help_pdf_export_answer">Wyeksportować można wpisy ze wskazanego przez użytkownika okresu. Plik PDF można również udostępnić z poziomu aplikacji. W celu wyeksportowania wybierz opcję "Eksport do PDF" w bocznym menu.</string>
     <!--### ABOUT ###-->
-    <string name="about">O aplikacji</string>
+    <string name="about">O</string>
     <string name="version_number">Wersja</string>
-    <string name="about_author">Autorzy</string>
+    <string name="about_author">Autorzy:</string>
     <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
-    <string name="about_author_contributors">oraz współautorzy.</string>
+    <string name="about_author_contributors">i współtwórcy.</string>
     <string name="about_affiliation">We współpracy z</string>
-    <string name="privacy_friendly">Aplikacja jest częścią grupy Privacy Friendly Apps stworzonych przez Technische Universität Darmstadt. Kod źródłowy jest objęty licencją GPLv3. Posiadaczami praw autorskich do obrazów są TU Darmstadt oraz Google Inc.</string>
-    <string name="more_info">Więcej informacji:</string>
+    <string name="privacy_friendly">Ta aplikacja należy do grupy Aplikacji Przyjaznych Prywatności opracowanych przez Karlsruhe Institute of Technology. Kod źródłowy licencjonowany na zasadach GPLv3. Prawa autorskie do obrazów KIT i Google Inc.</string>
+    <string name="more_info">Więcej informacji można znaleźć na stronie:</string>
     <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Github-Repo</a></string>
     <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
-
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Ustawienia</string>
     <string name="pref_header_general">Ogólne</string>
@@ -74,20 +65,15 @@
     <string name="pref_header_notifications">Przypomnienia</string>
     <string name="pref_reminder">Codzienne przypomnienie</string>
     <string name="pref_reminder_time">Czas przypomnienia</string>
-
     <!-- ### TUTORIAL DIALOG ### -->
-    <string name="slide1_heading">Witaj!</string>
+    <string name="slide1_heading">Witamy!</string>
     <string name="slide1_text">Dzięki tej aplikacji będziesz mógł sporządzać wpisy dotyczące samopoczucia oraz natężenia, miejsca, typu i czasu występowania odczuwanego bólu, jak również branych leków. Możesz również wpisać dodatkowe komentarze.</string>
-
     <string name="slide2_heading">Nowy wpis</string>
     <string name="slide2_text">Głównym elementem interfejsu jest kalendarz. Aby dodać nowy wpis wybierz odpowiedni dzień. Zostaniesz poproszony o udzielenie odpowiedzi na pytania dotyczące twojego samopoczucia oraz odczuwanego bólu.</string>
-
     <string name="slide3_heading">Dane osobowe</string>
     <string name="slide3_text">Na koniec zostaniesz poproszony o podanie danych osobowych. Ten krok nie jest obowiązkowy i może zostać pominięty. Dane osobowe mogą być wprowadzone lub usunięte w dowolnym momencie.</string>
-
     <string name="slide4_heading">Github oraz Pomoc</string>
-    <string name="slide4_text">Kod źródłowy aplikacji dostępny jest na GitHubie. W celu uzyskania dodatkowych informacji przejdź do zakładki &quot;Pomoc&quot; w menu bocznym bądź przeczytaj Privacy Friendly App Guide</string>
-
+    <string name="slide4_text">Kod źródłowy aplikacji dostępny jest na GitHubie. W celu uzyskania dodatkowych informacji przejdź do zakładki "Pomoc" w menu bocznym bądź przeczytaj Privacy Friendly App Guide</string>
     <!-- ### USER DETAILS ### -->
     <string name="user_details">Dane osobowe</string>
     <string name="first_name">Imię</string>
@@ -96,19 +82,16 @@
     <string name="gender">Płeć</string>
     <string name="name_invalid">Wprowadź poprawne imię</string>
     <string name="date_invalid">Wprowadź poprawną datę.</string>
-
     <!-- ### GENDER ### -->
     <string name="male">mężczyzna</string>
     <string name="female">kobieta</string>
     <string name="other">inne</string>
-
     <!-- ### PAIN DESCRIPTION ### -->
     <string name="pain_stabbing">kłujący</string>
     <string name="pain_dull">tępy</string>
     <string name="pain_shooting">przeszywający</string>
     <string name="pain_burning">palący</string>
     <string name="pain_throbbing">pulsujący</string>
-
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Nowy wpis</string>
     <string name="edit_diary_entry">Edytuj Wpis</string>
@@ -133,7 +116,6 @@
     <string name="medication">Lekarstwo</string>
     <string name="medication_name">Nazwa</string>
     <string name="dose">Dawka</string>
-
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Samopoczucie:</string>
     <string name="painlevel">Intensywność bólu:</string>
@@ -145,13 +127,11 @@
     <string name="none">brak</string>
     <string name="medication_taken">Brane leki:</string>
     <string name="warning_deleting">Czy na pewno chcesz usunąć ten wpis?</string>
-
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Powiadomienia</string>
     <string name="notification_title">Powiadomienie</string>
     <string name="notification_text">Nie zapomnij o swoim dziennym wpisie w dzienniku bólu!</string>
     <string name="snooze">Drzemka</string>
-
     <!-- ### PDF ### -->
     <string name="export_pdf">Eksport do PDF</string>
     <string name="export">Eksportuj</string>
@@ -170,5 +150,6 @@
     <string name="export_success">PDF zapisano w folderze Documents</string>
     <string name="export_failure">Nieznany błąd: nie można zapisać pliku PDF</string>
     <string name="share_caution">Uważaj, komu przekazujesz informacje dotyczące swojego stanu zdrowia.</string>
-
+    <string name="dialog_need_permission_for_notifications">Ta funkcja wymaga zezwolenia na wysyłanie powiadomień.</string>
+    <string name="dialog_need_permission_for_notifications_title">Włącz powiadomienia</string>
 </resources>
