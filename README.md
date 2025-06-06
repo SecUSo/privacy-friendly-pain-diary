@@ -19,9 +19,6 @@ Privacy Friendly Pain Diary is an Android app that allows its users to make dail
 [<img src="https://f-droid.org/badge/get-it-on.png"
       alt="Get it on F-Droid"
       height="80">](https://f-droid.org/packages/org.secuso.privacyfriendlypaindiary/)
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-      alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=org.secuso.privacyfriendlypaindiary)
 
 ## Motivation
 
