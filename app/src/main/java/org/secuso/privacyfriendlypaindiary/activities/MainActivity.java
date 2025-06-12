@@ -31,6 +31,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import org.secuso.privacyfriendlypaindiary.GoodbyeGoogleHelperKt;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
@@ -108,6 +109,7 @@ public class MainActivity extends BaseActivity {
         });
         calendar.setCurrentDate(date);
         calendar.setSelectedDate(date);
+        GoodbyeGoogleHelperKt.checkGoodbyeGoogle(this, getLayoutInflater());
     }
 
     @Override
