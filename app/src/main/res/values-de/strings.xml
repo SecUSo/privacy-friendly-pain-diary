@@ -1,17 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Schmerztagebuch</string>
     <string name="app_name_long">Privacy Friendly Schmerztagebuch</string>
-
     <!-- ### DRAWER ###-->
     <string name="action_help">Hilfe</string>
     <string name="action_about">Über</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_main">Hauptmenü</string>
     <string name="action_tutorial">Tutorial</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="navigation_drawer_open">Navigationsmenü öffnen</string>
+    <string name="navigation_drawer_close">Navigationsmenü schließen</string>
     <!-- ### GENERAL ### -->
     <string name="okay">Okay</string>
     <string name="back">Zurück</string>
@@ -26,19 +24,16 @@
     <string name="edit">Editieren</string>
     <string name="delete">Löschen</string>
     <string name="set">Übernehmen</string>
-
     <!-- ### MAIN ### -->
     <string name="welcome_question">Wie geht es Ihnen heute?</string>
-
     <!--### HELP ###-->
     <string name="help">Help</string>
-
     <string name="help_whatis">Was ist das Privacy Friendly Schmerztagebuch?</string>
-    <string name="help_whatis_answer">Das Privacy Friendly Schmerztagebuch ist eine App, die Ihnen das Erstellen täglicher Tagebucheinträge erlaubt, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>    <string name="help_privacy">Was macht die App Privatsphäre-freundlich?</string>
+    <string name="help_whatis_answer">Das Privacy Friendly Schmerztagebuch ist eine App, die Ihnen das Erstellen täglicher Tagebucheinträge erlaubt, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>
+    <string name="help_privacy">Was macht die App Privatsphäre-freundlich?</string>
     <string name="help_privacy_answer">Das Privacy Friendly Schmerztagebuch benötigt minimale Berechtigungen. Die App enthält außerdem keinerlei Tracking-Mechanismen oder Werbung.</string>
     <string name="help_permission">Welche Berechtigungen benötigt die App?</string>
     <string name="help_permission_answer">Das Privacy Friendly Schmerztagebuch benötigt eine Schreibberechtigung für den Speicher Ihres Gerätes, falls Sie Ihre Tagebucheinträge als PDF exportieren möchten. Für alle anderen Funktionen der App müssen keine Berechtigungen erteilt werden.</string>
-
     <string name="help_add_entry">Wie kann ich einen neuen Tagebucheintrag erstellen?</string>
     <string name="help_add_entry_answer">Ein neuer Tagebucheintrag kann erstellt werden, indem der entsprechende Tag im Kalender ausgewählt wird. Pro Tag kann nur ein Eintrag erstellt werden. Tage, an denen bereits ein Eintrag existiert, sind im Kalender markiert.</string>
     <string name="help_entry_information">Welche Informationen werden in einem Tagebucheintrag festgehalten?</string>
@@ -47,7 +42,6 @@
     <string name="help_userdetails_answer">Die App erfordert keine Eingabe Ihrer Benutzerdaten. Es ist Ihnen freigestellt, Ihren Namen, Ihr Geburtsdatum und Ihr Geschlecht einzugeben und Sie können eingegebene Informationen jederzeit wieder löschen. Die Informationen, die Sie eingeben werden nicht übertragen oder geteilt.</string>
     <string name="help_pdf_export">Wie kann ich meine Tagebucheinträge exportieren?</string>
     <string name="help_pdf_export_answer">Sie können alle Tagebucheinträge in einem von Ihnen gewählten Zeitraum als PDF exportieren und dieses wahlweise teilen. Dazu wählen Sie den Menüpunkt "PDF Export".</string>
-
     <!--### ABOUT ###-->
     <string name="about">Über</string>
     <string name="version_number">Version</string>
@@ -56,7 +50,6 @@
     <string name="about_affiliation">In Zusammenarbeit mit</string>
     <string name="privacy_friendly">Diese App gehört zur Gruppe der Privacy Friendly Apps entwickelt vom Karlsruher Institut für Technologie. Quelltext lizenziert unter GPLv3. Bilder copyright KIT und Google Inc.</string>
     <string name="more_info">Weitere Infos unter:</string>
-
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Einstellungen</string>
     <string name="pref_header_general">Allgemein</string>
@@ -68,20 +61,15 @@
     <string name="pref_header_notifications">Benachrichtigungen</string>
     <string name="pref_reminder">Tägliche Erinnerung</string>
     <string name="pref_reminder_time">Erinnerungszeit</string>
-
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Willkommen!</string>
     <string name="slide1_text">Diese App erlaubt Ihnen das Erstellen täglicher Tagebucheinträge, in denen Sie Ihr Wohlbefinden und die Intensität, die Position, den Charakter und den Zeitpunkt Ihrer Schmerzen festhalten können, sowie die von Ihnen eingenommenen Medikamente und zusätzliche Notizen.</string>
-
     <string name="slide2_heading">Neuer Tagebucheintrag</string>
     <string name="slide2_text">Die Hauptansicht der App ist ein Kalender. Durch Auswahl eines Tages in diesem Kalender können Sie einen neuen Tagebucheintrag erstellen. Anschließend werden Sie gebeten, verschiedene Fragen zu Ihrem Wohlbefinden und den von Ihnen empfundenen Schmerzen zu beantworten.</string>
-
     <string name="slide3_heading">Benutzerdaten</string>
     <string name="slide3_text">Am Ende dieses Tutorials werden Sie aufgefordert werden, Ihre Benutzerdaten einzugeben. Dieser Schritt ist optional und kann übersprungen werden. Benutzerdaten können auch zu einem späteren Zeitpunkt eingegeben oder gelöscht werden.</string>
-
     <string name="slide4_heading">Github und Guide</string>
     <string name="slide4_text">Der Quellcode dieser App ist auf GitHub. Weitere Infos gibt es auf der Hilfe-Seite und im Privacy Friendly App Guide.</string>
-
     <!-- ### USER DETAILS ### -->
     <string name="user_details">Benutzerdaten</string>
     <string name="first_name">Vorname</string>
@@ -90,19 +78,16 @@
     <string name="gender">Geschlecht</string>
     <string name="name_invalid">Bitte geben Sie einen korrekten Namen ein.</string>
     <string name="date_invalid">Bitte geben Sie ein korrektes Datum ein.</string>
-
     <!-- ### GENDER ### -->
     <string name="male">männlich</string>
     <string name="female">weiblich</string>
     <string name="other">andere</string>
-
     <!-- ### PAIN DESCRIPTION ### -->
     <string name="pain_stabbing">stechend</string>
     <string name="pain_dull">dumpf</string>
     <string name="pain_shooting">einschießend</string>
     <string name="pain_burning">brennend</string>
     <string name="pain_throbbing">pochend</string>
-
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Neuer Eintrag</string>
     <string name="edit_diary_entry">Eintrag Editieren</string>
@@ -127,7 +112,6 @@
     <string name="medication">Medikament</string>
     <string name="medication_name">Bezeichnung</string>
     <string name="dose">Dosierung</string>
-
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Gemütszustand:</string>
     <string name="painlevel">Schmerzintensität:</string>
@@ -139,13 +123,11 @@
     <string name="none">keine</string>
     <string name="medication_taken">Eingenommene Medikamente:</string>
     <string name="warning_deleting">Sind Sie sicher, dass Sie den Tagebucheintrag löschen wollen?</string>
-
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Erinnerungen</string>
     <string name="notification_title">Erinnerung</string>
     <string name="notification_text">Vergessen Sie Ihren täglichen Schmerztagebucheintrag nicht!</string>
-    <string name="snooze">Snooze</string>
-
+    <string name="snooze">Schlummern</string>
     <!-- ### PDF ### -->
     <string name="export_pdf">PDF Export</string>
     <string name="export">Exportieren</string>
@@ -166,6 +148,4 @@
     <string name="share_caution">Seien Sie vorsichtig, mit wem Sie Ihre medizinischen Informationen teilen.</string>
     <string name="dialog_need_permission_for_notifications">Für diese Funktion ist die Berechtigung zum Senden von Benachrichtigungen erforderlich.</string>
     <string name="dialog_need_permission_for_notifications_title">Benachrichtigungen aktivieren</string>
-
-
 </resources>
