@@ -16,7 +16,7 @@
     <string name="okay">Хорошо</string>
     <string name="skip">Пропустить</string>
     <string name="save">Сохранить</string>
-    <string name="cancel">Отмена</string>
+    <string name="cancel">Отменить</string>
     <string name="confirm">Подтвердить</string>
     <string name="changes_saved">Изменения сохранены.</string>
     <string name="delete">Удалить</string>
@@ -30,10 +30,10 @@
     <string name="next">Далее</string>
     <string name="changes_discarded">Изменения отменены.</string>
     <string name="back">Назад</string>
-    <string name="help">Справка</string>
-    <string name="edit">Редактировать</string>
+    <string name="help">Помощь</string>
+    <string name="edit">Отредактировать</string>
     <string name="more_info">Больше информации на:</string>
-    <string name="about">О приложении</string>
+    <string name="about">О программе</string>
     <string name="privacy_friendly">Это одно из приложений группы Уважающих Конфиденциальность Приложений (Privacy Friendly Apps, PFA), разработанных исследовательской группой SECUSO в Технологическом Институте Карлсруэ (KIT). Исходный код доступен по лицензии GPLv3. Авторские права на изображения принадлежат KIT и Google Inc.</string>
     <string name="pref_header_general">Главные</string>
     <string name="save_error">Сохранение невозможно.</string>
