@@ -10,9 +10,9 @@
     <string name="action_main">Główny</string>
     <string name="action_tutorial">Samouczek</string>
     <string name="navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
-    <string name="navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
+    <string name="navigation_drawer_close">Zamknij szufladę nawigacji</string>
     <!-- ### GENERAL ### -->
-    <string name="okay">Ok</string>
+    <string name="okay">OK</string>
     <string name="back">Wróć</string>
     <string name="next">Dalej</string>
     <string name="skip">Pomiń</string>
@@ -44,14 +44,14 @@
     <string name="help_pdf_export">W jaki sposób mogę wyeksportować moje wpisy?</string>
     <string name="help_pdf_export_answer">Wyeksportować można wpisy ze wskazanego przez użytkownika okresu. Plik PDF można również udostępnić z poziomu aplikacji. W celu wyeksportowania wybierz opcję "Eksport do PDF" w bocznym menu.</string>
     <!--### ABOUT ###-->
-    <string name="about">O</string>
+    <string name="about">O aplikacji</string>
     <string name="version_number">Wersja</string>
     <string name="about_author">Autorzy:</string>
     <string name="about_author_names" translatable="false">Karola Marky, Susanne Felsen, Rybien Sinjari</string>
     <string name="about_author_contributors">i współtwórcy.</string>
     <string name="about_affiliation">We współpracy z</string>
     <string name="privacy_friendly">Ta aplikacja należy do grupy Aplikacji Przyjaznych Prywatności opracowanych przez Karlsruhe Institute of Technology. Kod źródłowy licencjonowany na zasadach GPLv3. Prawa autorskie do obrazów KIT i Google Inc.</string>
-    <string name="more_info">Więcej informacji można znaleźć na stronie:</string>
+    <string name="more_info">Więcej informacji można znaleźć na:</string>
     <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-pain-diary">Github-Repo</a></string>
     <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
     <!-- ### SETTINGS ### -->
