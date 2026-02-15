@@ -16,13 +16,13 @@
     <string name="back">Précédent</string>
     <string name="next">Suivant</string>
     <string name="skip">Ignorer</string>
-    <string name="save">Sauver</string>
+    <string name="save">Enregistrer</string>
     <string name="save_error">Sauvegarde impossible.</string>
     <string name="cancel">Annuler</string>
     <string name="confirm">Confirmer</string>
     <string name="changes_saved">Changements sauvegardés.</string>
     <string name="changes_discarded">Changements annulés.</string>
-    <string name="edit">Éditer</string>
+    <string name="edit">Modifier</string>
     <string name="delete">Supprimer</string>
     <string name="set">Définir</string>
     <!-- ### MAIN ### -->
