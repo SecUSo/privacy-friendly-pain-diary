@@ -120,7 +120,7 @@
     <string name="unknown">desconocido</string>
     <string name="timeofpain">Duración del dolor:</string>
     <string name="notes">Comentarios:</string>
-    <string name="none">ninguno</string>
+    <string name="none">nada</string>
     <string name="medication_taken">Medicación tomada:</string>
     <string name="warning_deleting">¿Está seguro/a de que desea eliminar esta entrada del diario?</string>
     <!-- ### REMINDER ### -->
