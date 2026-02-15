@@ -12,7 +12,7 @@
     <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
     <string name="navigation_drawer_close">Fermer le menu de navigation</string>
     <!-- ### GENERAL ### -->
-    <string name="okay">Ok</string>
+    <string name="okay">Okay</string>
     <string name="back">Précédent</string>
     <string name="next">Suivant</string>
     <string name="skip">Passer</string>
@@ -66,7 +66,7 @@
     <string name="pref_reminder">Rappel quotidien</string>
     <string name="pref_reminder_time">Heure de rappel</string>
     <!-- ### TUTORIAL DIALOG ### -->
-    <string name="slide1_heading">Bienvenu.e !</string>
+    <string name="slide1_heading">Bienvenue !</string>
     <string name="slide1_text">Cette application vous permet de tenir un journal quotidien dans lequel vous consignez votre état et l\'intensité, le lieu, la nature et l\'heure de la douleur que vous ressentez, ainsi que les médicaments que vous prenez et des notes supplémentaires.</string>
     <string name="slide2_heading">Nouvelle entrée dans le journal</string>
     <string name="slide2_text">The main view of this app is a calendar. You can add a new diary entry by selecting a day in this calendar. You will then be asked to answer questions regarding your condition and the pain you are experiencing.</string>
