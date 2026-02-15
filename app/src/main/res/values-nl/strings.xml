@@ -1,17 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pijndagboek</string>
     <string name="app_name_long">Privacy-vriendelijk Pijndagboek</string>
-
     <!-- ### DRAWER ###-->
     <string name="action_help">Hulp</string>
     <string name="action_about">Over</string>
     <string name="action_settings">Instellingen</string>
     <string name="action_main">Hoofdmenu</string>
     <string name="action_tutorial">Rondleiding</string>
-
     <string name="navigation_drawer_open">Navigatiemenu openen</string>
     <string name="navigation_drawer_close">Navigatiemenu sluiten</string>
-
     <!-- ### GENERAL ### -->
     <string name="okay">Oké</string>
     <string name="back">Terug</string>
@@ -19,27 +17,23 @@
     <string name="skip">Overslaan</string>
     <string name="save">Opslaan</string>
     <string name="save_error">Het opslaan is niet mogelijk.</string>
-    <string name="cancel">Annuleren</string>
+    <string name="cancel">Afbreken</string>
     <string name="confirm">Bevestigen</string>
     <string name="changes_saved">De wijzigingen zijn opgeslagen.</string>
     <string name="changes_discarded">De wijzigingen zijn verworpen.</string>
     <string name="edit">Bewerken</string>
     <string name="delete">Verwijderen</string>
     <string name="set">Instellen</string>
-
     <!-- ### MAIN ### -->
     <string name="welcome_question">Hoe voel je je vandaag?</string>
-
     <!--### HELP ###-->
     <string name="help">Hulp</string>
-
     <string name="help_whatis">Wat is Privacy-vriendelijk Pijndagboek?</string>
     <string name="help_whatis_answer">Privacy-vriendelijk Pijndagboek is een app die je in staat stelt om een dagelijks dagboek bij te houden over je toestand en intensiteit, locatie, oorzaak en tijdstip van je pijn. Ook kun je noteren welke medicatie je hebt genomen en extra aantekeningen maken.</string>
     <string name="help_privacy">Wat maakt de app privacy-vriendelijk?</string>
     <string name="help_privacy_answer">Privacy-vriendelijk Pijndagboek vereist minimale machtigingen. Er zijn geen ingebouwde opsporingsmechanismen en advertenties.</string>
     <string name="help_permission">Welke machtigingen zijn vereist?</string>
     <string name="help_permission_answer">Privacy-vriendelijk Pijndagboek vereist schrijftoegang tot je apparaatopslag als je dagboeknotities wilt exporteren naar PDF. Alle andere functies vereisen geen machtigingen.</string>
-
     <string name="help_add_entry">Hoe voeg ik een nieuw dagboeknotitie toe?</string>
     <string name="help_add_entry_answer">Selecteer een dag op de kalender om een notitie toe te voegen. Let op: er kan slechts één notitie per dag worden gecreëerd. Dagen met reeds aanwezige dagboeknotities zijn gemarkeerd op de kalender.</string>
     <string name="help_entry_information">Welke informatie wordt er opgeslagen in een dagboeknotitie?</string>
@@ -48,16 +42,14 @@
     <string name="help_userdetails_answer">De app vereist geen gebruikersgegevens. Je bent vrij om je naam, geboortedatum en geslacht op te geven je kunt ingevoerde informatie ten alle tijde wissen. De ingevoerde informatie wordt niet gedeeld of stiekem verstuurd.</string>
     <string name="help_pdf_export">Hoe kan ik dagboeknotities exporteren?</string>
     <string name="help_pdf_export_answer">Je kunt alle dagboeknotities, binnen een door jouw opgegeven periode, exporteren. Je kunt het PDF-bestand ook delen. Gebruik hiervoor het menu-item "Exporteren naar PDF".</string>
-
     <!--### ABOUT ###-->
     <string name="about">Over</string>
     <string name="version_number">Versie</string>
     <string name="about_author">Auteurs: </string>
-    <string name="about_author_contributors">en bijdragers.</string>
+    <string name="about_author_contributors">en medewerkers.</string>
     <string name="about_affiliation">Betrekking met</string>
     <string name="privacy_friendly">Deze applicatie is onderdeel van de groep met Privacy-vriendelijke apps, ontwikkeld door de researchgroep SECUSO. De broncode wordt verspreid onder de GPLv3-licentie. Het auteursrecht/copyright behoort SECUSO en Google Inc.</string>
     <string name="more_info">Meer informatie is te vinden op:</string>
-
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Instellingen</string>
     <string name="pref_header_general">Algemeen</string>
@@ -69,20 +61,15 @@
     <string name="pref_header_notifications">Meldingen</string>
     <string name="pref_reminder">Dagelijkse herinnering</string>
     <string name="pref_reminder_time">Herinneringstijd</string>
-
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welkom!</string>
     <string name="slide1_text">Deze app stelt je in staat om een dagelijks dagboek bij te houden over je toestand en intensiteit, locatie, oorzaak en tijdstip van je pijn. Ook kun je noteren welke medicatie je hebt genomen en extra aantekeningen maken.</string>
-
     <string name="slide2_heading">Nieuwe dagboeknotitie</string>
     <string name="slide2_text">De hoofdweergave van deze app bestaat uit een kalender. Je kunt een nieuwe dagboeknotitie toevoegen door het selecteren van een dag. Vervolgens krijg je vragen voorgesteld over je toestand en de pijn die je voelt.</string>
-
     <string name="slide3_heading">Gebruikersgegevens</string>
     <string name="slide3_text">Aan het einde van de rondleiding wordt je gevraagd om gebruikersgegevens in te voeren. Deze stap is optioneel en kan worden overgeslagen. Gebruikersgegevens kunnen ook later worden toegevoegd  of verwijderd.</string>
-
     <string name="slide4_heading">Github en Gids</string>
     <string name="slide4_text">De broncode van deze app is beschikbaar op GitHub. Kijk voor meer uitleg op de hulppagina of in de Privacy Friendly App Guide.</string>
-
     <!-- ### USER DETAILS ### -->
     <string name="user_details">Gebruikersgegevens</string>
     <string name="first_name">Voornaam</string>
@@ -91,19 +78,16 @@
     <string name="gender">Geslacht</string>
     <string name="name_invalid">Voer een geldige naam in.</string>
     <string name="date_invalid">Voer een geldige geboortedatum in.</string>
-
     <!-- ### GENDER ### -->
     <string name="male">man</string>
     <string name="female">vrouw</string>
     <string name="other">anders</string>
-
     <!-- ### PAIN DESCRIPTION ### -->
     <string name="pain_stabbing">stekend</string>
     <string name="pain_dull">dof</string>
     <string name="pain_shooting">pijnscheut</string>
     <string name="pain_burning">brandend</string>
     <string name="pain_throbbing">kloppend</string>
-
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Nieuwe dagboeknotitie</string>
     <string name="edit_diary_entry">Dagboeknotitie bewerken</string>
@@ -128,7 +112,6 @@
     <string name="medication">Medicatie</string>
     <string name="medication_name">Naam</string>
     <string name="dose">Dosering</string>
-
     <!-- ### VIEW DIARY ENTRY ### -->
     <string name="condition">Toestand:</string>
     <string name="painlevel">Pijnintensiteit:</string>
@@ -140,13 +123,11 @@
     <string name="none">geen</string>
     <string name="medication_taken">Ingenomen medicatie:</string>
     <string name="warning_deleting">Weet je zeker dat je deze dagboeknotitie wilt verwijderen?</string>
-
     <!-- ### REMINDER ### -->
     <string name="reminders_channel_title">Herinneringen</string>
     <string name="notification_title">Herinnering</string>
     <string name="notification_text">Vergeet niet om de dagelijkse dagboeknotitie over je pijn te maken!</string>
     <string name="snooze">Uitstellen</string>
-
     <!-- ### PDF ### -->
     <string name="export_pdf">Exporteren naar PDF</string>
     <string name="export">Exporteren</string>
@@ -165,5 +146,4 @@
     <string name="export_success">Het PDF-bestand is opgeslagen in de documenten-map.</string>
     <string name="export_failure">Onbekende fout: Het PDF-bestand kan niet worden opgeslagen.</string>
     <string name="share_caution">Wees terughoudend met het delen van je medische informatie.</string>
-
 </resources>
