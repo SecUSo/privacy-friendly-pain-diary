@@ -12,7 +12,7 @@
     <string name="navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
     <string name="navigation_drawer_close">Zamknij szufladę nawigacji</string>
     <!-- ### GENERAL ### -->
-    <string name="okay">OK</string>
+    <string name="okay">Ok</string>
     <string name="back">Wróć</string>
     <string name="next">Dalej</string>
     <string name="skip">Pomiń</string>
