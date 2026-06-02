@@ -139,11 +139,11 @@ class NotificationJobService : JobService() {
 
         fun scheduleJob(context: Context) {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val alertTimeInMillis = sharedPreferences.getLong(KEY_PREF_REMINDER_TIME, 64800000)
+            // Stored as milliseconds since midnight (see TimePreference).
+            val reminderMillisOfDay = sharedPreferences.getInt(KEY_PREF_REMINDER_TIME, 64800000)
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = alertTimeInMillis
-            calendar[Calendar.getInstance()[Calendar.YEAR], Calendar.getInstance()[Calendar.MONTH]] =
-                Calendar.getInstance()[Calendar.DAY_OF_MONTH]
+            calendar[Calendar.HOUR_OF_DAY] = reminderMillisOfDay / (60 * 60 * 1000)
+            calendar[Calendar.MINUTE] = (reminderMillisOfDay / (60 * 1000)) % 60
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
             if (calendar.before(Calendar.getInstance())) {

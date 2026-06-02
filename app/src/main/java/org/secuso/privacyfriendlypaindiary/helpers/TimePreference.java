@@ -38,6 +38,12 @@ import java.util.Calendar;
  */
 
 public class TimePreference extends DialogPreference {
+
+    private static final int MILLIS_PER_HOUR = 60 * 60 * 1000;
+    private static final int MILLIS_PER_MINUTE = 60 * 1000;
+    // 18:00 expressed as milliseconds since midnight
+    private static final int DEFAULT_MILLIS_OF_DAY = 18 * MILLIS_PER_HOUR;
+
     private Calendar calendar;
     private TimePicker picker = null;
 
@@ -75,8 +81,9 @@ public class TimePreference extends DialogPreference {
             calendar.set(Calendar.MINUTE, getMinute(picker));
 
             setSummary(getSummary());
-            if (callChangeListener(calendar.getTimeInMillis())) {
-                persistLong(calendar.getTimeInMillis());
+            int millisOfDay = millisOfDayFromCalendar();
+            if (callChangeListener(millisOfDay)) {
+                persistInt(millisOfDay);
                 notifyChanged();
             }
         }
@@ -89,13 +96,9 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        if (defaultValue == null) {
-            calendar.setTimeInMillis(getPersistedLong(System.currentTimeMillis()));
-        } else if (restoreValue) {
-            calendar.setTimeInMillis(Long.parseLong(getPersistedString((String) defaultValue)));
-        } else {
-            calendar.setTimeInMillis(Long.parseLong((String) defaultValue));
-        }
+        int defaultMillisOfDay = defaultValue == null ? DEFAULT_MILLIS_OF_DAY : Integer.parseInt((String) defaultValue);
+        int millisOfDay = restoreValue ? getPersistedInt(defaultMillisOfDay) : defaultMillisOfDay;
+        setCalendarFromMillisOfDay(millisOfDay);
         setSummary(getSummary());
     }
 
@@ -105,6 +108,17 @@ public class TimePreference extends DialogPreference {
             return null;
         }
         return DateFormat.getTimeFormat(getContext()).format(calendar.getTime());
+    }
+
+    private void setCalendarFromMillisOfDay(int millisOfDay) {
+        calendar.set(Calendar.HOUR_OF_DAY, millisOfDay / MILLIS_PER_HOUR);
+        calendar.set(Calendar.MINUTE, (millisOfDay / MILLIS_PER_MINUTE) % 60);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    private int millisOfDayFromCalendar() {
+        return calendar.get(Calendar.HOUR_OF_DAY) * MILLIS_PER_HOUR + calendar.get(Calendar.MINUTE) * MILLIS_PER_MINUTE;
     }
 
     private void setHour(TimePicker timePicker, int hour) {
