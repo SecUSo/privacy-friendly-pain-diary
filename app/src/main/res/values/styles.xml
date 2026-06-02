@@ -1,7 +1,7 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Base application theme, now built on top of the PFA-Core Material 3 theme. -->
+    <style name="AppTheme" parent="PrivacyFriendlyCoreTheme">
 		<item name="secusoLogoDrawable">@drawable/secuso_logo_black</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
