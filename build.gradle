@@ -1,28 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript {
-    ext.kotlin_version = '2.0.21'
-    repositories {
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
 plugins {
-    id 'com.google.devtools.ksp' version "$kotlin_version-1.0.26" apply false
+    alias libs.plugins.android.app apply false
+    alias libs.plugins.android.lib apply false
+    alias libs.plugins.kotlin.android apply false
+    alias libs.plugins.ksp apply false
 }
 
 allprojects {
     repositories {
         mavenCentral()
         google()
+    }
+
+    // The PFA-Core ui-view module depends on the model module via the external
+    // coordinate "org.secuso.pfacore:model". Substitute it with the local project.
+    configurations.configureEach {
+        resolutionStrategy.dependencySubstitution {
+            substitute module("org.secuso.pfacore:model") using project(":model")
+        }
     }
 }
 

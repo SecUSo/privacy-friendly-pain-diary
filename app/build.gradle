@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'com.google.devtools.ksp'
+    alias libs.plugins.android.app
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.ksp
 }
 
 android {
@@ -27,6 +27,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -49,6 +50,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    coreLibraryDesugaring libs.desugar.jdk
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation('androidx.test.ext:junit:1.1.5') {
@@ -73,7 +75,9 @@ dependencies {
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // pfa-core library
+    implementation project(path: ':model')
+    implementation project(path: ':ui-view')
 
     implementation project(path: ':backup-api')
     def work_version = "2.9.0"
