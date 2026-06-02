@@ -1,22 +1,50 @@
 package org.secuso.privacyfriendlypaindiary
 
 
-import android.app.Application
+import android.app.Activity
 import android.preference.PreferenceManager
+import android.util.JsonWriter
 import android.util.Log
 import androidx.work.Configuration
-import org.secuso.privacyfriendlybackup.api.pfa.BackupManager
-import org.secuso.privacyfriendlypaindiary.backup.BackupCreator
-import org.secuso.privacyfriendlypaindiary.backup.BackupRestorer
+import org.secuso.pfacore.application.BackupDatabaseConfig
+import org.secuso.pfacore.application.PFAppBackup
+import org.secuso.pfacore.application.RoomDatabaseConfig
+import org.secuso.pfacore.ui.PFApplication
+import org.secuso.pfacore.ui.PFData
+import org.secuso.privacyfriendlypaindiary.activities.MainActivity
+import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabase
 import java.util.Calendar
 
 
-class PFAPainDiaryApplication : Application(), Configuration.Provider {
+class PFAPainDiaryApplication : PFApplication() {
+
+    override val name: String
+        get() = getString(R.string.app_name)
+
+    override val data: PFData
+        get() = PFApplicationData.instance(this).data
+
+    override val mainActivity: Class<out Activity> = MainActivity::class.java
+
+    override val database: BackupDatabaseConfig
+        get() = RoomDatabaseConfig(this, PainDiaryDatabase.DATABASE_NAME, PainDiaryDatabase::class.java)
+
+    // The PFA-Core BackupCreator only writes the registered appBackup managers and the
+    // preferences; it does not call database.backup() itself. We therefore back up the
+    // database through an appBackup entry. On restore the library routes the "database"
+    // key to the database config above.
+    override val appBackup: List<PFAppBackup>
+        get() = listOf(object : PFAppBackup {
+            override val key = "database"
+            override fun backup(writer: JsonWriter): JsonWriter {
+                database.backup(writer)
+                return writer
+            }
+        })
+
     override fun onCreate() {
-        super.onCreate()
         migrateReminderTimeToMillisOfDay()
-        BackupManager.backupCreator = BackupCreator()
-        BackupManager.backupRestorer = BackupRestorer()
+        super.onCreate()
     }
 
     /**
