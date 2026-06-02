@@ -17,7 +17,6 @@
 package org.secuso.privacyfriendlypaindiary.activities;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,6 +58,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
@@ -1161,7 +1161,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (changesMade) {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setMessage(getString(R.string.warning_leaving))
                     .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                         @Override

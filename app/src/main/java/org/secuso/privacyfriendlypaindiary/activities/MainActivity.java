@@ -16,7 +16,8 @@
 */
 package org.secuso.privacyfriendlypaindiary.activities;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -178,7 +179,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void viewDiaryEntry(final Date date) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         LiveData<DiaryEntryInterface> diaryEntryLive = database.getDiaryEntryByDate(date);
 
         diaryEntryLive.observe(this, diaryEntry -> {
@@ -193,7 +194,7 @@ public class MainActivity extends BaseActivity {
             alertDialogBuilder.setNeutralButton(getString(R.string.delete),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            new AlertDialog.Builder(MainActivity.this)
+                            new MaterialAlertDialogBuilder(MainActivity.this)
                                     .setMessage(getString(R.string.warning_deleting))
                                     .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                                         @Override
