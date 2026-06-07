@@ -276,7 +276,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         } else if (edit) {
             initFields(diaryEntry);
         } else {
-            boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_MEDICATION, true);
+            boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_medication", true);
             if (rememberMedication) {
                 LiveData<Long> IDLive = database.getIDOfLatestDiaryEntry();
                 IDLive.observe(this, ID -> {

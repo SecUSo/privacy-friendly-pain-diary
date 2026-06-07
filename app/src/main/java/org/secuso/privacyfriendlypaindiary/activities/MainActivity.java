@@ -32,6 +32,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import org.secuso.pfacore.model.DrawerElement;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
@@ -72,7 +73,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_content);
 
         database = new ViewModelProvider(this).get(DatabaseViewModel.class);
 
@@ -162,13 +163,11 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * This method connects the Activity to the menu item
-     *
-     * @return ID of the menu item it belongs to
+     * Highlights this screen's entry (the main view) in the navigation drawer.
      */
     @Override
-    protected int getNavigationDrawerID() {
-        return R.id.nav_main;
+    public boolean isActiveDrawerElement(@NonNull DrawerElement element) {
+        return element.getName().equals(getString(R.string.action_main));
     }
 
     private void createDiaryEntry(Date date) {

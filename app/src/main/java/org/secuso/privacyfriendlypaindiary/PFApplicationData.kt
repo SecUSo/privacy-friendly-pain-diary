@@ -8,6 +8,7 @@ import org.secuso.pfacore.model.about.About
 import org.secuso.pfacore.model.preferences.Preferable
 import org.secuso.pfacore.model.preferences.settings.ISettingData
 import org.secuso.pfacore.ui.PFData
+import org.secuso.pfacore.ui.help.Help
 import org.secuso.pfacore.ui.preferences.appPreferences
 import org.secuso.pfacore.ui.preferences.settings.appearance
 import org.secuso.pfacore.ui.preferences.settings.preferenceFirstTimeLaunch
@@ -70,6 +71,37 @@ class PFApplicationData private constructor(context: Context) {
         repo = "https://github.com/SecUSo/privacy-friendly-pain-diary"
     )
 
+    private val help = Help.build(context) {
+        item {
+            title { resource(R.string.help_whatis) }
+            description { resource(R.string.help_whatis_answer) }
+        }
+        item {
+            title { resource(R.string.help_privacy) }
+            description { resource(R.string.help_privacy_answer) }
+        }
+        item {
+            title { resource(R.string.help_permission) }
+            description { resource(R.string.help_permission_answer) }
+        }
+        item {
+            title { resource(R.string.help_add_entry) }
+            description { resource(R.string.help_add_entry_answer) }
+        }
+        item {
+            title { resource(R.string.help_entry_information) }
+            description { resource(R.string.help_entry_information_answer) }
+        }
+        item {
+            title { resource(R.string.help_userdetails) }
+            description { resource(R.string.help_userdetails_answer) }
+        }
+        item {
+            title { resource(R.string.help_pdf_export) }
+            description { resource(R.string.help_pdf_export_answer) }
+        }
+    }
+
     private val tutorial = buildTutorial {
         stage {
             title = context.getString(R.string.slide1_heading)
@@ -92,6 +124,7 @@ class PFApplicationData private constructor(context: Context) {
     val data: PFData = PFData(
         preferences = preferences,
         about = about,
+        help = help,
         tutorial = tutorial,
         theme = theme.state.map { Theme.valueOf(it) },
         firstLaunch = firstTimeLaunch,

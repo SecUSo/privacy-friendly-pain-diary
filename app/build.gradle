@@ -26,6 +26,13 @@ android {
         lintConfig = file("lint.xml")
     }
 
+    // The PFA-Core ui-view module exposes data-binding based layouts (the drawer,
+    // about, help, ...), so the app needs data binding enabled to generate the
+    // aggregating DataBinderMapperImpl.
+    buildFeatures {
+        dataBinding true
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
