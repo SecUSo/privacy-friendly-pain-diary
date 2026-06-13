@@ -29,12 +29,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
-import android.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.secuso.privacyfriendlypaindiary.PFApplicationData
 import org.secuso.privacyfriendlypaindiary.R
 import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabaseService.Companion.getInstance
 import java.util.Calendar
@@ -125,7 +125,6 @@ class NotificationJobService : JobService() {
 
     companion object {
         private val TAG = NotificationJobService::class.java.simpleName
-        private const val KEY_PREF_REMINDER_TIME = "pref_reminder_time"
         private const val ACTION_SNOOZE = "org.secuso.privacyfriendlypaindiary.action.SNOOZE"
         private const val PERIODIC_JOB_ID = 42
         private const val SNOOZED_JOB_ID = 13
@@ -138,9 +137,8 @@ class NotificationJobService : JobService() {
                 ).toLong()
 
         fun scheduleJob(context: Context) {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            // Stored as milliseconds since midnight (see TimePreference).
-            val reminderMillisOfDay = sharedPreferences.getInt(KEY_PREF_REMINDER_TIME, 64800000)
+            // Stored as milliseconds since midnight (see the reminder time setting).
+            val reminderMillisOfDay = PFApplicationData.instance(context).reminderTime.value
             val calendar = Calendar.getInstance()
             calendar[Calendar.HOUR_OF_DAY] = reminderMillisOfDay / (60 * 60 * 1000)
             calendar[Calendar.MINUTE] = (reminderMillisOfDay / (60 * 1000)) % 60

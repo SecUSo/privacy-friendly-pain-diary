@@ -24,7 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -60,6 +59,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.secuso.privacyfriendlypaindiary.PFApplicationData;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
@@ -276,7 +276,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
         } else if (edit) {
             initFields(diaryEntry);
         } else {
-            boolean rememberMedication = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_medication", true);
+            boolean rememberMedication = PFApplicationData.instance(this).getMedicationEnabled().getValue();
             if (rememberMedication) {
                 LiveData<Long> IDLive = database.getIDOfLatestDiaryEntry();
                 IDLive.observe(this, ID -> {

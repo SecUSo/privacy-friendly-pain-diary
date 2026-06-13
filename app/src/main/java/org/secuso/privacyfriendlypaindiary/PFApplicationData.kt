@@ -14,7 +14,10 @@ import org.secuso.pfacore.ui.preferences.settings.appearance
 import org.secuso.pfacore.ui.preferences.settings.preferenceFirstTimeLaunch
 import org.secuso.pfacore.ui.preferences.settings.settingDeviceInformationOnErrorReport
 import org.secuso.pfacore.ui.preferences.settings.settingThemeSelector
+import org.secuso.pfacore.ui.preferences.settings.switch
 import org.secuso.pfacore.ui.tutorial.buildTutorial
+import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService
+import org.secuso.privacyfriendlypaindiary.settings.time
 
 /**
  * Single source of truth for the data the PFA-Core empty-shell needs (preferences,
@@ -38,23 +41,51 @@ class PFApplicationData private constructor(context: Context) {
     private val preferences = appPreferences(context) {
         preferences {
             firstTimeLaunch = preferenceFirstTimeLaunch
-            medicationEnabled = preference {
-                key = "pref_medication"
-                default = true
-                backup = true
-            }
-            reminderEnabled = preference {
-                key = "pref_reminder"
-                default = false
-                backup = true
-            }
-            reminderTime = preference {
-                key = "pref_reminder_time"
-                default = 64800000
-                backup = true
-            }
         }
         settings {
+            category(R.string.pref_header_general) {
+                medicationEnabled = switch {
+                    key = "pref_medication"
+                    default = true
+                    backup = true
+                    title { resource(R.string.pref_medication) }
+                    summary { resource(R.string.pref_medication_summary) }
+                }
+            }
+            category(R.string.pref_header_notifications) {
+                reminderEnabled = switch {
+                    key = "pref_reminder"
+                    default = false
+                    backup = true
+                    title { resource(R.string.pref_reminder) }
+                    summary { literal("") }
+                    // React to the daily reminder being turned on or off without an activity
+                    // having to listen for the change.
+                    onUpdate = { enabled ->
+                        if (enabled) {
+                            NotificationJobService.scheduleJob(context)
+                        } else {
+                            NotificationJobService.cancelJob(context)
+                        }
+                    }
+                }
+                reminderTime = time {
+                    key = "pref_reminder_time"
+                    default = DEFAULT_REMINDER_MILLIS_OF_DAY
+                    backup = true
+                    title { resource(R.string.pref_reminder_time) }
+                    summary { literal("") }
+                    // Only selectable while the reminder is active.
+                    dependency = { "pref_reminder" on true }
+                    // Reschedule the reminder so it fires at the new time.
+                    onUpdate = {
+                        if (reminderEnabled.value) {
+                            NotificationJobService.cancelJob(context)
+                            NotificationJobService.scheduleJob(context)
+                        }
+                    }
+                }
+            }
             appearance {
                 theme = settingThemeSelector
             }
@@ -132,7 +163,12 @@ class PFApplicationData private constructor(context: Context) {
     )
 
     companion object {
+        // 18:00 expressed as milliseconds since midnight.
+        private const val DEFAULT_REMINDER_MILLIS_OF_DAY = 18 * 60 * 60 * 1000
+
         private var _instance: PFApplicationData? = null
+
+        @JvmStatic
         fun instance(context: Context): PFApplicationData {
             if (_instance == null) {
                 _instance = PFApplicationData(context.applicationContext)
