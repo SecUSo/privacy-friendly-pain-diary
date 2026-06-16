@@ -2,11 +2,8 @@
 
     <!-- Base application theme, now built on top of the PFA-Core Material 3 theme. -->
     <style name="AppTheme" parent="PrivacyFriendlyCoreTheme">
-		<item name="secusoLogoDrawable">@drawable/secuso_logo_black</item>
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="secusoLogoDrawable">@drawable/secuso_logo_black</item>
+        <!-- Colors come from the PFA-Core theme so light and dark mode are handled for us. -->
         <item name="android:startYear">1900</item>
     </style>
 

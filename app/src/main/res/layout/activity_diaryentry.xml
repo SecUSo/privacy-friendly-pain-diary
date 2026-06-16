@@ -58,7 +58,7 @@
                 android:layout_alignParentRight="true"
                 android:background="@null"
                 android:text="@string/next"
-                android:textColor="@android:color/black" />
+                android:textColor="?attr/colorOnSurface" />
 
             <Button
                 android:id="@+id/btn_back"
@@ -68,7 +68,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@null"
                 android:text="@string/back"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:visibility="gone" />
 
         </RelativeLayout>

@@ -107,7 +107,7 @@
                         android:layout_marginTop="-2dp"
                         android:text="/10"
                         android:textSize="20dp"
-                        android:textColor="@color/black"
+                        android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold" />
 
                 </LinearLayout>
