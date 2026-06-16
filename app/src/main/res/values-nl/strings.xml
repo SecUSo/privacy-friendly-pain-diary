@@ -53,9 +53,6 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Instellingen</string>
     <string name="pref_header_general">Algemeen</string>
-    <string name="pref_reset">Standaardwaarden</string>
-    <string name="pref_reset_summary">Alle dagboeknotities en gebruikersgegevens wissen</string>
-    <string name="pref_reset_warning">Alle dagboeknotities en gebruikersgegevens zullen permanent worden verwijderd.\nWeet je het zeker?</string>
     <string name="pref_medication">Medicatie onthouden</string>
     <string name="pref_medication_summary">De laatst ingenomen medicatie automatisch toevoegen aan nieuwe notities</string>
     <string name="pref_header_notifications">Meldingen</string>

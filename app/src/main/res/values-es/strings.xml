@@ -53,9 +53,6 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Ajustes</string>
     <string name="pref_header_general">General</string>
-    <string name="pref_reset">Restablecer aplicación</string>
-    <string name="pref_reset_summary">Borrar todas las entradas del diario y detalles de usuario</string>
-    <string name="pref_reset_warning">Todas las entradas del diario y los detalles del usuario se borrarán irremediablemente.\n¿Está seguro/a?</string>
     <string name="pref_medication">Recordar medicación</string>
     <string name="pref_medication_summary">La última medicación incluida se agrega automáticamente a las nuevas entradas</string>
     <string name="pref_header_notifications">Notificaciones</string>

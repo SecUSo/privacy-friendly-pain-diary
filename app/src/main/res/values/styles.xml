@@ -2,7 +2,6 @@
 
     <!-- Base application theme, now built on top of the PFA-Core Material 3 theme. -->
     <style name="AppTheme" parent="PrivacyFriendlyCoreTheme">
-        <item name="secusoLogoDrawable">@drawable/secuso_logo_black</item>
         <!-- Colors come from the PFA-Core theme so light and dark mode are handled for us. -->
         <item name="android:startYear">1900</item>
     </style>
@@ -12,11 +11,6 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="SplashTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

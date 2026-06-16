@@ -57,9 +57,6 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Ustawienia</string>
     <string name="pref_header_general">Ogólne</string>
-    <string name="pref_reset">Reset aplikacji</string>
-    <string name="pref_reset_summary">Usuń wszystkie wpisy w dzienniku i dane osobowe</string>
-    <string name="pref_reset_warning">Wszystkie wpisy i dane osobowe zostaną bezpowrotnie usunięte. Kontynuować?</string>
     <string name="pref_medication">Zapamiętaj leki</string>
     <string name="pref_medication_summary">Do nowych wpisów automatycznie dodawane są ostatnio wpisane leki.</string>
     <string name="pref_header_notifications">Przypomnienia</string>

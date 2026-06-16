@@ -57,9 +57,6 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
-    <string name="pref_reset">Reset app</string>
-    <string name="pref_reset_summary">Delete all diary entries and user details</string>
-    <string name="pref_reset_warning">All diary entries and user details will be deleted irrevocably.\nAre you sure?</string>
     <string name="pref_medication">Remember Medication</string>
     <string name="pref_medication_summary">The medication last entered is automatically added to new entries</string>
     <string name="pref_header_notifications">Notifications</string>

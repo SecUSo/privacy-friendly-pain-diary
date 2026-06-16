@@ -57,9 +57,6 @@
     <!-- ### SETTINGS ### -->
     <string name="title_activity_settings">Paramètres</string>
     <string name="pref_header_general">Principaux</string>
-    <string name="pref_reset">Réinitialiser l\'application</string>
-    <string name="pref_reset_summary">Supprimer toutes les entrées du journal et les détails de l\'utilisateur</string>
-    <string name="pref_reset_warning">Toutes les entrées du journal et les détails de l\'utilisateur seront irrévocablement effacés. Êtes-vous sûr ?</string>
     <string name="pref_medication">Mémoriser les médicaments</string>
     <string name="pref_medication_summary">Le dernier médicament saisi est automatiquement ajouté aux nouvelles saisies.</string>
     <string name="pref_header_notifications">Notifications</string>

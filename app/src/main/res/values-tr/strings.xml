@@ -26,7 +26,6 @@
     <string name="about_author">Yazarlar:</string>
     <string name="help_pdf_export">Günlük girişlerimi nasıl dışa aktarabilirim?</string>
     <string name="pref_header_general">Genel</string>
-    <string name="pref_reset_summary">Tüm günlük girişlerini ve kullanıcı ayrıntılarını silin</string>
     <string name="slide1_heading">Hoş geldiniz!</string>
     <string name="gender">Cinsiyet</string>
     <string name="male">erkek</string>
@@ -80,7 +79,6 @@
     <string name="help_add_entry">Yeni bir günlük girişi nasıl eklerim?</string>
     <string name="end_date_error">Lütfen bir bitiş tarihi girin.</string>
     <string name="help_permission">Uygulama hangi izinleri gerektirir?</string>
-    <string name="pref_reset_warning">Tüm günlük girişleri ve kullanıcı ayrıntıları geri dönülmez bir şekilde silinecektir.\nEmin misin?</string>
     <string name="subheading_painlevel">(0 = ağrı yok, 10 = çok güçlü ağrı (bayılma eşiğinde))</string>
     <string name="medication">İlaç</string>
     <string name="help_privacy">Uygulamayı gizlilik dostu yapan nedir?</string>
@@ -104,7 +102,6 @@
     <string name="title_activity_settings">Ayarlar</string>
     <string name="pain_stabbing">Bıçak saplanması gibi</string>
     <string name="medication_name">Ad</string>
-    <string name="pref_reset">Uygulamayı sıfırla</string>
     <string name="heading_condition">Nasıl hissediyorsun?</string>
     <string name="navigation_drawer_open">Gezinti çekmecesini aç</string>
     <string name="navigation_drawer_close">Gezinti çekmecesini kapat</string>
