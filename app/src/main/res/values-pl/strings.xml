@@ -149,4 +149,6 @@
     <string name="share_caution">Uważaj, komu przekazujesz informacje dotyczące swojego stanu zdrowia.</string>
     <string name="dialog_need_permission_for_notifications">Ta funkcja wymaga zezwolenia na wysyłanie powiadomień.</string>
     <string name="dialog_need_permission_for_notifications_title">Włącz powiadomienia</string>
+    <string name="pref_reset">Reset aplikacji</string>
+    <string name="pref_reset_warning">Wszystkie wpisy i dane osobowe zostaną bezpowrotnie usunięte. Kontynuować?</string>
 </resources>

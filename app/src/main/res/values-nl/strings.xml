@@ -143,4 +143,6 @@
     <string name="export_success">Het PDF-bestand is opgeslagen in de documenten-map.</string>
     <string name="export_failure">Onbekende fout: Het PDF-bestand kan niet worden opgeslagen.</string>
     <string name="share_caution">Wees terughoudend met het delen van je medische informatie.</string>
+    <string name="pref_reset">Standaardwaarden</string>
+    <string name="pref_reset_warning">Alle dagboeknotities en gebruikersgegevens zullen permanent worden verwijderd.\nWeet je het zeker?</string>
 </resources>

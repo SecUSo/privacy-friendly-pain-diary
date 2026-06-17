@@ -18,12 +18,18 @@ package org.secuso.privacyfriendlypaindiary.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,6 +39,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.secuso.pfacore.model.DrawerElement;
+import org.secuso.privacyfriendlypaindiary.PFApplicationData;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
@@ -69,6 +76,9 @@ public class MainActivity extends BaseActivity {
     private AlertDialog alertDialog;
 
     private DatabaseViewModel database;
+
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {});
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +130,20 @@ public class MainActivity extends BaseActivity {
                 .commit();
         getDiaryEntryDates(calendar.getCurrentDate().getMonth(), calendar.getCurrentDate().getYear());
 
+        requestNotificationPermissionIfNeeded();
+    }
+
+    /**
+     * The daily reminder can only post a notification if the runtime notification permission is
+     * granted (Android 13+). The old settings screen used to ask for it; since that screen is now
+     * the PFA-Core one, we request it here whenever the reminder is on but the permission is missing.
+     */
+    private void requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && PFApplicationData.instance(this).getReminderEnabled().getValue()
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     @Override

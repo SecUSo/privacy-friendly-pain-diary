@@ -145,4 +145,6 @@
     <string name="share_caution">Tenga cuidado al compartir su información médica.</string>
     <string name="dialog_need_permission_for_notifications_title">Permitir notificaciones</string>
     <string name="dialog_need_permission_for_notifications">Esta característica necesita permiso para enviar notificaciones.</string>
+    <string name="pref_reset">Restablecer aplicación</string>
+    <string name="pref_reset_warning">Todas las entradas del diario y los detalles del usuario se borrarán irremediablemente.\n¿Está seguro/a?</string>
 </resources>
