@@ -42,6 +42,7 @@ import org.secuso.pfacore.model.DrawerElement;
 import org.secuso.privacyfriendlypaindiary.PFApplicationData;
 import org.secuso.privacyfriendlypaindiary.R;
 import org.secuso.privacyfriendlypaindiary.database.entities.interfaces.DiaryEntryInterface;
+import org.secuso.privacyfriendlypaindiary.helpers.Dialogs;
 import org.secuso.privacyfriendlypaindiary.helpers.EventDecorator;
 import org.secuso.privacyfriendlypaindiary.helpers.Helper;
 import org.secuso.privacyfriendlypaindiary.viewmodel.DatabaseViewModel;
@@ -217,26 +218,15 @@ public class MainActivity extends BaseActivity {
             alertDialogBuilder.setNeutralButton(getString(R.string.delete),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            new MaterialAlertDialogBuilder(MainActivity.this)
-                                    .setMessage(getString(R.string.warning_deleting))
-                                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            deleteDiaryEntry(date);
-                                            Calendar cal = Calendar.getInstance();
-                                            cal.setTime(date);
-                                            getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
-                                            calendar.invalidate();
-                                            dialog.cancel();
-                                        }
-                                    })
-                                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            viewDiaryEntry(date);
-                                        }
-                                    })
-                                    .show();
+                            Dialogs.confirm(MainActivity.this, getString(R.string.warning_deleting),
+                                    () -> {
+                                        deleteDiaryEntry(date);
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.setTime(date);
+                                        getDiaryEntryDates(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+                                        calendar.invalidate();
+                                    },
+                                    () -> viewDiaryEntry(date));
                         }
                     });
             alertDialog = alertDialogBuilder.create();

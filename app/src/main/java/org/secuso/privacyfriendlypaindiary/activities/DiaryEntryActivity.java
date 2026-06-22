@@ -57,10 +57,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.secuso.privacyfriendlypaindiary.PFApplicationData;
 import org.secuso.privacyfriendlypaindiary.R;
+import org.secuso.privacyfriendlypaindiary.helpers.Dialogs;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.BodyRegion;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.Condition;
 import org.secuso.privacyfriendlypaindiary.database.entities.enums.PainQuality;
@@ -1161,18 +1161,7 @@ public class DiaryEntryActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (changesMade) {
-            new MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.warning_leaving))
-                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-
-                    })
-                    .setNegativeButton(getString(R.string.cancel), null)
-                    .show();
-
+            Dialogs.confirm(this, getString(R.string.warning_leaving), this::finish);
         } else {
             finish();
         }
