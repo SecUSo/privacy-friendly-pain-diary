@@ -44,6 +44,7 @@ class PFAPainDiaryApplication : PFApplication() {
 
     override fun onCreate() {
         migrateReminderTimeToMillisOfDay()
+        migrateUserIdToDefaultPrefs()
         super.onCreate()
         // Build the application data eagerly on the main thread. PFApplicationData wires up
         // LiveData transformations (e.g. the theme), and LiveData.setValue may only run on the
@@ -72,9 +73,25 @@ class PFAPainDiaryApplication : PFApplication() {
         }
     }
 
+    /**
+     * The user id used to live in its own "privacy_friendly_apps" preferences file, which the
+     * PFA-Core backup does not cover. It is now kept in the default preferences (and backed up).
+     * Move any value left over from an older version across once so an upgrade keeps the user link.
+     */
+    private fun migrateUserIdToDefaultPrefs() {
+        val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        if (defaultPrefs.contains(KEY_USER_ID)) return
+        val legacyUserId = getSharedPreferences(LEGACY_PREF_FILE, MODE_PRIVATE).getLong(KEY_USER_ID, 0L)
+        if (legacyUserId > 0L) {
+            defaultPrefs.edit().putInt(KEY_USER_ID, legacyUserId.toInt()).apply()
+        }
+    }
+
     override val workManagerConfiguration = Configuration.Builder().setMinimumLoggingLevel(Log.INFO).build()
 
     companion object {
         private const val KEY_PREF_REMINDER_TIME = "pref_reminder_time"
+        private const val KEY_USER_ID = "userID"
+        private const val LEGACY_PREF_FILE = "privacy_friendly_apps"
     }
 }

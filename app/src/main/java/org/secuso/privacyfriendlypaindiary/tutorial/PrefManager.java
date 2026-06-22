@@ -18,6 +18,7 @@ package org.secuso.privacyfriendlypaindiary.tutorial;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersistentObject;
 
@@ -33,39 +34,26 @@ import org.secuso.privacyfriendlypaindiary.database.entities.impl.AbstractPersis
  * Class structure taken from <a href="http://www.androidhive.info/2016/05/android-build-intro-slider-app/">this tutorial</a>.
  */
 public class PrefManager {
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences pref;
+    private final SharedPreferences.Editor editor;
 
-    // shared pref mode
-    public static final int PRIVATE_MODE = Context.MODE_PRIVATE;
-
-    // Shared preferences file name
-    public static final String PREF_NAME = "privacy_friendly_apps";
-
-    private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static final String USER_ID = "userID";
 
     public PrefManager(Context context) {
-        pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        // Store the user id in the default preferences so it is included in the PFA-Core backup
+        // (its own file used to be left out, which made restores lose the user details).
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
         editor = pref.edit();
     }
 
-    public void setFirstTimeLaunch(boolean isFirstTime) {
-        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
-        editor.commit();
-    }
-
-    public boolean isFirstTimeLaunch() {
-        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
-    }
-
     public void setUserID(long userID) {
-        editor.putLong(USER_ID, userID);
+        // PFA-Core preferences support Int but not Long; the user id always fits in an Int.
+        editor.putInt(USER_ID, (int) userID);
         editor.commit();
     }
 
     public long getUserID() {
-        return pref.getLong(USER_ID, AbstractPersistentObject.INVALID_OBJECT_ID);
+        return pref.getInt(USER_ID, (int) AbstractPersistentObject.INVALID_OBJECT_ID);
     }
 
 }

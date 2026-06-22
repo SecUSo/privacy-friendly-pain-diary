@@ -37,10 +37,20 @@ class PFApplicationData private constructor(context: Context) {
         private set
     lateinit var reminderTime: Preferable<Int>
         private set
+    lateinit var userId: Preferable<Int>
+        private set
 
     private val preferences = appPreferences(context) {
         preferences {
             firstTimeLaunch = preferenceFirstTimeLaunch
+            // The user id links the saved diary to the stored user details. It lives in the
+            // default preferences (not its own file anymore) and is backed up, so a restore brings
+            // the user's name, birthday and so on back together with the database.
+            userId = preference {2
+                key = "userID"
+                default = 0
+                backup = true
+            }
         }
         settings {
             category(R.string.pref_header_general) {
