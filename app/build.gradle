@@ -69,12 +69,12 @@ dependencies {
     implementation libs.ax.legacy.v4
     implementation libs.material
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
-    implementation("com.github.bumptech.glide:glide:4.11.0") {
+    implementation(libs.glide) {
         exclude group: "com.android.support"
     }
     ksp 'com.github.bumptech.glide:compiler:4.9.0'
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
+    implementation libs.ax.lifecycle.viewmodel
 
     implementation libs.ax.room
     annotationProcessor libs.ax.room.compiler
@@ -86,10 +86,9 @@ dependencies {
     implementation project(path: ':ui-view')
 
     implementation project(path: ':backup-api')
-    def work_version = "2.9.0"
-    implementation "androidx.work:work-runtime:$work_version"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-    androidTestImplementation "androidx.work:work-testing:$work_version"
+    implementation libs.ax.work.runtime
+    implementation libs.ax.work.runtime.ktx
+    androidTestImplementation libs.ax.work.testing
 }
 repositories {
     mavenCentral()
