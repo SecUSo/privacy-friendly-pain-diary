@@ -29,7 +29,7 @@ import java.util.Map;
  * @version 20171205
  */
 public enum PainQuality {
-    STABBING("stabbing", R.string.pain_stabbing), DULL("dull", R.string.pain_dull), SHOOTING("shooting", R.string.pain_shooting), BURNING("burning", R.string.pain_burning), THROBBING("throbbing", R.string.pain_throbbing);
+    STABBING("stabbing", R.string.pain_stabbing), DULL("dull", R.string.pain_dull), SHOOTING("shooting", R.string.pain_shooting), BURNING("burning", R.string.pain_burning), THROBBING("throbbing", R.string.pain_throbbing), NUMBNESS("numbness", R.string.pain_numbness), TINGLING("tingling", R.string.pain_tingling);
 
     private String stringValue;
     private int resourceID;

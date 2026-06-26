@@ -592,6 +592,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
             if (painQualities.contains(PainQuality.THROBBING)) {
                 ((CheckBox) findViewById(R.id.pain_throbbing)).setChecked(true);
             }
+            if (painQualities.contains(PainQuality.NUMBNESS)) {
+                ((CheckBox) findViewById(R.id.pain_numbness)).setChecked(true);
+            }
+            if (painQualities.contains(PainQuality.TINGLING)) {
+                ((CheckBox) findViewById(R.id.pain_tingling)).setChecked(true);
+            }
         }
     }
 
@@ -720,6 +726,12 @@ public class DiaryEntryActivity extends AppCompatActivity {
                 break;
             case R.id.pain_throbbing:
                 quality = PainQuality.THROBBING;
+                break;
+            case R.id.pain_numbness:
+                quality = PainQuality.NUMBNESS;
+                break;
+            case R.id.pain_tingling:
+                quality = PainQuality.TINGLING;
                 break;
             default:
                 break;

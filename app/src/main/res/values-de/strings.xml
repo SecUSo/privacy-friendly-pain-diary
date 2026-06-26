@@ -85,6 +85,8 @@
     <string name="pain_shooting">einschießend</string>
     <string name="pain_burning">brennend</string>
     <string name="pain_throbbing">pochend</string>
+    <string name="pain_numbness">Taubheit</string>
+    <string name="pain_tingling">Kribbeln</string>
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">Neuer Eintrag</string>
     <string name="edit_diary_entry">Eintrag Editieren</string>

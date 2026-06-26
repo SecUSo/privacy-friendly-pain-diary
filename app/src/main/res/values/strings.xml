@@ -89,6 +89,8 @@
     <string name="pain_shooting">shooting</string>
     <string name="pain_burning">burning</string>
     <string name="pain_throbbing">throbbing</string>
+    <string name="pain_numbness">numbness</string>
+    <string name="pain_tingling">tingling</string>
     <!-- ### DIARY ENTRY ### -->
     <string name="new_diary_entry">New Diary Entry</string>
     <string name="edit_diary_entry">Edit Diary Entry</string>
