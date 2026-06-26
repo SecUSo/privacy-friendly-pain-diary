@@ -52,7 +52,7 @@
                 android:gravity="top|left"
                 android:scrollbars="vertical"
                 android:textSize="16dp"
-                android:maxLength="256"
+                android:maxLength="1000"
                 android:background="@drawable/custom_border"/>
 
         </LinearLayout>
