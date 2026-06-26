@@ -107,4 +107,7 @@
     <string name="navigation_drawer_close">Gezinti çekmecesini kapat</string>
     <string name="about_author_contributors">ve katkıda bulunanlar.</string>
     <string name="about_affiliation">ile bağlantılı olarak</string>
+    <string name="pref_reset_summary">Tüm günlük girişlerini ve kullanıcı ayrıntılarını silin</string>
+    <string name="pref_reset_warning">Tüm günlük girişleri ve kullanıcı ayrıntıları geri dönülmez bir şekilde silinecektir.\nEmin misin?</string>
+    <string name="pref_reset">Uygulamayı sıfırla</string>
 </resources>

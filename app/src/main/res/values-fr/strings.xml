@@ -149,4 +149,7 @@
     <string name="share_caution">Faites attention à qui vous partagez vos informations médicales.</string>
     <string name="dialog_need_permission_for_notifications">L\'autorisation d\'envoyer des notifications pour requise pour cette fonctionnalité.</string>
     <string name="dialog_need_permission_for_notifications_title">Autoriser les notifications</string>
+    <string name="pref_reset">Réinitialiser l\'application</string>
+    <string name="pref_reset_summary">Supprimer toutes les entrées du journal et les détails de l\'utilisateur</string>
+    <string name="pref_reset_warning">Toutes les entrées du journal et les détails de l\'utilisateur seront irrévocablement effacés. Êtes-vous sûr ?</string>
 </resources>

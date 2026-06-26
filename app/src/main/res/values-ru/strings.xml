@@ -131,4 +131,7 @@
     <string name="share_caution">Будьте осторожны, кому вы предоставляете свою медицинскую информацию.</string>
     <string name="dialog_need_permission_for_notifications">Для этой функции необходимо разрешение на отправку уведомлений.</string>
     <string name="dialog_need_permission_for_notifications_title">Включить уведомления</string>
+    <string name="pref_reset">Сбросить настройки приложения</string>
+    <string name="pref_reset_summary">Удалить все записи дневника и данные пользователя</string>
+    <string name="pref_reset_warning">Все записи дневника и данные пользователя будут безвозвратно удалены.\nВы уверены?</string>
 </resources>

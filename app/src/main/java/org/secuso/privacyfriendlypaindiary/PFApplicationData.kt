@@ -13,9 +13,11 @@ import org.secuso.pfacore.ui.preferences.appPreferences
 import org.secuso.pfacore.ui.preferences.settings.appearance
 import org.secuso.pfacore.ui.preferences.settings.preferenceFirstTimeLaunch
 import org.secuso.pfacore.ui.preferences.settings.settingDeviceInformationOnErrorReport
+import org.secuso.pfacore.ui.preferences.settings.action
 import org.secuso.pfacore.ui.preferences.settings.settingThemeSelector
 import org.secuso.pfacore.ui.preferences.settings.switch
 import org.secuso.pfacore.ui.tutorial.buildTutorial
+import org.secuso.privacyfriendlypaindiary.helpers.AppReset
 import org.secuso.privacyfriendlypaindiary.helpers.NotificationJobService
 import org.secuso.privacyfriendlypaindiary.settings.time
 
@@ -60,6 +62,11 @@ class PFApplicationData private constructor(context: Context) {
                     backup = true
                     title { resource(R.string.pref_medication) }
                     summary { resource(R.string.pref_medication_summary) }
+                }
+                action {
+                    title { resource(R.string.pref_reset) }
+                    summary { resource(R.string.pref_reset_summary) }
+                    onClick = { activity -> AppReset.confirmAndReset(activity) }
                 }
             }
             category(R.string.pref_header_notifications) {
