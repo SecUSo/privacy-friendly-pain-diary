@@ -41,7 +41,7 @@ import java.util.Calendar
 
 /**
  * Responsible for scheduling and displaying snoozable daily reminder notifications
- * at the reminder time set by the user (see also [org.secuso.privacyfriendlypaindiary.activities.SettingsActivity]).
+ * at the reminder time the user sets in the app settings.
  *
  * @author Susanne Felsen
  * @version 20180130
