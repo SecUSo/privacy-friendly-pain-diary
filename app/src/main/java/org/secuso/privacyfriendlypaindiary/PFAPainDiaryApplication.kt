@@ -32,6 +32,12 @@ import org.secuso.privacyfriendlypaindiary.database.PainDiaryDatabase
 import java.util.Calendar
 
 
+/**
+ * The application class from the pain diary. It extend the PFA-Core PFApplication and give to the
+ * library the app data, the main activity and the database backup config. It run also two small
+ * migrations for the old users, so the reminder time and the user id are still working after the
+ * update.
+ */
 class PFAPainDiaryApplication : PFApplication() {
 
     override val name: String

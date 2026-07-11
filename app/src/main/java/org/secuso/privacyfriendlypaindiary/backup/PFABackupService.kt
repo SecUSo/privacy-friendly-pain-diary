@@ -18,5 +18,9 @@ package org.secuso.privacyfriendlypaindiary.backup
 
 import org.secuso.privacyfriendlybackup.api.pfa.PFAAuthService
 
+/**
+ * Backup service from the pain diary. It extend only the PFA-Core PFAAuthService, so the backup
+ * app can reach to us. No own logic is here needed.
+ */
 class PFABackupService : PFAAuthService() {
 }
